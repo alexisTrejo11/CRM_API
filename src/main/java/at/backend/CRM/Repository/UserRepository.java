@@ -15,12 +15,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByRole(UserRole role);
 
-    @Query("SELECT u FROM UserMappers u WHERE SIZE(u.activities) >= :minActivities " +
+    @Query("SELECT u FROM User u WHERE SIZE(u.activities) >= :minActivities " +
             "AND u.role = 'SALES_REP'")
     List<User> findActiveSalesReps(@Param("minActivities") int minActivities);
 
     @Query("SELECT u.id, u.firstName, u.lastName, COUNT(a) " +
-            "FROM UserMappers u LEFT JOIN u.activities a " +
+            "FROM User u LEFT JOIN u.activities a " +
             "WHERE a.createdAt >= :startDate " +
             "GROUP BY u.id, u.firstName, u.lastName")
     List<Object[]> getUserActivityStats(@Param("startDate") LocalDateTime startDate);
