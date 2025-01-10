@@ -4,6 +4,7 @@ import at.backend.CRM.Inputs.DealInput;
 import at.backend.CRM.Mappers.DealMappers;
 import at.backend.CRM.Models.Deal;
 import at.backend.CRM.Repository.DealRepository;
+import at.backend.CRM.Utils.Result;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,10 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
         }
 
         companyRepository.deleteById(id);
+    }
+
+    @Override
+    public Result<Void> validate(DealInput input) {
+        return null;
     }
 }

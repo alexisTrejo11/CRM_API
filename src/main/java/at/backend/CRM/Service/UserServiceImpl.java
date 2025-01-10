@@ -4,6 +4,7 @@ import at.backend.CRM.Inputs.UserInput;
 import at.backend.CRM.Mappers.UserMappers;
 import at.backend.CRM.Models.User;
 import at.backend.CRM.Repository.UserRepository;
+import at.backend.CRM.Utils.Result;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,10 @@ public class UserServiceImpl implements CommonService<User, UserInput> {
         }
 
         companyRepository.deleteById(id);
+    }
+
+    @Override
+    public Result<Void> validate(UserInput input) {
+        return null;
     }
 }

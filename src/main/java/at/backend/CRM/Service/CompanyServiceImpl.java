@@ -4,6 +4,7 @@ import at.backend.CRM.Inputs.CompanyInput;
 import at.backend.CRM.Mappers.CompanyMappers;
 import at.backend.CRM.Models.Company;
 import at.backend.CRM.Repository.CompanyRepository;
+import at.backend.CRM.Utils.Result;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,10 @@ public class CompanyServiceImpl implements CommonService<Company, CompanyInput> 
         }
 
         companyRepository.deleteById(id);
+    }
+
+    @Override
+    public Result<Void> validate(CompanyInput input) {
+        return null;
     }
 }

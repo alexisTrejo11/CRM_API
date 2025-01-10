@@ -4,6 +4,7 @@ import at.backend.CRM.Inputs.ActivityInput;
 import at.backend.CRM.Mappers.ActivityMappers;
 import at.backend.CRM.Models.Activity;
 import at.backend.CRM.Repository.ActivityRepository;
+import at.backend.CRM.Utils.Result;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,10 @@ public class ActivityServiceImpl implements CommonService<Activity, ActivityInpu
         }
 
         companyRepository.deleteById(id);
+    }
+
+    @Override
+    public Result<Void> validate(ActivityInput input) {
+        return null;
     }
 }
