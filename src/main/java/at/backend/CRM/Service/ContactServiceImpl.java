@@ -36,7 +36,8 @@ public class ContactServiceImpl implements CommonService<Contact, ContactInput> 
     public Contact create(ContactInput input) {
         Contact contact = companyMapper.createInputToEntity(input);
 
-        Company company = companyRepository.findById(input.companyId()).orElseThrow(() -> new EntityNotFoundException("Company Not Found"));
+        Company company = companyRepository.findById(input.companyId())
+                .orElseThrow(() -> new EntityNotFoundException("Company Not Found"));
         contact.setCompany(company);
 
         contactRepository.saveAndFlush(contact);
@@ -66,12 +67,6 @@ public class ContactServiceImpl implements CommonService<Contact, ContactInput> 
     }
 
     @Override
-    public Result<Void> validate(ContactInput input) {
-        Optional<Company> company = companyRepository.findById(input.companyId());
-        if (company.isEmpty()) {
-            return Result.error("Company Not Found");
-        }
-
-        return Result.success();
+    public void validate(ContactInput input) {
     }
 }

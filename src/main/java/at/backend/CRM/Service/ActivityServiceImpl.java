@@ -60,7 +60,7 @@ public class ActivityServiceImpl implements CommonService<Activity, ActivityInpu
     }
 
     @Override
-    public Result<Void> validate(ActivityInput input) {
-        return null;
+    public void validate(ActivityInput input) {
+        return;
     }
 }

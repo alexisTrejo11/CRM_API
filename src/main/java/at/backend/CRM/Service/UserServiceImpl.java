@@ -60,7 +60,6 @@ public class UserServiceImpl implements CommonService<User, UserInput> {
     }
 
     @Override
-    public Result<Void> validate(UserInput input) {
-        return null;
+    public void validate(UserInput input) {
     }
 }

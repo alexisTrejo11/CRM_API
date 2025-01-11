@@ -60,7 +60,6 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
     }
 
     @Override
-    public Result<Void> validate(DealInput input) {
-        return null;
+    public void validate(DealInput input) {
     }
 }

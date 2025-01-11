@@ -3,6 +3,8 @@ package at.backend.CRM.Controller;
 import at.backend.CRM.Inputs.CompanyInput;
 import at.backend.CRM.Models.Company;
 import at.backend.CRM.Service.CommonService;
+import at.backend.CRM.Utils.Result;
+import jakarta.validation.Valid;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -31,7 +33,9 @@ public class CompanyController {
     }
 
     @MutationMapping
-    public Company createCompany(@Argument CompanyInput input) {
+    public Company createCompany(@Valid @Argument CompanyInput input) {
+        service.validate(input);
+
         return service.create(input);
     }
 

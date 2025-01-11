@@ -32,10 +32,18 @@ public class CompanyServiceImpl implements CommonService<Company, CompanyInput> 
     @Override
     public Company create(CompanyInput input) {
         Company company = companyMappers.createInputToEntity(input);
-
         companyRepository.saveAndFlush(company);
 
         return company;
+    }
+
+
+    @Override
+    public void validate(CompanyInput input) {
+        Optional<Company> company = companyRepository.findByName(input.name());
+        if (company.isPresent()) {
+           throw new RuntimeException("Company already created");
+        }
     }
 
     @Override
@@ -57,10 +65,5 @@ public class CompanyServiceImpl implements CommonService<Company, CompanyInput> 
         }
 
         companyRepository.deleteById(id);
-    }
-
-    @Override
-    public Result<Void> validate(CompanyInput input) {
-        return null;
     }
 }

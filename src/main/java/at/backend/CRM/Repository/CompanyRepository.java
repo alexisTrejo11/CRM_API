@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     Optional<Company> findByTaxNumber(String taxNumber);
 
+    Optional<Company> findByName(String name);
+
     List<Company> findByIndustry(String industry);
 
     @Query("SELECT c FROM Company c WHERE SIZE(c.deals) > :minDeals")

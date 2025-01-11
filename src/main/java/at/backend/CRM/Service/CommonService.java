@@ -11,6 +11,6 @@ public interface CommonService<E, C> {
     E create(C input);
     E update(Long id, C input);
     void delete(Long id);
-    Result<Void> validate(C input);
+    void validate(C input);
 }
 
