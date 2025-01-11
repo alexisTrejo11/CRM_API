@@ -47,13 +47,12 @@ type User {
     firstName: String!
     lastName: String!
     email: String!
-    password: String!
     role: UserRole!
 }
 enum UserRole {
     ADMIN
-    USER
-    MODERATOR
+    SALES_MANAGER,
+    SALES_REP
 }
 
 
@@ -119,21 +118,20 @@ enum DealStage {
 
 # Queries
 type Query {
-
     getAllCompanies: [Company!]!
     getCompanyById(id: ID!): Company
 
     getAllContacts: [Contact!]!
     getContactById(id: ID!): Contact
 
-    getAllActivities: [Contact!]!
-    getActivityById(id: ID!): Contact
+    getAllActivities: [Activity!]!
+    getActivityById(id: ID!): Activity
 
-    getAllUsers: [Contact!]!
-    getUserById(id: ID!): Contact
+    getAllUsers: [User!]!
+    getUserById(id: ID!): User
 
-    getAllDeals: [Contact!]!
-    getDealById(id: ID!): Contact
+    getAllDeals: [Deal!]!
+    getDealById(id: ID!): Deal
 }
 
 #Mutations

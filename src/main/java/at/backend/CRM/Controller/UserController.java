@@ -32,6 +32,8 @@ public class UserController {
 
     @MutationMapping
     public User createUser(@Argument UserInput input) {
+        service.validate(input);
+
         return service.create(input);
     }
 

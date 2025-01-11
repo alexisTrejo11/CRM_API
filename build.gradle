@@ -53,6 +53,9 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	implementation 'org.modelmapper:modelmapper:2.4.4'
 
+	// Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
 
 }
 

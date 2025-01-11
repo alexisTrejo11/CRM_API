@@ -12,6 +12,7 @@ public interface UserMappers {
     @Mapping(target = "activities", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "password", ignore = true)
     User createInputToEntity(UserInput input);
 
     User updateInputToEntity(@MappingTarget User existingUser, UserInput input);
