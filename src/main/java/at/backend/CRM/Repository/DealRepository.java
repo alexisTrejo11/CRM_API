@@ -11,6 +11,9 @@ import java.util.List;
 import at.backend.CRM.Models.Deal;
 
 public interface DealRepository extends JpaRepository<Deal, Long> {
+    boolean existsByName(String name);
+
+
     List<Deal> findByCompanyId(Long companyId);
 
     List<Deal> findByStage(DealStage stage);

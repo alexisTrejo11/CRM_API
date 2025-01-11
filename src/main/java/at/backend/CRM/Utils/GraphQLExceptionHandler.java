@@ -15,6 +15,8 @@ public class GraphQLExceptionHandler extends DataFetcherExceptionResolverAdapter
 
     @Override
     protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
+        ex.printStackTrace(); // Solo para depuración. En producción, usa un logger.
+
         if (ex instanceof BusinessException) {
             return GraphqlErrorBuilder.newError()
                     .message(ex.getMessage())
@@ -38,15 +40,14 @@ public class GraphQLExceptionHandler extends DataFetcherExceptionResolverAdapter
                     .build();
         }
 
-
-
         return GraphqlErrorBuilder.newError()
-                .message("Internal Server Error: " + ex.getMessage())
+                .message("Internal Server Error: " + (ex.getMessage() != null ? ex.getMessage() : "Unexpected error occurred."))
                 .errorType(ErrorType.INTERNAL_ERROR)
                 .path(env.getExecutionStepInfo().getPath())
                 .location(env.getField().getSourceLocation())
                 .build();
     }
+
 }
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -69,4 +70,3 @@ class ValidationException extends RuntimeException {
         super(message);
     }
 }
-

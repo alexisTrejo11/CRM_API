@@ -93,25 +93,26 @@ enum ActivityStatus {
 # Deal
 input DealInput {
     name: String!
-    value: Float!
+    value: Float
     stage: DealStage!
-    expectedCloseDate: String!
-    companyId: ID!
-    contactIds: [ID!]!
+    expectedCloseDate: String
+    companyId: ID
+    contactIds: [ID]
 }
 type Deal {
     id: ID!
     name: String!
-    value: Float!
+    value: Float
     stage: DealStage!
-    expectedCloseDate: String!
-    companyId: ID!
-    contactIds: [ID!]!
+    expectedCloseDate: String
+    company: Company
 }
 enum DealStage {
-    PROSPECT
-    NEGOTIATION
-    CLOSED_WON
+    QUALIFICATION,
+    MEETING_SCHEDULED,
+    PROPOSAL_SENT,
+    NEGOTIATION,
+    CLOSED_WON,
     CLOSED_LOST
 }
 

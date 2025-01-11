@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface ContactRepository extends JpaRepository<Contact, Long> {
     List<Contact> findByCompanyId(Long companyId);
@@ -27,4 +28,6 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
     List<Contact> findContactsWithNoActivitiesSince(
             @Param("since") LocalDateTime since
     );
+
+    List<Contact> findByIdIn(Set<Long> ids);
 }

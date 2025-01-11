@@ -35,10 +35,10 @@ public class Contact {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @OneToMany(mappedBy = "contact")
+    @OneToMany(mappedBy = "contact", fetch = FetchType.LAZY)
     private Set<Activity> activities = new HashSet<>();
 
-    @ManyToMany(mappedBy = "contacts")
+    @ManyToMany(mappedBy = "contacts", fetch = FetchType.LAZY)
     private Set<Deal> deals = new HashSet<>();
 
     @Column(name = "created_at")
@@ -56,5 +56,18 @@ public class Contact {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public int hashCode() {
+        return (id == null) ? 0 : id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Contact other = (Contact) obj;
+        return id != null && id.equals(other.id);
     }
 }

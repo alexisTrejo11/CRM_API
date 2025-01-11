@@ -21,12 +21,13 @@ public class Deal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "value")
     private BigDecimal value;
 
+    @Column(name = "stage", nullable = false)
     @Enumerated(EnumType.STRING)
     private DealStage stage;
 

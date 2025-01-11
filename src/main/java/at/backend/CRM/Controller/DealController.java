@@ -3,6 +3,7 @@ package at.backend.CRM.Controller;
 import at.backend.CRM.Inputs.DealInput;
 import at.backend.CRM.Models.Deal;
 import at.backend.CRM.Service.CommonService;
+import jakarta.validation.Valid;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -31,12 +32,16 @@ public class DealController {
     }
 
     @MutationMapping
-    public Deal createDeal(@Argument DealInput input) {
+    public Deal createDeal(@Valid @Argument DealInput input) {
+        service.validate(input);
+
         return service.create(input);
     }
 
     @MutationMapping
     public Deal updateDeal(@Argument Long id, @Argument DealInput input) {
+        service.validate(input);
+
         return service.update(id, input);
     }
 
