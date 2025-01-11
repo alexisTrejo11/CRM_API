@@ -1,7 +1,6 @@
 package at.backend.CRM.Mappers;
 
 import at.backend.CRM.Inputs.CompanyInput;
-import at.backend.CRM.Models.Company;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

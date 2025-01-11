@@ -5,30 +5,37 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "interactions")
+public class Interaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-    private String email;
-    private String password;
-    private String role;  // ADMIN, SALES_REP, SALES_MANAGER
+    @ManyToOne
+    private Customer customer;
+
+    @Column(name = "type", nullable = false)
+    private String type;  // EMAIL, CALL, MEETING, NOTE
+
+    @Column(name = "date_time", nullable = false)
+    private LocalDateTime dateTime;
+
+    @Column(name = "description", columnDefinition = "text")
+    private String description;
+
+    @Column(name = "outcome", nullable = false)
+    private String outcome;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "assignedTo")
-    private List<Task> assignedTasks;
 
     @PrePersist
     protected void onCreate() {

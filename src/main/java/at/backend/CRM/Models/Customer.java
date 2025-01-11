@@ -10,16 +10,26 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "customers")
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @Column(name = "email")
     private String email;
-    private String password;
-    private String role;  // ADMIN, SALES_REP, SALES_MANAGER
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "company")
+    private String company;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -27,8 +37,12 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "assignedTo")
-    private List<Task> assignedTasks;
+    @OneToMany(mappedBy = "customer")
+    private List<Opportunity> opportunities;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Interaction> interactions;
+
 
     @PrePersist
     protected void onCreate() {
@@ -41,3 +55,4 @@ public class User {
         this.updatedAt = LocalDateTime.now();
     }
 }
+

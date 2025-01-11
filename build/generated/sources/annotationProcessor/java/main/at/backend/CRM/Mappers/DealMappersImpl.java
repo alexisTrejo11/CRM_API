@@ -1,7 +1,7 @@
 package at.backend.CRM.Mappers;
 
 import at.backend.CRM.Inputs.DealInput;
-import at.backend.CRM.Models.Deal;
+
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 

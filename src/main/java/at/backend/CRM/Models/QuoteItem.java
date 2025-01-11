@@ -4,22 +4,28 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "quote_items")
+public class QuoteItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-    private String email;
-    private String password;
-    private String role;  // ADMIN, SALES_REP, SALES_MANAGER
+    @ManyToOne
+    private Quote quote;
+
+    @ManyToOne
+    private Product product;
+
+    private Integer quantity;
+    private BigDecimal unitPrice;
+    private BigDecimal discount;
+
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -27,8 +33,6 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "assignedTo")
-    private List<Task> assignedTasks;
 
     @PrePersist
     protected void onCreate() {
