@@ -35,8 +35,6 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "assignedTo")
-    private List<Task> assignedTasks;
 
     @PrePersist
     protected void onCreate() {

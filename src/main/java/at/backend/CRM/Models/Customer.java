@@ -55,8 +55,6 @@ public class Customer {
     @Column(name = "social_media_handles")
     private String socialMediaHandles;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    private List<Campaign> campaigns;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Opportunity> opportunities;

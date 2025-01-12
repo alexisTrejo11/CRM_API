@@ -20,7 +20,7 @@ public class QuoteItem {
     private Quote quote;
 
     @ManyToOne
-    private Product product;
+    private ServicePackage servicePackage;
 
     private Integer quantity;
     private BigDecimal unitPrice;
