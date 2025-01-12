@@ -1,5 +1,7 @@
 package at.backend.CRM.Models;
 
+import at.backend.CRM.Models.enums.TaskPriority;
+import at.backend.CRM.Models.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,20 +18,33 @@ public class Task {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @ManyToOne
+    @JoinColumn(name = "opportunity_id")
     private Opportunity opportunity;
 
+    @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "due_date")
     private LocalDateTime dueDate;
-    private String status;  // PENDING, IN_PROGRESS, COMPLETED
-    private String priority;  // HIGH, MEDIUM, LOW
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private TaskStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priority", nullable = false)
+    private TaskPriority priority;
 
     @ManyToOne
+    @JoinColumn(name = "assigned_to_user_id")
     private User assignedTo;
-
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

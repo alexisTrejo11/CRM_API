@@ -18,10 +18,6 @@ enum UserRole {
     SALES_REP
 }
 
-input PageInput {
-    page: Int!
-    size: Int!
-}
 
 
 # CUSTOMER
@@ -71,6 +67,40 @@ input OpportunityInput {
 }
 
 
+# Task
+enum TaskStatus {
+    PENDING
+    IN_PROGRESS
+    COMPLETED
+}
+enum TaskPriority {
+    HIGH
+    MEDIUM
+    LOW
+}
+type Task {
+    id: ID!
+    customer: Customer!
+    opportunity: Opportunity!
+    title: String!
+    description: String
+    dueDate: String!
+    status: TaskStatus!
+    priority: TaskPriority!
+    assignedTo: User
+}
+input TaskInput {
+    customerId: ID!
+    opportunityId: ID!
+    title: String!
+    description: String
+    dueDate: String!
+    status: TaskStatus!
+    priority: TaskPriority!
+    assignedToUserId: ID
+}
+
+
 # Queries
 type Query {
     getAllUsers(input: PageInput!): [User!]!
@@ -79,9 +109,19 @@ type Query {
     getAllCustomers(input: CustomerInput!): [Customer!]!
     getCustomerById(id: ID!): Customer
 
-    getAllOpportunity(input: OpportunityInput!): [Opportunity!]!
+    getAllOpportunities(input: OpportunityInput!): [Opportunity!]!
     getOpportunityById(id: ID!): Opportunity
+
+    getAllTasks(input: TaskInput!): [Task!]!
+    getTaskById(id: ID!): Task
 }
+
+
+input PageInput {
+    page: Int!
+    size: Int!
+}
+
 
 #Mutations
 type Mutation {
@@ -97,4 +137,7 @@ type Mutation {
     updateOpportunity(id: ID!, input: OpportunityInput!): Opportunity!
     deleteOpportunity(id: ID!): Boolean!
 
+    createTask(input: TaskInput!): Task!
+    updateTask(id: ID!, input: TaskInput!): Task!
+    deleteTask(id: ID!): Boolean!
 }
