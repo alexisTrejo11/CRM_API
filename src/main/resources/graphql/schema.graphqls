@@ -41,6 +41,8 @@ input CustomerInput {
     company: String!
 }
 
+# ServicePackage
+
 
 # Queries
 type Query {

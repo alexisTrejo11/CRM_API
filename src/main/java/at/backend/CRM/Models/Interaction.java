@@ -37,6 +37,17 @@ public class Interaction {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @ManyToOne
+    private Campaign campaign;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "feedback_type")
+    private FeedbackType feedbackType;
+
+    @Column(name = "channel_preference")
+    private String channelPreference;
+
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -46,5 +57,11 @@ public class Interaction {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public enum FeedbackType {
+        CONTENT_REVIEW,
+        CAMPAIGN_PERFORMANCE,
+        STRATEGY
     }
 }

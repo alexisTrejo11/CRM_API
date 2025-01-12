@@ -31,11 +31,32 @@ public class Customer {
     @Column(name = "company")
     private String company;
 
+    @Column(name = "industry")
+    private String industry;
+
+    @Column(name = "brand_voice")
+    private String brandVoice;
+
+    @Column(name = "brand_colors")
+    private String brandColors;
+
+    @Column(name = "target_market")
+    private String targetMarket;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @ElementCollection
+    private List<String> competitorUrls;
+
+    @Column(name = "social_media_handles")
+    private String socialMediaHandles;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<Campaign> campaigns;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Opportunity> opportunities;
