@@ -1,52 +1,15 @@
-# COMPANY
-type Company {
-    id: ID
-    name: String
-    taxNumber: String
-    industry: String
-    website: String
-}
-input CompanyInput {
-    name: String!
-    taxNumber: String
-    industry: String
-    website: String
-}
-
-
-# CONTACT
-type Contact {
-    id: ID!
-    firstName: String!
-    lastName: String!
-    email: String!
-    phone: String
-    position: String
-    company: Company
-}
-input ContactInput {
-    firstName: String!
-    lastName: String!
-    email: String!
-    phone: String
-    position: String
-    companyId: ID!
-}
-
-
 # USERS
-input UserInput {
-    firstName: String!
-    lastName: String!
-    email: String!
-    password: String!
-    role: UserRole!
-}
 type User {
-    id: ID!
-    firstName: String!
-    lastName: String!
-    email: String!
+    id: ID
+    username: String
+    email: String
+    role: UserRole
+}
+
+input UserInput {
+    username: String!
+    email: String
+    password: String!
     role: UserRole!
 }
 enum UserRole {
@@ -55,111 +18,24 @@ enum UserRole {
     SALES_REP
 }
 
-
-# Activity
-input ActivityInput {
-    type: ActivityType!
-    description: String!
-    dueDate: String!
-    contactId: ID!
-    dealId: ID!
-    assignedUserId: ID!
-    status: ActivityStatus!
+input PageInput {
+    page: Int!
+    size: Int!
 }
-type Activity {
-    id: ID!
-    type: ActivityType!
-    description: String!
-    dueDate: String!
-    contactId: ID!
-    dealId: ID!
-    assignedUserId: ID!
-    status: ActivityStatus!
-}
-enum ActivityType {
-    MEETING
-    CALL
-    EMAIL
-    TASK
-}
-enum ActivityStatus {
-    PENDING
-    COMPLETED
-    IN_PROGRESS
-    CANCELED
-}
-
-
-# Deal
-input DealInput {
-    name: String!
-    value: Float
-    stage: DealStage!
-    expectedCloseDate: String
-    companyId: ID
-    contactIds: [ID]
-}
-type Deal {
-    id: ID!
-    name: String!
-    value: Float
-    stage: DealStage!
-    expectedCloseDate: String
-    company: Company
-}
-enum DealStage {
-    QUALIFICATION,
-    MEETING_SCHEDULED,
-    PROPOSAL_SENT,
-    NEGOTIATION,
-    CLOSED_WON,
-    CLOSED_LOST
-}
-
 
 # Queries
 type Query {
-    getAllCompanies: [Company!]!
-    getCompanyById(id: ID!): Company
-
-    getAllContacts: [Contact!]!
-    getContactById(id: ID!): Contact
-
-    getAllActivities: [Activity!]!
-    getActivityById(id: ID!): Activity
-
-    getAllUsers: [User!]!
+    getAllUsers(input: PageInput!): [User!]!
     getUserById(id: ID!): User
 
-    getAllDeals: [Deal!]!
-    getDealById(id: ID!): Deal
 }
 
 #Mutations
 type Mutation {
-    createCompany(input: CompanyInput!): Company!
-    updateCompany(id: ID!, input: CompanyInput!): Company!
-    deleteCompany(id: ID!): Boolean!
-
-
-    createContact(input: ContactInput!): Contact!
-    updateContact(id: ID!, input: ContactInput!): Contact!
-    deleteContact(id: ID!): Boolean!
-
 
     createUser(input: UserInput!): User!
     updateUser(id: ID!, input: UserInput!): User!
     deleteUser(id: ID!): Boolean!
-
-
-    createActivity(input: ActivityInput!): Activity!
-    updateActivity(id: ID!, input: ActivityInput!): Activity!
-    deleteActivity(id: ID!): Boolean!
-
-
-    createDeal(input: DealInput!): Deal!
-    updateDeal(id: ID!, input: DealInput!): Deal!
-    deleteDeal(id: ID!): Boolean!
 
 
 }

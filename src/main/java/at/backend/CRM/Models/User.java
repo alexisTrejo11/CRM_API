@@ -1,5 +1,6 @@
 package at.backend.CRM.Models;
 
+import at.backend.CRM.Models.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,10 +17,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
+
+    @Column(name = "email",  unique = true, nullable = false)
     private String email;
+
+    @Column(name = "password")
     private String password;
-    private String role;  // ADMIN, SALES_REP, SALES_MANAGER
+
+    @Column(name = "role")
+    private UserRole role;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
