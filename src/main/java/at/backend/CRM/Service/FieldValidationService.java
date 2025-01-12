@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserValidationService {
+public class FieldValidationService {
 
     private final UserRepository userRepository;
 
@@ -46,6 +46,18 @@ public class UserValidationService {
             throw new BusinessLogicException(
                     "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character(@$!%*?&)."
             );
+        }
+    }
+
+    public void validatePhone(String phone) {
+        if (phone.trim().isEmpty()) {
+            throw new BusinessLogicException("Phone cannot be blank.");
+        }
+        if (phone.length() > 20) {
+            throw new BusinessLogicException("Phone cannot exceed 20 characters.");
+        }
+        if (!phone.matches("\\+?\\d{7,15}")) {
+            throw new BusinessLogicException("Phone number is invalid. Must contain only digits and optional '+'.");
         }
     }
 

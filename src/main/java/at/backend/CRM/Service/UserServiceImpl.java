@@ -18,7 +18,7 @@ import java.util.Optional;
 public class UserServiceImpl  implements  CommonService<User, UserInput>{
 
     public final UserRepository userRepository;
-    public final UserValidationService userValidationService;
+    public final FieldValidationService fieldValidationService;
     public final UserMappers userMappers;
 
     @Override
@@ -70,8 +70,8 @@ public class UserServiceImpl  implements  CommonService<User, UserInput>{
 
     @Override
     public void validate(UserInput input) {
-        userValidationService.validateUsername(input.username());
-        userValidationService.validateEmail(input.email());
-        userValidationService.validatePassword(input.password());
+        fieldValidationService.validateUsername(input.username());
+        fieldValidationService.validateEmail(input.email());
+        fieldValidationService.validatePassword(input.password());
     }
 }

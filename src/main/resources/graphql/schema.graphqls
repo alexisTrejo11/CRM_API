@@ -23,10 +23,32 @@ input PageInput {
     size: Int!
 }
 
+
+# CUSTOMER
+type Customer {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String
+    phone: String
+    company: String
+}
+input CustomerInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    phone: String!
+    company: String!
+}
+
+
 # Queries
 type Query {
     getAllUsers(input: PageInput!): [User!]!
     getUserById(id: ID!): User
+
+    getAllCustomers(input: CustomerInput!): [Customer!]!
+    getCustomerById(id: ID!): Customer
 
 }
 
@@ -36,6 +58,10 @@ type Mutation {
     createUser(input: UserInput!): User!
     updateUser(id: ID!, input: UserInput!): User!
     deleteUser(id: ID!): Boolean!
+
+    createCustomer(input: CustomerInput!): Customer!
+    updateCustomer(id: ID!, input: CustomerInput!): Customer!
+    deleteCustomer(id: ID!): Boolean!
 
 
 }
