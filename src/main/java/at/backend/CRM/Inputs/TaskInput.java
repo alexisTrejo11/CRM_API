@@ -12,8 +12,11 @@ import java.time.LocalDateTime;
 public record TaskInput(
         @NotNull(message = "Customer ID is required")
         Long customerId,
+
         @NotNull(message = "Opportunity ID is required")
         Long opportunityId,
+
+        Long assignedToUserId,
 
         @NotEmpty(message = "Title cannot be empty")
         @Size(max = 255, message = "Title must be less than 255 characters")

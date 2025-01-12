@@ -5,9 +5,11 @@ import at.backend.CRM.Mappers.TaskMappers;
 import at.backend.CRM.Models.Customer;
 import at.backend.CRM.Models.Opportunity;
 import at.backend.CRM.Models.Task;
+import at.backend.CRM.Models.User;
 import at.backend.CRM.Repository.CustomerRepository;
 import at.backend.CRM.Repository.OpportunityRepository;
 import at.backend.CRM.Repository.TaskRepository;
+import at.backend.CRM.Repository.UserRepository;
 import at.backend.CRM.Utils.BusinessLogicException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class TaskServiceImpl implements  CommonService<Task, TaskInput>{
     public final TaskMappers TaskMappers;
     public final CustomerRepository customerRepository;
     public final OpportunityRepository opportunityRepository;
+    public final UserRepository userRepository;
 
     @Override
     public Page<Task> findAll(Pageable pageable) {
@@ -46,6 +49,10 @@ public class TaskServiceImpl implements  CommonService<Task, TaskInput>{
         newTask.setCustomer(getCustomer(input.customerId()));
         newTask.setOpportunity(getOpportunity(input.opportunityId()));
 
+        if (input.assignedToUserId() != null) {
+            newTask.setAssignedTo(getUser(input.assignedToUserId()));
+        }
+
         TaskRepository.saveAndFlush(newTask);
 
         return newTask;
@@ -60,6 +67,11 @@ public class TaskServiceImpl implements  CommonService<Task, TaskInput>{
 
         updatedTask.setCustomer(getCustomer(input.customerId()));
         updatedTask.setOpportunity(getOpportunity(input.opportunityId()));
+
+        if (input.assignedToUserId() != null) {
+            updatedTask.setAssignedTo(getUser(input.assignedToUserId()));
+        }
+
 
         TaskRepository.saveAndFlush(updatedTask);
 
@@ -105,5 +117,10 @@ public class TaskServiceImpl implements  CommonService<Task, TaskInput>{
     private Opportunity getOpportunity(Long opportunityId) {
         return opportunityRepository.findById(opportunityId)
                 .orElseThrow(() -> new RuntimeException("Opportunity Not found"));
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User Not found"));
     }
 }
