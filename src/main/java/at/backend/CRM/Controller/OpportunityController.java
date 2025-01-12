@@ -1,11 +1,8 @@
-/*
-
-
 package at.backend.CRM.Controller;
 
-import at.backend.CRM.Inputs.ServicePackageInput;
+import at.backend.CRM.Inputs.OpportunityInput;
 import at.backend.CRM.Inputs.PageInput;
-import at.backend.CRM.Models.ServicePackage;
+import at.backend.CRM.Models.Opportunity;
 import at.backend.CRM.Service.CommonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,40 +16,40 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-public class ServicePackageController {
-    private final CommonService<ServicePackage, ServicePackageInput> service;
+public class OpportunityController {
+    
+    private final CommonService<Opportunity, OpportunityInput> service;
 
     @QueryMapping
-    public Page<ServicePackage> getAllServicePackages(@Argument PageInput input) {
+    public Page<Opportunity> getAllOpportunities(@Argument PageInput input) {
         Pageable pageable = PageRequest.of(input.page(), input.size());
 
         return service.findAll(pageable);
     }
 
     @QueryMapping
-    public ServicePackage getServicePackageById(@Argument Long id) {
+    public Opportunity getOpportunityById(@Argument Long id) {
         return service.findById(id)
-                .orElse(new ServicePackage());
+                .orElse(new Opportunity());
     }
 
     @MutationMapping
-    public ServicePackage createServicePackage(@Valid @Argument ServicePackageInput input) {
+    public Opportunity createOpportunity(@Valid @Argument OpportunityInput input) {
         service.validate(input);
 
         return service.create(input);
     }
 
     @MutationMapping
-    public ServicePackage updateServicePackage(@Valid @Argument Long id, @Argument ServicePackageInput input) {
+    public Opportunity updateOpportunity(@Valid @Argument Long id, @Argument OpportunityInput input) {
         service.validate(input);
 
         return service.update(id, input);
     }
 
     @MutationMapping
-    public boolean deleteServicePackage(@Argument Long id) {
+    public boolean deleteOpportunity(@Argument Long id) {
         service.delete(id);
         return true;
     }
 }
- */

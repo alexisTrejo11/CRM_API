@@ -41,6 +41,35 @@ input CustomerInput {
     company: String!
 }
 
+# ServicePackage
+
+
+# Opportunity
+enum OpportunityStage {
+    LEAD
+    QUALIFIED
+    PROPOSAL
+    NEGOTIATION
+    CLOSED_WON
+    CLOSED_LOST
+}
+type Opportunity {
+    id: ID
+    customer: Customer
+    title: String
+    amount: Float
+    stage: OpportunityStage
+    expectedCloseDate: String
+}
+
+input OpportunityInput {
+    customerId: ID!
+    title: String!
+    amount: Float!
+    stage: OpportunityStage!
+    expectedCloseDate: String!
+}
+
 
 # Queries
 type Query {
@@ -50,11 +79,12 @@ type Query {
     getAllCustomers(input: CustomerInput!): [Customer!]!
     getCustomerById(id: ID!): Customer
 
+    getAllOpportunity(input: OpportunityInput!): [Opportunity!]!
+    getOpportunityById(id: ID!): Opportunity
 }
 
 #Mutations
 type Mutation {
-
     createUser(input: UserInput!): User!
     updateUser(id: ID!, input: UserInput!): User!
     deleteUser(id: ID!): Boolean!
@@ -63,5 +93,8 @@ type Mutation {
     updateCustomer(id: ID!, input: CustomerInput!): Customer!
     deleteCustomer(id: ID!): Boolean!
 
+    createOpportunity(input: OpportunityInput!): Opportunity!
+    updateOpportunity(id: ID!, input: OpportunityInput!): Opportunity!
+    deleteOpportunity(id: ID!): Boolean!
 
 }

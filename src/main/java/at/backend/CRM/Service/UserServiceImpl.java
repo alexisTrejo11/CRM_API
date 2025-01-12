@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl  implements  CommonService<User, UserInput>{
+public class UserServiceImpl implements  CommonService<User, UserInput>{
 
     public final UserRepository userRepository;
     public final FieldValidationService fieldValidationService;

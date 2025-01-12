@@ -3,6 +3,7 @@ package at.backend.CRM.Inputs;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record OpportunityInput(
 
@@ -20,5 +21,8 @@ public record OpportunityInput(
 
         @NotNull(message = "Expected close date cannot be null.")
         @FutureOrPresent(message = "Expected close date must be today or in the future.")
-        LocalDate expectedCloseDate
+        LocalDate expectedCloseDate,
+
+        @Positive
+        Long customerId
 ) {}

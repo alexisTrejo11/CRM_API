@@ -37,9 +37,6 @@ public class Interaction {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToOne
-    private Campaign campaign;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "feedback_type")
     private FeedbackType feedbackType;
