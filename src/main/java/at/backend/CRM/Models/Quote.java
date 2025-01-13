@@ -43,6 +43,7 @@ public class Quote {
     private BigDecimal totalAmount;
 
     @Column(name = "status", nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
     private QuoteStatus status;
 
     @OneToMany(mappedBy = "quote", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

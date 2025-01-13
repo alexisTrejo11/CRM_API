@@ -2,7 +2,6 @@ package at.backend.CRM.Service;
 
 import at.backend.CRM.Inputs.QuoteInput;
 import at.backend.CRM.Inputs.QuoteItemInput;
-import at.backend.CRM.Mappers.QuoteItemMappers;
 import at.backend.CRM.Mappers.QuoteMappers;
 import at.backend.CRM.Models.*;
 import at.backend.CRM.Repository.*;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,7 +30,6 @@ public class QuoteServiceImpl implements  CommonService<Quote, QuoteInput>{
     public final OpportunityRepository opportunityRepository;
     public final ServicePackageRepository servicePackageRepository;
     public final QuoteMappers quoteMappers;
-    public final QuoteItemMappers quoteItemMappers;
 
     @Override
     public Page<Quote> findAll(Pageable pageable) {
@@ -105,7 +102,7 @@ public class QuoteServiceImpl implements  CommonService<Quote, QuoteInput>{
 
         return inputs.stream()
                 .map(input -> {
-                    QuoteItem item = quoteItemMappers.inputToEntity(input);
+                    QuoteItem item =  new QuoteItem();
                     item.setQuote(createdQuote);
 
                     ServicePackage servicePackage = servicePackages.get(input.servicePackageId());

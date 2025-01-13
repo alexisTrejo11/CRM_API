@@ -180,11 +180,8 @@ type Quote {
 }
 input QuoteInput {
     customerId: ID!
-    opportunityId: ID
+    opportunityId: ID!
     validUntil: String!
-    subTotal: Float!
-    discount: Float
-    totalAmount: Float!
     status: QuoteStatus!
     items: [QuoteItemInput!]!
 }
@@ -197,15 +194,10 @@ type QuoteItem {
     total: Float!
     discountPercentage: Float!
     discount: Float!
-    createdAt: String!
-    updatedAt: String!
 }
 input QuoteItemInput {
     servicePackageId: ID!
-    unitPrice: Float!
-    total: Float!
     discountPercentage: Float!
-    discount: Float!
 }
 enum QuoteStatus {
     DRAFT
@@ -237,6 +229,10 @@ type Query {
 
     getAllServicePackages(input: PageInput!): [ServicePackage!]!
     getServicePackageById(id: ID!): ServicePackage
+
+
+    getAllQuotes(input: QuoteInput!): [Quote!]!
+    getQuoteById(id: ID!): Quote
 }
 
 
@@ -261,4 +257,8 @@ type Mutation {
     createServicePackage(input: ServicePackageInput!): ServicePackage!
     updateServicePackage(id: ID!, input: ServicePackageInput!): ServicePackage!
     deleteServicePackage(id: ID!): Boolean!
+
+    createQuote(input: QuoteInput!): Quote!
+    updateQuote(id: ID!, input: QuoteInput!): Quote!
+    deleteQuote(id: ID!): Boolean!
 }
