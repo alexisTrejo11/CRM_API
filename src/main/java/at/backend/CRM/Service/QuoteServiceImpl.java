@@ -16,16 +16,15 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class QuoteServiceImpl implements  CommonService<Quote, QuoteInput>{
+public class QuoteServiceImpl implements  QuoteService {
 
     public final QuoteRepository quoteRepository;
+    public final QuoteItemRepository quoteItemRepository;
     public final CustomerRepository customerRepository;
     public final OpportunityRepository opportunityRepository;
     public final ServicePackageRepository servicePackageRepository;
@@ -60,8 +59,41 @@ public class QuoteServiceImpl implements  CommonService<Quote, QuoteInput>{
     @Override
     @Transactional
     public Quote update(Long id, QuoteInput input) {
-        return null;
+       return null;
     }
+
+    @Override
+    @Transactional
+    public Quote addItem(Long id, QuoteItemInput input) {
+         Quote existingQuote = quoteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Quote not found"));
+
+        List<QuoteItem> items = generateItems(existingQuote, Collections.singletonList(input));
+        existingQuote.getItems().addAll(items);
+
+        calculateNumbers(existingQuote);
+
+        return quoteRepository.saveAndFlush(existingQuote);
+    }
+
+    @Override
+    @Transactional
+    public Quote deleteItem(Long itemId) {
+        QuoteItem item = quoteItemRepository.findById(itemId)
+                .orElseThrow(() -> new EntityNotFoundException("Quote Item not found"));
+
+        Quote quote = item.getQuote();
+
+        quote.getItems().remove(item);
+
+        calculateNumbers(quote);
+
+        quoteRepository.saveAndFlush(quote);
+
+        return quote;
+    }
+
+
+
 
     @Override
     @Transactional
@@ -102,8 +134,7 @@ public class QuoteServiceImpl implements  CommonService<Quote, QuoteInput>{
 
         return inputs.stream()
                 .map(input -> {
-                    QuoteItem item =  new QuoteItem();
-                    item.setQuote(createdQuote);
+                    QuoteItem item =  new QuoteItem(input.discountPercentage(), createdQuote);
 
                     ServicePackage servicePackage = servicePackages.get(input.servicePackageId());
                     if (servicePackage == null) {
@@ -112,6 +143,7 @@ public class QuoteServiceImpl implements  CommonService<Quote, QuoteInput>{
                     item.setServicePackage(servicePackage);
 
                     calculateItemNumbers(item);
+
                     return item;
                 }).toList();
     }
@@ -119,20 +151,19 @@ public class QuoteServiceImpl implements  CommonService<Quote, QuoteInput>{
 
     private void calculateNumbers(Quote quote) {
         List<QuoteItem> items = quote.getItems();
-        if (items == null || items.isEmpty()) {
-            throw new RuntimeException("Cannot calculate total amount for a quote with no items.");
-        }
 
         BigDecimal subtotal = BigDecimal.ZERO;
         BigDecimal discount = BigDecimal.ZERO;
         BigDecimal total = BigDecimal.ZERO;
 
-        for (var item : items) {
-            calculateItemNumbers(item);
+        if (!items.isEmpty()) {
+            for (var item : items) {
+                calculateItemNumbers(item);
 
-            subtotal = subtotal.add(item.getUnitPrice());
-            discount = discount.add(item.getDiscount());
-            total = total.add(item.getTotal());
+                subtotal = subtotal.add(item.getUnitPrice());
+                discount = discount.add(item.getDiscount());
+                total = total.add(item.getTotal());
+            }
         }
 
         quote.setSubTotal(subtotal);

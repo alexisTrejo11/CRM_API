@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-13T12:41:55-0600",
+    date = "2025-01-13T13:56:32-0600",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.11.1.jar, environment: Java 23.0.1 (Homebrew)"
 )
 @Component
@@ -66,6 +66,8 @@ public class QuoteMappersImpl implements QuoteMappers {
         }
 
         QuoteItem quoteItem = new QuoteItem();
+
+        quoteItem.setDiscountPercentage( quoteItemInput.discountPercentage() );
 
         return quoteItem;
     }

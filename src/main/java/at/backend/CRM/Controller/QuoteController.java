@@ -2,8 +2,10 @@ package at.backend.CRM.Controller;
 
 import at.backend.CRM.Inputs.QuoteInput;
 import at.backend.CRM.Inputs.PageInput;
+import at.backend.CRM.Inputs.QuoteItemInput;
 import at.backend.CRM.Models.Quote;
 import at.backend.CRM.Service.CommonService;
+import at.backend.CRM.Service.QuoteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class QuoteController {
-    private final CommonService<Quote, QuoteInput> service;
+    private final QuoteService service;
 
     @QueryMapping
     public Page<Quote> getAllQuotes(@Argument PageInput input) {
@@ -40,11 +42,15 @@ public class QuoteController {
     }
 
     @MutationMapping
-    public Quote updateQuote(@Valid @Argument Long id, @Argument QuoteInput input) {
-        service.validate(input);
-
-        return service.update(id, input);
+    public Quote addQuoteItem(@Valid @Argument Long id, @Argument QuoteItemInput input) {
+        return service.addItem(id, input);
     }
+
+    @MutationMapping
+    public Quote deleteQuoteItem(@Valid @Argument Long itemId) {
+        return service.deleteItem(itemId);
+    }
+
 
     @MutationMapping
     public boolean deleteQuote(@Argument Long id) {

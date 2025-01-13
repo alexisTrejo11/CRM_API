@@ -54,4 +54,9 @@ public class QuoteItem {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    public QuoteItem(BigDecimal discountPercentage, Quote quote) {
+        this.discountPercentage = discountPercentage;
+        this.quote = quote;
+    }
 }

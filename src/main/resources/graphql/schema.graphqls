@@ -230,8 +230,7 @@ type Query {
     getAllServicePackages(input: PageInput!): [ServicePackage!]!
     getServicePackageById(id: ID!): ServicePackage
 
-
-    getAllQuotes(input: QuoteInput!): [Quote!]!
+    getAllQuotes(input: PageInput!): [Quote!]!
     getQuoteById(id: ID!): Quote
 }
 
@@ -259,6 +258,7 @@ type Mutation {
     deleteServicePackage(id: ID!): Boolean!
 
     createQuote(input: QuoteInput!): Quote!
-    updateQuote(id: ID!, input: QuoteInput!): Quote!
+    addQuoteItem(id: ID!, input: QuoteItemInput!): Quote!
+    deleteQuoteItem(itemId: ID!): Quote!
     deleteQuote(id: ID!): Boolean!
 }

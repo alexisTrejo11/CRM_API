@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-01-13T12:41:31-0600",
+    date = "2025-01-13T13:30:23-0600",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.11.1.jar, environment: Java 23.0.1 (Homebrew)"
 )
 @Component
@@ -26,7 +26,6 @@ public class QuoteMappersImpl implements QuoteMappers {
         Quote quote = new Quote();
 
         quote.setValidUntil( input.validUntil() );
-        quote.setTotalAmount( input.totalAmount() );
         quote.setStatus( input.status() );
         quote.setItems( quoteItemInputListToQuoteItemList( input.items() ) );
 
@@ -40,7 +39,6 @@ public class QuoteMappersImpl implements QuoteMappers {
         }
 
         existingQuote.setValidUntil( input.validUntil() );
-        existingQuote.setTotalAmount( input.totalAmount() );
         existingQuote.setStatus( input.status() );
         if ( existingQuote.getItems() != null ) {
             List<QuoteItem> list = quoteItemInputListToQuoteItemList( input.items() );
