@@ -207,10 +207,46 @@ enum QuoteStatus {
 }
 
 
+
+# Deals
+type Deal {
+    id: ID!
+    customer: Customer!
+    opportunity: Opportunity!
+    dealStatus: DealStatus!
+    finalAmount: Float!
+    startDate: String!
+    endDate: String
+    campaignManager: User
+    services: [ServicePackage!]!
+    deliverables: String
+    terms: String
+}
+input DealInput {
+    opportunityId: ID!
+    dealStatus: DealStatus!
+    finalAmount: Float!
+    startDate: String!
+    endDate: String
+    campaignManagerId: ID
+    deliverables: String
+    terms: String
+    servicePackageIds: [ID!]!
+}
+enum DealStatus {
+    SIGNED
+    PAID
+    IN_PROGRESS
+    COMPLETED
+}
+
+
+
 input PageInput {
     page: Int!
     size: Int!
 }
+
 
 
 # Queries
@@ -232,6 +268,9 @@ type Query {
 
     getAllQuotes(input: PageInput!): [Quote!]!
     getQuoteById(id: ID!): Quote
+
+    getAllDeals(input: PageInput!): [Deal]!
+    getDealById(id: ID!): Deal
 }
 
 
@@ -261,4 +300,8 @@ type Mutation {
     addQuoteItem(id: ID!, input: QuoteItemInput!): Quote!
     deleteQuoteItem(itemId: ID!): Quote!
     deleteQuote(id: ID!): Boolean!
+
+    createDeal(input: DealInput!): Deal!
+    updateDeal(id: ID!, input: DealInput!): Deal!
+    deleteDeal(id: ID!): Boolean!
 }

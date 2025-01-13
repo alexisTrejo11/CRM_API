@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -41,17 +42,39 @@ public class Deal {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Column(name = "campaign_manager_id")
-    private String campaignManagerId;
-
-    @OneToMany
-    @JoinColumn(name = "deal_id")
-    private List<ServicePackage> services;
+    @ManyToOne
+    @JoinColumn(name = "campaign_manager_id")
+    private User campaignManager;
 
     @Column(name = "deliverables", columnDefinition = "TEXT")
     private String deliverables;
 
     @Column(name = "terms", columnDefinition = "TEXT")
     private String terms;
+
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @ManyToMany
+    @JoinTable(
+            name = "deal_service_packages",
+            joinColumns = @JoinColumn(name = "deal_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_package_id"))
+    private List<ServicePackage> services;
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
 
