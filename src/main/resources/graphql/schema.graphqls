@@ -37,7 +37,6 @@ input CustomerInput {
     company: String!
 }
 
-# ServicePackage
 
 
 # Opportunity
@@ -65,6 +64,7 @@ input OpportunityInput {
     stage: OpportunityStage!
     expectedCloseDate: String!
 }
+
 
 
 # Task
@@ -101,25 +101,94 @@ input TaskInput {
 }
 
 
-# Queries
-type Query {
-    getAllUsers(input: PageInput!): [User!]!
-    getUserById(id: ID!): User
 
-    getAllCustomers(input: CustomerInput!): [Customer!]!
-    getCustomerById(id: ID!): Customer
-
-    getAllOpportunities(input: OpportunityInput!): [Opportunity!]!
-    getOpportunityById(id: ID!): Opportunity
-
-    getAllTasks(input: TaskInput!): [Task!]!
-    getTaskById(id: ID!): Task
+#Service Package
+enum ServiceType {
+    SOCIAL_MEDIA,
+    SEO,
+    PPC,
+    CONTENT,
+    EMAIL,
+    BRANDING
 }
+
+enum Complexity {
+    BASIC,
+    STANDARD,
+    PREMIUM
+}
+enum Frequency {
+    DAILY
+    WEEKLY
+    MONTHLY
+    ANNUALLY
+}
+enum SocialNetworkPlatform {
+    FACEBOOK
+    INSTAGRAM
+    TWITTER
+    LINKEDIN
+    TIKTOK
+}
+type ServicePackage {
+    id: ID!
+    name: String!
+    description: String
+    price: Float!
+    serviceType: ServiceType!
+    deliverables: String
+    estimatedHours: Int!
+    complexity: Complexity!
+    isRecurring: Boolean!
+    frequency: Frequency
+    projectDuration: Int
+    kpis: [String!]!
+    socialNetworkPlatforms: [SocialNetworkPlatform!]!
+    active: Boolean!
+    createdAt: String!
+    updatedAt: String!
+}
+input ServicePackageInput {
+    name: String!
+    description: String
+    price: Float!
+    serviceType: ServiceType!
+    deliverables: String
+    estimatedHours: Int!
+    complexity: Complexity!
+    isRecurring: Boolean!
+    frequency: Frequency
+    projectDuration: Int
+    kpis: [String!]!
+    socialNetworkPlatforms: [SocialNetworkPlatform!]!
+    active: Boolean!
+}
+
 
 
 input PageInput {
     page: Int!
     size: Int!
+}
+
+
+
+# Queries
+type Query {
+    getAllUsers(input: PageInput!): [User!]!
+    getUserById(id: ID!): User
+
+    getAllCustomers(input: PageInput!): [Customer!]!
+    getCustomerById(id: ID!): Customer
+
+    getAllOpportunities(input: PageInput!): [Opportunity!]!
+    getOpportunityById(id: ID!): Opportunity
+
+    getAllTasks(input: TaskInput!): [Task!]!
+    getTaskById(id: ID!): Task
+
+    getAllServicePackages(input: PageInput!): [ServicePackage!]!
+    getServicePackageById(id: ID!): ServicePackage
 }
 
 
@@ -140,4 +209,8 @@ type Mutation {
     createTask(input: TaskInput!): Task!
     updateTask(id: ID!, input: TaskInput!): Task!
     deleteTask(id: ID!): Boolean!
+
+    createServicePackage(input: ServicePackageInput!): ServicePackage!
+    updateServicePackage(id: ID!, input: ServicePackageInput!): ServicePackage!
+    deleteServicePackage(id: ID!): Boolean!
 }

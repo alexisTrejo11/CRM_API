@@ -1,25 +1,57 @@
 package at.backend.CRM.Inputs;
 
+import at.backend.CRM.Models.enums.Complexity;
+import at.backend.CRM.Models.enums.Frequency;
+import at.backend.CRM.Models.enums.ServiceType;
+import at.backend.CRM.Models.enums.SocialNetworkPlatform;
 import jakarta.validation.constraints.*;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public record ServicePackageInput(
-        @NotBlank(message = "ServicePackage name cannot be blank. Please provide a valid name.")
-        @Size(max = 100, message = "ServicePackage name cannot exceed 100 characters.")
+
+        @NotBlank(message = "Name is required.")
+        @Size(max = 100, message = "Name must not exceed 100 characters.")
         String name,
 
-        @Size(max = 500, message = "Description cannot exceed 500 characters.")
+        @Size(max = 5000, message = "Description must not exceed 5000 characters.")
         String description,
 
-        @NotNull(message = "Price cannot be null.")
-        @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0.")
-        @Digits(integer = 10, fraction = 2, message = "Price must be a valid decimal number with up to 10 integer digits and 2 decimal places.")
+        @NotNull(message = "Price is required.")
+        @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero.")
+        @Digits(integer = 8, fraction = 2, message = "Price must be a valid decimal with up to 2 decimal places.")
         BigDecimal price,
 
-        @NotBlank(message = "Category cannot be blank. Please provide a valid category.")
-        @Size(max = 50, message = "Category cannot exceed 50 characters.")
-        String category,
+        @NotNull(message = "Service type is required.")
+        ServiceType serviceType,
 
-        @NotNull(message = "isActive cannot be null. Please specify if the product is active.")
-        Boolean isActive
+        @Size(max = 5000, message = "Deliverables must not exceed 5000 characters.")
+        String deliverables,
+
+        @NotNull(message = "Estimated hours are required.")
+        @Min(value = 1, message = "Estimated hours must be at least 1.")
+        Integer estimatedHours,
+
+        @NotNull(message = "Complexity is required.")
+        Complexity complexity,
+
+        @NotNull(message = "Recurring status is required.")
+        Boolean isRecurring,
+
+        Frequency frequency,
+
+        @Min(value = 1, message = "Project duration must be at least 1 month.")
+        Integer projectDuration,
+
+        @NotNull(message = "KPI list is required.")
+        @Size(min = 1, message = "At least one KPI must be provided.")
+        List<@NotBlank(message = "KPI cannot be blank.") String> kpis,
+
+        @NotNull(message = "Social network platforms list is required.")
+        @Size(min = 1, message = "At least one platform must be provided.")
+        List<SocialNetworkPlatform> socialNetworkPlatforms,
+
+        @NotNull(message = "Active status is required.")
+        Boolean active
 ) {}
