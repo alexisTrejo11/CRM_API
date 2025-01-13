@@ -1,6 +1,6 @@
 package at.backend.CRM.Inputs;
 
-import at.backend.CRM.Models.enums.UserRole;
+import at.backend.CRM.Utils.enums.UserRole;
 import jakarta.validation.constraints.*;
 
 public record UserInput(

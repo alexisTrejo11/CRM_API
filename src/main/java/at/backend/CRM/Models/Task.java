@@ -1,7 +1,7 @@
 package at.backend.CRM.Models;
 
-import at.backend.CRM.Models.enums.TaskPriority;
-import at.backend.CRM.Models.enums.TaskStatus;
+import at.backend.CRM.Utils.enums.TaskPriority;
+import at.backend.CRM.Utils.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

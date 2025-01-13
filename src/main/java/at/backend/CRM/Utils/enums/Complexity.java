@@ -1,4 +1,4 @@
-package at.backend.CRM.Models.enums;
+package at.backend.CRM.Utils.enums;
 
 public enum Complexity {
     BASIC,

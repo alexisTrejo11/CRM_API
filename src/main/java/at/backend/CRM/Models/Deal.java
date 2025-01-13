@@ -1,6 +1,6 @@
 package at.backend.CRM.Models;
 
-import at.backend.CRM.Models.enums.DealStatus;
+import at.backend.CRM.Utils.enums.DealStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

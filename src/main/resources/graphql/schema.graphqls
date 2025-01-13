@@ -164,13 +164,61 @@ input ServicePackageInput {
     active: Boolean!
 }
 
+# Quote
+type Quote {
+    id: ID!
+    customer: Customer!
+    opportunity: Opportunity
+    validUntil: String!
+    subTotal: Float!
+    discount: Float!
+    totalAmount: Float!
+    status: QuoteStatus!
+    items: [QuoteItem!]!
+    createdAt: String!
+    updatedAt: String!
+}
+input QuoteInput {
+    customerId: ID!
+    opportunityId: ID
+    validUntil: String!
+    subTotal: Float!
+    discount: Float
+    totalAmount: Float!
+    status: QuoteStatus!
+    items: [QuoteItemInput!]!
+}
+# Quote Item
+type QuoteItem {
+    id: ID!
+    quote: Quote!
+    servicePackage: ServicePackage!
+    unitPrice: Float!
+    total: Float!
+    discountPercentage: Float!
+    discount: Float!
+    createdAt: String!
+    updatedAt: String!
+}
+input QuoteItemInput {
+    servicePackageId: ID!
+    unitPrice: Float!
+    total: Float!
+    discountPercentage: Float!
+    discount: Float!
+}
+enum QuoteStatus {
+    DRAFT
+    SENT
+    ACCEPTED
+    REJECTED
+}
 
 
 input PageInput {
     page: Int!
     size: Int!
 }
-
 
 
 # Queries

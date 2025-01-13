@@ -12,27 +12,37 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "quote_items")
 public class QuoteItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "quote_id", nullable = false)
     private Quote quote;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "service_package_id", nullable = false)
     private ServicePackage servicePackage;
 
-    private Integer quantity;
-    private BigDecimal unitPrice;
-    private BigDecimal discount;
+    @Column(name = "unit_price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal unitPrice = BigDecimal.ZERO;
 
+    @Column(name = "total", nullable = false, precision = 10, scale = 2)
+    private BigDecimal total = BigDecimal.ZERO;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "discount_percentage", precision = 5, scale = 2)
+    private BigDecimal discountPercentage = BigDecimal.ZERO;
+
+    @Column(name = "discount", precision = 5, scale = 2)
+    private BigDecimal discount = BigDecimal.ZERO;
+
+    @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-
 
     @PrePersist
     protected void onCreate() {

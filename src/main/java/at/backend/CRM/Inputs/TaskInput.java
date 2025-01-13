@@ -1,8 +1,7 @@
 package at.backend.CRM.Inputs;
 
-import at.backend.CRM.Models.enums.TaskPriority;
-import at.backend.CRM.Models.enums.TaskStatus;
-import jakarta.validation.constraints.FutureOrPresent;
+import at.backend.CRM.Utils.enums.TaskPriority;
+import at.backend.CRM.Utils.enums.TaskStatus;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

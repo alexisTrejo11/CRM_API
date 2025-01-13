@@ -1,12 +1,11 @@
 package at.backend.CRM.Models;
 
-import at.backend.CRM.Models.enums.UserRole;
+import at.backend.CRM.Utils.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor

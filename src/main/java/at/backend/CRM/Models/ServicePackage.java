@@ -1,9 +1,9 @@
 package at.backend.CRM.Models;
 
-import at.backend.CRM.Models.enums.Complexity;
-import at.backend.CRM.Models.enums.Frequency;
-import at.backend.CRM.Models.enums.SocialNetworkPlatform;
-import at.backend.CRM.Models.enums.ServiceType;
+import at.backend.CRM.Utils.enums.Complexity;
+import at.backend.CRM.Utils.enums.Frequency;
+import at.backend.CRM.Utils.enums.SocialNetworkPlatform;
+import at.backend.CRM.Utils.enums.ServiceType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

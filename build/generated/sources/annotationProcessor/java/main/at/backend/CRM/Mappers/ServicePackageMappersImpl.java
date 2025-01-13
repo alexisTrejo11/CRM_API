@@ -2,7 +2,7 @@ package at.backend.CRM.Mappers;
 
 import at.backend.CRM.Inputs.ServicePackageInput;
 import at.backend.CRM.Models.ServicePackage;
-import at.backend.CRM.Models.enums.SocialNetworkPlatform;
+import at.backend.CRM.Utils.enums.SocialNetworkPlatform;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
