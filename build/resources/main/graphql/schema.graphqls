@@ -207,6 +207,41 @@ enum QuoteStatus {
 }
 
 
+# Interaction
+type Interaction {
+    id: ID!
+    customer: Customer!
+    type: InteractionType!
+    dateTime: String!
+    description: String
+    outcome: String!
+    feedbackType: FeedbackType
+    channelPreference: String
+    createdAt: String!
+    updatedAt: String!
+}
+input InteractionInput {
+    customerId: ID!
+    type: InteractionType!
+    dateTime: String!
+    description: String
+    outcome: String!
+    feedbackType: FeedbackType
+    channelPreference: String
+}
+enum InteractionType {
+    EMAIL
+    CALL
+    MEETING
+    NOTE
+}
+
+enum FeedbackType {
+    CONTENT_REVIEW
+    CAMPAIGN_PERFORMANCE
+    STRATEGY
+}
+
 
 # Deals
 type Deal {
@@ -269,6 +304,9 @@ type Query {
     getAllQuotes(input: PageInput!): [Quote!]!
     getQuoteById(id: ID!): Quote
 
+    getAllInteractions(input: PageInput!): [Interaction]!
+    getInteractionById(id: ID!): Interaction
+
     getAllDeals(input: PageInput!): [Deal]!
     getDealById(id: ID!): Deal
 }
@@ -300,6 +338,10 @@ type Mutation {
     addQuoteItem(id: ID!, input: QuoteItemInput!): Quote!
     deleteQuoteItem(itemId: ID!): Quote!
     deleteQuote(id: ID!): Boolean!
+
+    createInteraction(input: InteractionInput!): Interaction!
+    updateInteraction(id: ID!, input: InteractionInput!): Interaction!
+    deleteInteraction(id: ID!): Boolean!
 
     createDeal(input: DealInput!): Deal!
     updateDeal(id: ID!, input: DealInput!): Deal!

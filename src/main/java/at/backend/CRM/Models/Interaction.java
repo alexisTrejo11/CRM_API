@@ -1,5 +1,7 @@
 package at.backend.CRM.Models;
 
+import at.backend.CRM.Utils.enums.FeedbackType;
+import at.backend.CRM.Utils.enums.InteractionType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,8 @@ public class Interaction {
     private Customer customer;
 
     @Column(name = "type", nullable = false)
-    private String type;  // EMAIL, CALL, MEETING, NOTE
+    @Enumerated(EnumType.STRING)
+    private InteractionType type;
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
@@ -37,8 +40,8 @@ public class Interaction {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "feedback_type")
+    @Enumerated(EnumType.STRING)
     private FeedbackType feedbackType;
 
     @Column(name = "channel_preference")
@@ -56,9 +59,4 @@ public class Interaction {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public enum FeedbackType {
-        CONTENT_REVIEW,
-        CAMPAIGN_PERFORMANCE,
-        STRATEGY
-    }
 }
