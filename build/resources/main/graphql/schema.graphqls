@@ -277,15 +277,271 @@ enum DealStatus {
 
 
 
+
+
+type Property {
+    key: String!
+    value: String!
+}
+
+input PropertyInput {
+    key: String!
+    value: String!
+}
+
+# MARKETING #
+# Type for CampaignActivity
+
+
+type CampaignActivity {
+    id: ID!
+    name: String!
+    description: String
+    activityType: ActivityType!
+    plannedStartDate: String!
+    plannedEndDate: String!
+    actualStartDate: String
+    actualEndDate: String
+    status: ActivityStatus!
+    plannedCost: Float!
+    actualCost: Float
+    assignedTo: String
+    successCriteria: String
+    targetAudience: String
+    deliveryChannel: String
+}
+
+# Input for creating a new CampaignActivity
+input CampaignActivityInput {
+    name: String!
+    description: String
+    activityType: ActivityType!
+    plannedStartDate: String!
+    plannedEndDate: String!
+    plannedCost: Float!
+    successCriteria: String
+    targetAudience: String
+    deliveryChannel: String
+    campaignId: ID!
+}
+
+# Enum for ActivityType
+enum ActivityType {
+    ADVERTISEMENT
+    EMAIL_CAMPAIGN
+    SOCIAL_MEDIA_POST
+    EVENT
+    OTHER
+}
+
+# Enum for ActivityStatus
+enum ActivityStatus {
+    PLANNED
+    IN_PROGRESS
+    COMPLETED
+    CANCELLED
+}
+
+# Type for CampaignAttribution
+type CampaignAttribution {
+    id: ID!
+    dealId: ID!
+    campaignId: ID!
+    attributionModel: AttributionModel!
+    attributionPercentage: Float!
+    attributedRevenue: Float
+    firstTouchDate: String
+    lastTouchDate: String
+    touchCount: Int
+}
+
+# Input for creating a new CampaignAttribution
+input CampaignAttributionInput {
+    dealId: ID!
+    campaignId: ID!
+    attributionModel: AttributionModel!
+    attributionPercentage: Float!
+    attributedRevenue: Float
+    touchCount: Int
+}
+
+# Enum for AttributionModel
+enum AttributionModel {
+    FIRST_TOUCH
+    LAST_TOUCH
+    LINEAR
+    TIME_DECAY
+    POSITION_BASED
+    CUSTOM
+}
+
+# Type for CampaignInteraction
+type CampaignInteraction {
+    id: ID!
+    campaignId: ID!
+    customerId: ID!
+    interactionType: InteractionType!
+    interactionDate: String!
+    sourceChannel: String
+    sourceMedium: String
+    sourceCampaign: String
+    deviceType: String
+    ipAddress: String
+    geoLocation: String
+    properties: [Property!]
+    details: String
+    resultedDealId: ID
+    conversionValue: Float
+}
+
+# Input for creating a new CampaignInteraction
+input CampaignInteractionInput {
+    campaignId: ID!
+    customerId: ID!
+    interactionType: InteractionType!
+    interactionDate: String!
+    sourceChannel: String
+    sourceMedium: String
+    sourceCampaign: String
+    deviceType: String
+    ipAddress: String
+    geoLocation: String
+    properties: [PropertyInput!]
+    details: String
+    resultedDealId: ID
+    conversionValue: Float
+}
+
+# Enum for MarketingInteractionType
+enum MarketingInteractionType {
+    CLICK
+    VIEW
+    SHARE
+    COMMENT
+    LIKE
+    DOWNLOAD
+    PURCHASE
+    OTHER
+}
+
+# Type for CustomerSegment
+type CustomerSegment {
+    id: ID!
+    name: String!
+    description: String
+    segmentCriteria: String
+    dynamic: Boolean!
+    rules: [Property!]
+    campaignIds: [ID!]
+    customerIds: [ID!]
+    lastUpdated: String
+}
+
+# Input for creating a new CustomerSegment
+input CustomerSegmentInput {
+    name: String!
+    description: String
+    segmentCriteria: String
+    dynamic: Boolean
+    rules: [PropertyInput!]
+}
+
+
+# Type for CampaignMetric
+type CampaignMetric {
+    id: ID!
+    campaignId: ID!
+    name: String!
+    description: String
+    type: MetricType!
+    value: Float
+    targetValue: Float!
+    measurementUnit: String
+    lastCalculated: String
+    calculationFormula: String
+    dataSource: String
+    automated: Boolean!
+}
+
+# Input for creating a new CampaignMetric
+input CampaignMetricInput {
+    campaignId: ID!
+    name: String!
+    description: String
+    type: MetricType!
+    value: Float
+    targetValue: Float!
+    measurementUnit: String
+    calculationFormula: String
+    dataSource: String
+    automated: Boolean
+}
+
+# Enum for MetricType
+enum MetricType {
+    COUNT
+    CURRENCY
+    PERCENTAGE
+    DURATION
+    COST
+}
+
+# Type for MarketingCampaign
+type MarketingCampaign {
+    id: ID!
+    name: String!
+    description: String
+    startDate: String!
+    endDate: String
+    budget: Float
+    costToDate: Float
+    status: CampaignStatus!
+    type: CampaignType!
+    targetAudience: String
+    successCriteria: String
+    targets: [Property!]
+    relatedDealIds: [ID!]
+    targetSegmentIds: [ID!]
+}
+
+# Input for creating a new MarketingCampaign
+input MarketingCampaignInput {
+    name: String!
+    description: String
+    startDate: String!
+    endDate: String
+    budget: Float
+    targetAudience: String
+    successCriteria: String
+    targets: [PropertyInput!]
+    type: CampaignType!
+}
+
+# Enum for CampaignStatus
+enum CampaignStatus {
+    DRAFT
+    ACTIVE
+    PAUSED
+    COMPLETED
+    CANCELLED
+}
+
+# Enum for CampaignType
+enum CampaignType {
+    ONLINE
+    OFFLINE
+    HYBRID
+}
+
+
 input PageInput {
     page: Int!
     size: Int!
 }
 
-
-
 # Queries
 type Query {
+    #CRM
     getAllUsers(input: PageInput!): [User!]!
     getUserById(id: ID!): User
 
@@ -309,11 +565,21 @@ type Query {
 
     getAllDeals(input: PageInput!): [Deal]!
     getDealById(id: ID!): Deal
+
+
+    #Marketing
+    getActivityById(id: ID!): CampaignActivity
+    getAttributionById(id: ID!): CampaignAttribution
+    getCampaignInteractionById(id: ID!): CampaignInteraction
+    getMetricById(id: ID!): CampaignMetric
+    getCampaignById(id: ID!): MarketingCampaign
+    getSegmentById(id: ID!): CustomerSegment
 }
 
 
 #Mutations
 type Mutation {
+    # CRM
     createUser(input: UserInput!): User!
     updateUser(id: ID!, input: UserInput!): User!
     deleteUser(id: ID!): Boolean!
@@ -346,4 +612,30 @@ type Mutation {
     createDeal(input: DealInput!): Deal!
     updateDeal(id: ID!, input: DealInput!): Deal!
     deleteDeal(id: ID!): Boolean!
+
+
+    # Marketing Campaign
+    createActivity(input: CampaignActivityInput!): CampaignActivity!
+    updateActivity(id: ID!, input: CampaignActivityInput!): CampaignActivity!
+    deleteActivity(id: ID!): Boolean!
+
+    createMarketingInteraction(input: CampaignInteractionInput!): CampaignInteraction!
+    updateMarketingInteraction(id: ID!, input: CampaignInteractionInput!): CampaignInteraction!
+    deleteMarketingInteraction(id: ID!): Boolean!
+
+    createAttribution(input: CampaignAttributionInput!): CampaignAttribution!
+    updateAttribution(id: ID!, input: CampaignAttributionInput!): CampaignAttribution!
+    deleteAttribution(id: ID!): Boolean!
+
+    createMetric(input: CampaignMetricInput!): CampaignMetric!
+    updateMetric(id: ID!, input: CampaignMetricInput!): CampaignMetric!
+    deleteMetric(id: ID!): Boolean!
+
+    createCampaign(input: MarketingCampaignInput!): MarketingCampaign!
+    updateCampaign(id: ID!, input: MarketingCampaignInput!): MarketingCampaign!
+    deleteCampaign(id: ID!): Boolean!
+
+    createSegment(input: CustomerSegmentInput!): CustomerSegment!
+    updateSegment(id: ID!, input: CustomerSegmentInput!): CustomerSegment!
+    deleteSegment(id: ID!): Boolean!
 }

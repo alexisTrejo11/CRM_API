@@ -1,7 +1,7 @@
 package at.backend.CRM.Models;
 
 import at.backend.CRM.Utils.enums.FeedbackType;
-import at.backend.CRM.Utils.enums.InteractionType;
+import at.backend.CRM.Utils.enums.MarketingInteractionType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ public class Interaction {
 
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
-    private InteractionType type;
+    private MarketingInteractionType type;
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;

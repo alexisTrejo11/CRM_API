@@ -1,7 +1,7 @@
 package at.backend.CRM.Inputs;
 
 import at.backend.CRM.Utils.enums.FeedbackType;
-import at.backend.CRM.Utils.enums.InteractionType;
+import at.backend.CRM.Utils.enums.MarketingInteractionType;
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ public record InteractionInput(
         Long customerId,
 
         @NotNull(message = "Type cannot be null")
-        InteractionType type,
+        MarketingInteractionType type,
 
         @NotNull(message = "Date and time cannot be null")
         @FutureOrPresent(message = "Date and time must be in the present or future")

@@ -1,6 +1,6 @@
 package at.backend.MarketingProject.DTOs;
 
-import at.backend.CRM.Utils.enums.InteractionType;
+import at.backend.CRM.Utils.enums.MarketingInteractionType;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -18,7 +18,7 @@ public class CampaignInteractionDTO {
     private Long customerId;
 
     @NotNull(message = "Interaction type cannot be null")
-    private InteractionType interactionType;
+    private MarketingInteractionType marketingInteractionType;
 
     @NotNull(message = "Interaction date cannot be null")
     private LocalDateTime interactionDate;

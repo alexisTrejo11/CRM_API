@@ -5,33 +5,36 @@ import at.backend.MarketingProject.DTOs.CampaignMetricInsertDTO;
 import at.backend.MarketingProject.Service.CampaignMetricService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/marketing-campaigns/metrics")
 @RequiredArgsConstructor
 public class CampaignMetricController {
     private final CampaignMetricService campaignMetricService;
 
-    @GetMapping("/{id}")
-    public CampaignMetricDTO getMetricByID(@PathVariable Long id) {
+    @QueryMapping("/{id}")
+    public CampaignMetricDTO getMetricById(@PathVariable Long id) {
         return campaignMetricService.getMetricById(id);
     }
 
-    @PostMapping
+    @MutationMapping
     public CampaignMetricDTO CreateMetric(@Valid @RequestBody CampaignMetricInsertDTO insertDTO) {
         return campaignMetricService.createMetric(insertDTO);
     }
 
-    @PutMapping("/{id}")
+    @MutationMapping("/{id}")
     public CampaignMetricDTO updateMetric(@Valid @RequestBody CampaignMetricInsertDTO insertDTO,
                                                @PathVariable Long id) {
         return campaignMetricService.updateMetric(id, insertDTO);
     }
 
 
-    @DeleteMapping("/{id}")
-    public boolean deleteMetricByID(@PathVariable Long id) {
+    @MutationMapping("/{id}")
+    public boolean deleteMetric(@PathVariable Long id) {
         campaignMetricService.deleteMetric(id);
         
         return true;

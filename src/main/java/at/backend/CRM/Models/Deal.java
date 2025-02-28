@@ -52,12 +52,6 @@ public class Deal {
     @Column(name = "terms", columnDefinition = "TEXT")
     private String terms;
 
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
     @ManyToMany
     @JoinTable(
             name = "deal_service_packages",
@@ -66,15 +60,21 @@ public class Deal {
     private List<ServicePackage> services;
 
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
     @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }
 

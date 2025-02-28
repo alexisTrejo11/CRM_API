@@ -2,7 +2,7 @@ package at.backend.MarketingProject.Models;
 
 import at.backend.CRM.Models.Customer;
 import at.backend.CRM.Models.Deal;
-import at.backend.CRM.Utils.enums.InteractionType;
+import at.backend.CRM.Utils.enums.MarketingInteractionType;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -28,7 +28,7 @@ public class CampaignInteraction {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private InteractionType interactionType;
+    private MarketingInteractionType marketingInteractionType;
 
     @Column(name = "interaction_date", nullable = false)
     private LocalDateTime interactionDate;
@@ -73,11 +73,20 @@ public class CampaignInteraction {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "created_at")
+    private LocalDateTime updatedAt;
+
     @PrePersist
     public void prePersist() {
         createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
         if (interactionDate == null) {
             interactionDate = LocalDateTime.now();
         }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }

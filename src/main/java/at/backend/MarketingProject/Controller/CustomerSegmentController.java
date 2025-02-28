@@ -5,33 +5,36 @@ import at.backend.MarketingProject.DTOs.CustomerSegmentInsertDTO;
 import at.backend.MarketingProject.Service.CustomerSegmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/marketing-campaigns/customer-segments")
 @RequiredArgsConstructor
 public class CustomerSegmentController {
     private final CustomerSegmentService campaignSegmentService;
 
-    @GetMapping("/{id}")
-    public CustomerSegmentDTO getSegmentByID(@PathVariable Long id) {
+    @QueryMapping("/{id}")
+    public CustomerSegmentDTO getSegmentById(@PathVariable Long id) {
         return campaignSegmentService.getSegmentById(id);
     }
 
-    @PostMapping
+    @MutationMapping
     public CustomerSegmentDTO CreateSegment(@Valid @RequestBody CustomerSegmentInsertDTO insertDTO) {
         return campaignSegmentService.createSegment(insertDTO);
     }
 
-    @PutMapping("/{id}")
+    @MutationMapping("/{id}")
     public CustomerSegmentDTO updateSegment(@Valid @RequestBody CustomerSegmentInsertDTO insertDTO,
                                                @PathVariable Long id) {
         return campaignSegmentService.updateSegment(id, insertDTO);
     }
 
 
-    @DeleteMapping("/{id}")
-    public boolean deleteSegmentByID(@PathVariable Long id) {
+    @MutationMapping("/{id}")
+    public boolean deleteSegment(@PathVariable Long id) {
         campaignSegmentService.deleteSegment(id);
         
         return true;

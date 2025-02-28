@@ -85,7 +85,7 @@ public class CampaignInteractionService {
     }
 
     private void validateInteraction(CampaignInteraction interaction) {
-        if (interaction.getInteractionType() == null) {
+        if (interaction.getMarketingInteractionType() == null) {
             throw new IllegalArgumentException("Interaction type cannot be null");
         }
         if (interaction.getInteractionDate() == null) {

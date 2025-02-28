@@ -5,33 +5,36 @@ import at.backend.MarketingProject.DTOs.MarketingCampaignInsertDTO;
 import at.backend.MarketingProject.Service.MarketingCampaignService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/marketing-campaigns")
 @RequiredArgsConstructor
 public class MarketingCampaignController {
     private final MarketingCampaignService marketingCampaignService;
 
-    @GetMapping("/{id}")
-    public MarketingCampaignDTO getCampaignByID(@PathVariable Long id) {
+    @QueryMapping("/{id}")
+    public MarketingCampaignDTO getCampaignById(@PathVariable Long id) {
         return marketingCampaignService.getCampaignById(id);
     }
 
-    @PostMapping
+    @MutationMapping
     public MarketingCampaignDTO CreateCampaign(@Valid @RequestBody MarketingCampaignInsertDTO insertDTO) {
         return marketingCampaignService.createCampaign(insertDTO);
     }
 
-    @PutMapping("/{id}")
+    @MutationMapping("/{id}")
     public MarketingCampaignDTO updateCampaign(@Valid @RequestBody MarketingCampaignInsertDTO insertDTO,
                                                @PathVariable Long id) {
         return marketingCampaignService.updateCampaign(id, insertDTO);
     }
 
 
-    @DeleteMapping("/{id}")
-    public boolean deleteCampaignByID(@PathVariable Long id) {
+    @MutationMapping("/{id}")
+    public boolean deleteCampaign(@PathVariable Long id) {
         marketingCampaignService.deleteCampaign(id);
 
         return true;

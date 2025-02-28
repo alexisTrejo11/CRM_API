@@ -5,33 +5,36 @@ import at.backend.MarketingProject.DTOs.CampaignActivityInsertDTO;
 import at.backend.MarketingProject.Service.CampaignActivityService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/marketing-campaigns/activities")
 @RequiredArgsConstructor
 public class CampaignActivityController {
     private final CampaignActivityService campaignActivityService;
 
-    @GetMapping("/{id}")
-    public CampaignActivityDTO getActivityByID(@PathVariable Long id) {
+    @QueryMapping("/{id}")
+    public CampaignActivityDTO getActivityById(@PathVariable Long id) {
         return campaignActivityService.getActivityById(id);
     }
 
-    @PostMapping
+    @MutationMapping
     public CampaignActivityDTO CreateActivity(@Valid @RequestBody CampaignActivityInsertDTO insertDTO) {
         return campaignActivityService.createActivity(insertDTO);
     }
 
-    @PutMapping("/{id}")
+    @MutationMapping("/{id}")
     public CampaignActivityDTO updateActivity(@Valid @RequestBody CampaignActivityInsertDTO insertDTO,
                                                @PathVariable Long id) {
         return campaignActivityService.updateActivity(id, insertDTO);
     }
 
 
-    @DeleteMapping("/{id}")
-    public boolean deleteActivityByID(@PathVariable Long id) {
+    @MutationMapping("/{id}")
+    public boolean deleteActivity(@PathVariable Long id) {
         campaignActivityService.deleteActivity(id);
         
         return true;

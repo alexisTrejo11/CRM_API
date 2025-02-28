@@ -7,7 +7,7 @@ import at.backend.CRM.Models.Interaction;
 import at.backend.CRM.Repository.CustomerRepository;
 import at.backend.CRM.Repository.InteractionRepository;
 import at.backend.CRM.Utils.enums.FeedbackType;
-import at.backend.CRM.Utils.enums.InteractionType;
+import at.backend.CRM.Utils.enums.MarketingInteractionType;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -85,15 +85,15 @@ public class InteractionServiceImpl implements  CommonService<Interaction, Inter
             throw new IllegalArgumentException("For feedback type 'STRATEGY', the outcome must include a follow-up action");
         }
 
-        if (InteractionType.MEETING.equals(input.type()) && input.feedbackType() == null) {
+        if (MarketingInteractionType.MEETING.equals(input.type()) && input.feedbackType() == null) {
             throw new IllegalArgumentException("Feedback type must be specified for 'MEETING' interactions");
         }
 
         if (input.channelPreference() != null) {
-            if (InteractionType.CALL.equals(input.type()) && !"Phone".equalsIgnoreCase(input.channelPreference())) {
+            if (MarketingInteractionType.CALL.equals(input.type()) && !"Phone".equalsIgnoreCase(input.channelPreference())) {
                 throw new IllegalArgumentException("For 'CALL' interactions, channel preference must be 'Phone'");
             }
-            if (InteractionType.EMAIL.equals(input.type()) && !"Email".equalsIgnoreCase(input.channelPreference())) {
+            if (MarketingInteractionType.EMAIL.equals(input.type()) && !"Email".equalsIgnoreCase(input.channelPreference())) {
                 throw new IllegalArgumentException("For 'EMAIL' interactions, channel preference must be 'Email'");
             }
         }
