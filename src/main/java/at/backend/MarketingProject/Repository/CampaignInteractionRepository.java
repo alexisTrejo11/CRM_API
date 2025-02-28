@@ -41,6 +41,9 @@ public interface CampaignInteractionRepository extends JpaRepository<CampaignInt
             @Param("campaignId") Long campaignId,
             @Param("interactionType") InteractionType interactionType);
 
+
+    Long countByCampaignIdAndInteractionType(Long campaignId, InteractionType interactionType);
+
     @Query("SELECT ci FROM CampaignInteraction ci " +
             "WHERE ci.resultedDeal IS NOT NULL " +
             "AND ci.campaign.id = :campaignId " +
