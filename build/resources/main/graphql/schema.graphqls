@@ -291,7 +291,7 @@ input PropertyInput {
 
 # MARKETING #
 # Type for CampaignActivity
-
+scalar JSON
 
 type CampaignActivity {
     id: ID!
@@ -380,7 +380,7 @@ type CampaignInteraction {
     id: ID!
     campaignId: ID!
     customerId: ID!
-    interactionType: InteractionType!
+    marketingInteractionType: MarketingInteractionType!
     interactionDate: String!
     sourceChannel: String
     sourceMedium: String
@@ -388,7 +388,7 @@ type CampaignInteraction {
     deviceType: String
     ipAddress: String
     geoLocation: String
-    properties: [Property!]
+    properties: JSON
     details: String
     resultedDealId: ID
     conversionValue: Float
@@ -398,7 +398,7 @@ type CampaignInteraction {
 input CampaignInteractionInput {
     campaignId: ID!
     customerId: ID!
-    interactionType: InteractionType!
+    marketingInteractionType: MarketingInteractionType!
     interactionDate: String!
     sourceChannel: String
     sourceMedium: String
@@ -406,7 +406,7 @@ input CampaignInteractionInput {
     deviceType: String
     ipAddress: String
     geoLocation: String
-    properties: [PropertyInput!]
+    properties: JSON
     details: String
     resultedDealId: ID
     conversionValue: Float
@@ -431,7 +431,7 @@ type CustomerSegment {
     description: String
     segmentCriteria: String
     dynamic: Boolean!
-    rules: [Property!]
+    rules: JSON
     campaignIds: [ID!]
     customerIds: [ID!]
     lastUpdated: String
@@ -443,7 +443,7 @@ input CustomerSegmentInput {
     description: String
     segmentCriteria: String
     dynamic: Boolean
-    rules: [PropertyInput!]
+    rules: JSON
 }
 
 
@@ -499,7 +499,7 @@ type MarketingCampaign {
     type: CampaignType!
     targetAudience: String
     successCriteria: String
-    targets: [Property!]
+    targets: JSON
     relatedDealIds: [ID!]
     targetSegmentIds: [ID!]
 }
@@ -513,7 +513,7 @@ input MarketingCampaignInput {
     budget: Float
     targetAudience: String
     successCriteria: String
-    targets: [PropertyInput!]
+    targets: JSON
     type: CampaignType!
 }
 
@@ -619,9 +619,9 @@ type Mutation {
     updateActivity(id: ID!, input: CampaignActivityInput!): CampaignActivity!
     deleteActivity(id: ID!): Boolean!
 
-    createMarketingInteraction(input: CampaignInteractionInput!): CampaignInteraction!
-    updateMarketingInteraction(id: ID!, input: CampaignInteractionInput!): CampaignInteraction!
-    deleteMarketingInteraction(id: ID!): Boolean!
+    createCampaignInteraction(input: CampaignInteractionInput!): CampaignInteraction!
+    updateCampaignInteraction(id: ID!, input: CampaignInteractionInput!): CampaignInteraction!
+    deleteCampaignInteraction(id: ID!): Boolean!
 
     createAttribution(input: CampaignAttributionInput!): CampaignAttribution!
     updateAttribution(id: ID!, input: CampaignAttributionInput!): CampaignAttribution!

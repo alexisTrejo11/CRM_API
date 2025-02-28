@@ -21,14 +21,14 @@ public class CustomerSegmentController {
     }
 
     @MutationMapping
-    public CustomerSegmentDTO createSegment(@Valid @Argument CustomerSegmentInsertDTO insertDTO) {
-        return campaignSegmentService.createSegment(insertDTO);
+    public CustomerSegmentDTO createSegment(@Valid @Argument CustomerSegmentInsertDTO input) {
+        return campaignSegmentService.createSegment(input);
     }
 
     @MutationMapping
-    public CustomerSegmentDTO updateSegment(@Valid @Argument CustomerSegmentInsertDTO insertDTO,
+    public CustomerSegmentDTO updateSegment(@Valid @Argument CustomerSegmentInsertDTO input,
                                                @Argument Long id) {
-        return campaignSegmentService.updateSegment(id, insertDTO);
+        return campaignSegmentService.updateSegment(id, input);
     }
 
 

@@ -21,14 +21,14 @@ public class CampaignMetricController {
     }
 
     @MutationMapping
-    public CampaignMetricDTO CreateMetric(@Valid @Argument CampaignMetricInsertDTO insertDTO) {
-        return campaignMetricService.createMetric(insertDTO);
+    public CampaignMetricDTO createMetric(@Valid @Argument CampaignMetricInsertDTO input) {
+        return campaignMetricService.createMetric(input);
     }
 
     @MutationMapping
-    public CampaignMetricDTO updateMetric(@Valid @Argument CampaignMetricInsertDTO insertDTO,
+    public CampaignMetricDTO updateMetric(@Valid @Argument CampaignMetricInsertDTO input,
                                                @Argument Long id) {
-        return campaignMetricService.updateMetric(id, insertDTO);
+        return campaignMetricService.updateMetric(id, input);
     }
 
 

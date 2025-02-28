@@ -21,14 +21,14 @@ public class CampaignActivityController {
     }
 
     @MutationMapping
-    public CampaignActivityDTO createActivity(@Valid @Argument CampaignActivityInsertDTO insertDTO) {
-        return campaignActivityService.createActivity(insertDTO);
+    public CampaignActivityDTO createActivity(@Valid @Argument CampaignActivityInsertDTO input) {
+        return campaignActivityService.createActivity(input);
     }
 
     @MutationMapping
-    public CampaignActivityDTO updateActivity(@Valid @Argument CampaignActivityInsertDTO insertDTO,
+    public CampaignActivityDTO updateActivity(@Valid @Argument CampaignActivityInsertDTO input,
                                                @Argument Long id) {
-        return campaignActivityService.updateActivity(id, insertDTO);
+        return campaignActivityService.updateActivity(id, input);
     }
 
 

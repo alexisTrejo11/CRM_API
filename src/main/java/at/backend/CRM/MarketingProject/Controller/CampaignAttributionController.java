@@ -22,14 +22,14 @@ public class CampaignAttributionController {
     }
 
     @MutationMapping
-    public CampaignAttributionDTO createAttribution(@Valid @Argument CampaignAttributionInsertDTO insertDTO) {
-        return campaignAttributionService.createAttribution(insertDTO);
+    public CampaignAttributionDTO createAttribution(@Valid @Argument CampaignAttributionInsertDTO input) {
+        return campaignAttributionService.createAttribution(input);
     }
 
     @MutationMapping
-    public CampaignAttributionDTO updateAttribution(@Valid @Argument CampaignAttributionInsertDTO insertDTO,
+    public CampaignAttributionDTO updateAttribution(@Valid @Argument CampaignAttributionInsertDTO input,
                                                @PathVariable Long id) {
-        return campaignAttributionService.updateAttribution(id, insertDTO);
+        return campaignAttributionService.updateAttribution(id, input);
     }
 
 

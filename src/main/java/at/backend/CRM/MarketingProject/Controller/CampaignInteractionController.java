@@ -22,14 +22,14 @@ public class CampaignInteractionController {
     }
 
     @MutationMapping
-    public CampaignInteractionDTO createCampaignInteraction(@Valid @Argument CampaignInteractionInsertDTO insertDTO) {
-        return campaignInteractionService.createInteraction(insertDTO);
+    public CampaignInteractionDTO createCampaignInteraction(@Valid @Argument CampaignInteractionInsertDTO input) {
+        return campaignInteractionService.createInteraction(input);
     }
 
     @MutationMapping
-    public CampaignInteractionDTO updateCampaignInteraction(@Valid @Argument CampaignInteractionInsertDTO insertDTO,
+    public CampaignInteractionDTO updateCampaignInteraction(@Valid @Argument CampaignInteractionInsertDTO input,
                                                @PathVariable Long id) {
-        return campaignInteractionService.updateInteraction(id, insertDTO);
+        return campaignInteractionService.updateInteraction(id, input);
     }
 
     @MutationMapping

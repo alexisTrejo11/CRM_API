@@ -21,14 +21,14 @@ public class MarketingCampaignController {
     }
 
     @MutationMapping
-    public MarketingCampaignDTO CreateCampaign(@Valid @Argument MarketingCampaignInsertDTO insertDTO) {
-        return marketingCampaignService.createCampaign(insertDTO);
+    public MarketingCampaignDTO createCampaign(@Valid @Argument MarketingCampaignInsertDTO input) {
+        return marketingCampaignService.createCampaign(input);
     }
 
     @MutationMapping
-    public MarketingCampaignDTO updateCampaign(@Valid @Argument MarketingCampaignInsertDTO insertDTO,
+    public MarketingCampaignDTO updateCampaign(@Valid @Argument MarketingCampaignInsertDTO input,
                                                @Argument Long id) {
-        return marketingCampaignService.updateCampaign(id, insertDTO);
+        return marketingCampaignService.updateCampaign(id, input);
     }
 
 
