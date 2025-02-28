@@ -1,9 +1,13 @@
 package at.backend.MarketingProject.Service;
 
+import at.backend.MarketingProject.AutoMappers.CampaignActivityMappers;
+import at.backend.MarketingProject.DTOs.CampaignActivityDTO;
+import at.backend.MarketingProject.DTOs.CampaignActivityInsertDTO;
 import at.backend.MarketingProject.Models.CampaignActivity;
 import at.backend.MarketingProject.Models.Utils.ActivityStatus;
 import at.backend.MarketingProject.Repository.CampaignActivityRepository;
 import at.backend.MarketingProject.Repository.MarketingCampaignRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -11,62 +15,49 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import at.backend.MarketingProject.Models.MarketingCampaign;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CampaignActivityService {
 
-    @Autowired
-    private CampaignActivityRepository campaignActivityRepository;
+    private final CampaignActivityRepository campaignActivityRepository;
+    private final MarketingCampaignRepository marketingCampaignRepository;
+    private final CampaignActivityMappers campaignActivityMappers;
 
-    @Autowired
-    private MarketingCampaignRepository marketingCampaignRepository;
+    public CampaignActivityDTO createActivity(CampaignActivityInsertDTO input) {
+        CampaignActivity activity = campaignActivityMappers.inputToEntity(input);
 
-    public CampaignActivity createActivity(Long campaignId, CampaignActivity activity) {
         validateActivity(activity);
-        MarketingCampaign campaign = marketingCampaignRepository.findById(campaignId)
-                .orElseThrow(() -> new RuntimeException("Campaign not found with ID: " + campaignId));
+
+        MarketingCampaign campaign = getCampaign(input.getCampaignId());
         activity.setCampaign(campaign);
-        return campaignActivityRepository.save(activity);
+
+        campaignActivityRepository.save(activity);
+
+        return campaignActivityMappers.entityToDTO(activity);
     }
 
-    public CampaignActivity updateActivity(Long id, CampaignActivity updatedActivity) {
-        Optional<CampaignActivity> existingActivity = campaignActivityRepository.findById(id);
-        if (existingActivity.isPresent()) {
-            CampaignActivity activity = existingActivity.get();
-            activity.setName(updatedActivity.getName());
-            activity.setDescription(updatedActivity.getDescription());
-            activity.setActivityType(updatedActivity.getActivityType());
-            activity.setPlannedStartDate(updatedActivity.getPlannedStartDate());
-            activity.setPlannedEndDate(updatedActivity.getPlannedEndDate());
-            activity.setActualStartDate(updatedActivity.getActualStartDate());
-            activity.setActualEndDate(updatedActivity.getActualEndDate());
-            activity.setStatus(updatedActivity.getStatus());
-            activity.setPlannedCost(updatedActivity.getPlannedCost());
-            activity.setActualCost(updatedActivity.getActualCost());
-            activity.setAssignedTo(updatedActivity.getAssignedTo());
-            activity.setSuccessCriteria(updatedActivity.getSuccessCriteria());
-            activity.setTargetAudience(updatedActivity.getTargetAudience());
-            activity.setDeliveryChannel(updatedActivity.getDeliveryChannel());
-            return campaignActivityRepository.save(activity);
-        } else {
-            throw new RuntimeException("Activity not found with ID: " + id);
-        }
+    public CampaignActivityDTO updateActivity(Long id, CampaignActivityInsertDTO input) {
+        CampaignActivity existingActivity = campaignActivityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
+
+        campaignActivityMappers.updateEntity(existingActivity, input);
+
+        campaignActivityRepository.save(existingActivity);
+
+        return campaignActivityMappers.entityToDTO(existingActivity);
     }
 
     public void deleteActivity(Long id) {
-        Optional<CampaignActivity> activity = campaignActivityRepository.findById(id);
-        if (activity.isPresent()) {
-            campaignActivityRepository.delete(activity.get());
-        } else {
-            throw new RuntimeException("Activity not found with ID: " + id);
-        }
+        CampaignActivity activity = campaignActivityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
+
+        campaignActivityRepository.delete(activity);
     }
 
-    public CampaignActivity getActivityById(Long id) {
+    public CampaignActivityDTO getActivityById(Long id) {
         return campaignActivityRepository.findById(id)
+                .map(campaignActivityMappers::entityToDTO)
                 .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
     }
 
@@ -79,7 +70,7 @@ public class CampaignActivityService {
     }
 
     public CampaignActivity startActivity(Long id) {
-        CampaignActivity activity = getActivityById(id);
+        CampaignActivity activity = getActivity(id);
         if (activity.getStatus() == ActivityStatus.PLANNED) {
             activity.setStatus(ActivityStatus.IN_PROGRESS);
             activity.setActualStartDate(LocalDateTime.now());
@@ -90,7 +81,7 @@ public class CampaignActivityService {
     }
 
     public CampaignActivity completeActivity(Long id) {
-        CampaignActivity activity = getActivityById(id);
+        CampaignActivity activity = getActivity(id);
         if (activity.getStatus() == ActivityStatus.IN_PROGRESS) {
             activity.setStatus(ActivityStatus.COMPLETED);
             activity.setActualEndDate(LocalDateTime.now());
@@ -101,7 +92,7 @@ public class CampaignActivityService {
     }
 
     public BigDecimal calculateRemainingBudget(Long id) {
-        CampaignActivity activity = getActivityById(id);
+        CampaignActivity activity = getActivity(id);
         return activity.getPlannedCost().subtract(activity.getActualCost() != null ? activity.getActualCost() : BigDecimal.ZERO);
     }
 
@@ -115,5 +106,15 @@ public class CampaignActivityService {
         if (activity.getPlannedCost() == null || activity.getPlannedCost().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Planned cost must be greater than zero");
         }
+    }
+
+    private CampaignActivity getActivity(Long activityID) {
+        return campaignActivityRepository.findById(activityID)
+                .orElseThrow(() -> new RuntimeException("Campaign Activity not found with ID: " + activityID));
+    }
+
+    private MarketingCampaign getCampaign(Long campaignID) {
+        return marketingCampaignRepository.findById(campaignID)
+                .orElseThrow(() -> new RuntimeException("Campaign not found with ID: " + campaignID));
     }
 }

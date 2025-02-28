@@ -1,16 +1,17 @@
 package at.backend.MarketingProject.Service;
 
+import at.backend.MarketingProject.AutoMappers.CampaignMetricMappers;
+import at.backend.MarketingProject.DTOs.CampaignMetricDTO;
+import at.backend.MarketingProject.DTOs.CampaignMetricInsertDTO;
 import at.backend.MarketingProject.Models.CampaignMetric;
 import at.backend.MarketingProject.Models.MarketingCampaign;
 import at.backend.MarketingProject.Repository.CampaignMetricRepository;
 import at.backend.MarketingProject.Repository.MarketingCampaignRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,44 +19,44 @@ public class CampaignMetricService {
 
     private final CampaignMetricRepository campaignMetricRepository;
     private final MarketingCampaignRepository marketingCampaignRepository;
+    private final CampaignMetricMappers campaignMetricMappers;
 
-    public CampaignMetric createMetric(Long campaignId, CampaignMetric metric) {
+    public CampaignMetricDTO createMetric(CampaignMetricInsertDTO insertDTO) {
+        CampaignMetric metric = campaignMetricMappers.inputToEntity(insertDTO);
+
         validateMetric(metric);
-        MarketingCampaign campaign = marketingCampaignRepository.findById(campaignId)
-                .orElseThrow(() -> new RuntimeException("Campaign not found with ID: " + campaignId));
+
+        MarketingCampaign campaign = getCampaign(insertDTO.getCampaignId());
         metric.setCampaign(campaign);
-        return campaignMetricRepository.save(metric);
+
+        campaignMetricRepository.save(metric);
+
+        return campaignMetricMappers.entityToDTO(metric);
     }
 
-    public CampaignMetric updateMetric(Long id, CampaignMetric updatedMetric) {
-        Optional<CampaignMetric> existingMetric = campaignMetricRepository.findById(id);
-        if (existingMetric.isPresent()) {
-            CampaignMetric metric = existingMetric.get();
-            metric.setName(updatedMetric.getName());
-            metric.setDescription(updatedMetric.getDescription());
-            metric.setType(updatedMetric.getType());
-            metric.setValue(updatedMetric.getValue());
-            metric.setTargetValue(updatedMetric.getTargetValue());
-            metric.setMeasurementUnit(updatedMetric.getMeasurementUnit());
-            metric.setCalculationFormula(updatedMetric.getCalculationFormula());
-            metric.setDataSource(updatedMetric.getDataSource());
-            metric.setAutomated(updatedMetric.isAutomated());
-            return campaignMetricRepository.save(metric);
-        } else {
-            throw new RuntimeException("Metric not found with ID: " + id);
-        }
+    public CampaignMetricDTO updateMetric(Long id, CampaignMetricInsertDTO insertDTO) {
+        CampaignMetric existingMetric = getMetric(id);
+
+        campaignMetricMappers.updateEntity(existingMetric, insertDTO);
+
+        campaignMetricRepository.save(existingMetric);
+
+        return campaignMetricMappers.entityToDTO(existingMetric);
     }
 
     public void deleteMetric(Long id) {
-        Optional<CampaignMetric> metric = campaignMetricRepository.findById(id);
-        if (metric.isPresent()) {
-            campaignMetricRepository.delete(metric.get());
-        } else {
-            throw new RuntimeException("Metric not found with ID: " + id);
-        }
+        CampaignMetric metric = getMetric(id);
+
+        campaignMetricRepository.delete(metric);
     }
 
-    public CampaignMetric getMetricById(Long id) {
+    public CampaignMetricDTO getMetricById(Long id) {
+        CampaignMetric campaignMetric = getMetric(id);
+
+        return campaignMetricMappers.entityToDTO(campaignMetric);
+    }
+
+    private CampaignMetric getMetric(Long id) {
         return campaignMetricRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Metric not found with ID: " + id));
     }
@@ -65,13 +66,13 @@ public class CampaignMetricService {
     }
 
     public CampaignMetric calculateMetricValue(Long id) {
-        CampaignMetric metric = getMetricById(id);
+        CampaignMetric metric = getMetric(id);
         metric.calculateMetricValue();
         return campaignMetricRepository.save(metric);
     }
 
     public boolean isTargetAchieved(Long id) {
-        CampaignMetric metric = getMetricById(id);
+        CampaignMetric metric = getMetric(id);
         return metric.isTargetAchieved();
     }
 
@@ -85,5 +86,10 @@ public class CampaignMetricService {
         if (metric.getTargetValue() == null || metric.getTargetValue().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Target value must be greater than or equal to zero");
         }
+    }
+
+    private MarketingCampaign getCampaign(Long campaignID) {
+        return marketingCampaignRepository.findById(campaignID)
+                .orElseThrow(() -> new RuntimeException("Campaign not found with ID: " + campaignID));
     }
 }

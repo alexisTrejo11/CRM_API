@@ -1,5 +1,8 @@
 package at.backend.MarketingProject.Service;
 
+import at.backend.MarketingProject.AutoMappers.CustomerSegmentMappers;
+import at.backend.MarketingProject.DTOs.CustomerSegmentDTO;
+import at.backend.MarketingProject.DTOs.CustomerSegmentInsertDTO;
 import at.backend.MarketingProject.Models.CustomerSegment;
 import at.backend.CRM.Models.Customer;
 import at.backend.MarketingProject.Repository.CustomerSegmentRepository;
@@ -8,44 +11,45 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerSegmentService {
 
     private final CustomerSegmentRepository customerSegmentRepository;
+    private final CustomerSegmentMappers customerSegmentMappers;
 
-    public CustomerSegment createSegment(CustomerSegment segment) {
+    public CustomerSegmentDTO createSegment(CustomerSegmentInsertDTO input) {
+        CustomerSegment segment = customerSegmentMappers.inputToEntity(input);
+
         validateSegment(segment);
-        return customerSegmentRepository.save(segment);
+        customerSegmentRepository.save(segment);
+
+        return customerSegmentMappers.entityToDTO(segment);
     }
 
-    public CustomerSegment updateSegment(Long id, CustomerSegment updatedSegment) {
-        Optional<CustomerSegment> existingSegment = customerSegmentRepository.findById(id);
-        if (existingSegment.isPresent()) {
-            CustomerSegment segment = existingSegment.get();
-            segment.setName(updatedSegment.getName());
-            segment.setDescription(updatedSegment.getDescription());
-            segment.setSegmentCriteria(updatedSegment.getSegmentCriteria());
-            segment.setDynamic(updatedSegment.isDynamic());
-            segment.setRules(updatedSegment.getRules());
-            return customerSegmentRepository.save(segment);
-        } else {
-            throw new RuntimeException("Customer segment not found with ID: " + id);
-        }
+    public CustomerSegmentDTO updateSegment(Long id, CustomerSegmentInsertDTO input) {
+        CustomerSegment existingSegment = getSegment(id);
+
+        customerSegmentMappers.updateEntity(existingSegment, input);
+
+        customerSegmentRepository.save(existingSegment);
+
+        return customerSegmentMappers.entityToDTO(existingSegment);
     }
 
     public void deleteSegment(Long id) {
-        Optional<CustomerSegment> segment = customerSegmentRepository.findById(id);
-        if (segment.isPresent()) {
-            customerSegmentRepository.delete(segment.get());
-        } else {
-            throw new RuntimeException("Customer segment not found with ID: " + id);
-        }
+        CustomerSegment segment = getSegment(id);
+
+        customerSegmentRepository.delete(segment);
     }
 
-    public CustomerSegment getSegmentById(Long id) {
+    public CustomerSegmentDTO getSegmentById(Long id) {
+        CustomerSegment segment = getSegment(id);
+        return customerSegmentMappers.entityToDTO(segment);
+    }
+
+    public CustomerSegment getSegment(Long id) {
         return customerSegmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer segment not found with ID: " + id));
     }
@@ -59,19 +63,22 @@ public class CustomerSegmentService {
     }
 
     public CustomerSegment updateSegmentRules(Long id, Map<String, String> rules) {
-        CustomerSegment segment = getSegmentById(id);
+        CustomerSegment segment = getSegment(id);
+
         segment.getRules().putAll(rules);
         return customerSegmentRepository.save(segment);
     }
 
     public CustomerSegment addCustomersToSegment(Long id, List<Customer> customers) {
-        CustomerSegment segment = getSegmentById(id);
+        CustomerSegment segment = getSegment(id);
+
         segment.getCustomers().addAll(customers);
         return customerSegmentRepository.save(segment);
     }
 
     public CustomerSegment removeCustomersFromSegment(Long id, List<Customer> customers) {
-        CustomerSegment segment = getSegmentById(id);
+        CustomerSegment segment = getSegment(id);
+
         segment.getCustomers().removeAll(customers);
         return customerSegmentRepository.save(segment);
     }

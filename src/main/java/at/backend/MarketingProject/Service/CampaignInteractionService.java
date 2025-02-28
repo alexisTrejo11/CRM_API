@@ -1,6 +1,9 @@
 package at.backend.MarketingProject.Service;
 
 import at.backend.CRM.Repository.CustomerRepository;
+import at.backend.MarketingProject.AutoMappers.CampaignInteractionMappers;
+import at.backend.MarketingProject.DTOs.CampaignInteractionDTO;
+import at.backend.MarketingProject.DTOs.CampaignInteractionInsertDTO;
 import at.backend.MarketingProject.Models.CampaignInteraction;
 import at.backend.MarketingProject.Models.MarketingCampaign;
 import at.backend.CRM.Models.Customer;
@@ -12,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,51 +23,40 @@ public class CampaignInteractionService {
     private final CampaignInteractionRepository campaignInteractionRepository;
     private final MarketingCampaignRepository marketingCampaignRepository;
     private final CustomerRepository customerRepository;
+    private final CampaignInteractionMappers campaignInteractionMappers;
 
-    public CampaignInteraction createInteraction(Long campaignId, Long customerId, CampaignInteraction interaction) {
+    public CampaignInteractionDTO createInteraction(CampaignInteractionInsertDTO insertDTO) {
+        CampaignInteraction interaction = campaignInteractionMappers.inputToEntity(insertDTO);
+
         validateInteraction(interaction);
-        MarketingCampaign campaign = marketingCampaignRepository.findById(campaignId)
-                .orElseThrow(() -> new RuntimeException("Campaign not found with ID: " + campaignId));
-        Customer customer = getCustomerById(customerId);
-        interaction.setCampaign(campaign);
-        interaction.setCustomer(customer);
-        return campaignInteractionRepository.save(interaction);
+
+        fetchInteractionRelationships(interaction, insertDTO.getCampaignId(), insertDTO.getCustomerId());
+
+        campaignInteractionRepository.save(interaction);
+
+        return campaignInteractionMappers.entityToDTO(interaction);
     }
 
-    public CampaignInteraction updateInteraction(Long id, CampaignInteraction updatedInteraction) {
-        Optional<CampaignInteraction> existingInteraction = campaignInteractionRepository.findById(id);
-        if (existingInteraction.isPresent()) {
-            CampaignInteraction interaction = existingInteraction.get();
-            interaction.setInteractionType(updatedInteraction.getInteractionType());
-            interaction.setInteractionDate(updatedInteraction.getInteractionDate());
-            interaction.setSourceChannel(updatedInteraction.getSourceChannel());
-            interaction.setSourceMedium(updatedInteraction.getSourceMedium());
-            interaction.setSourceCampaign(updatedInteraction.getSourceCampaign());
-            interaction.setDeviceType(updatedInteraction.getDeviceType());
-            interaction.setIpAddress(updatedInteraction.getIpAddress());
-            interaction.setGeoLocation(updatedInteraction.getGeoLocation());
-            interaction.setProperties(updatedInteraction.getProperties());
-            interaction.setDetails(updatedInteraction.getDetails());
-            interaction.setResultedDeal(updatedInteraction.getResultedDeal());
-            interaction.setConversionValue(updatedInteraction.getConversionValue());
-            return campaignInteractionRepository.save(interaction);
-        } else {
-            throw new RuntimeException("Interaction not found with ID: " + id);
-        }
+    public CampaignInteractionDTO updateInteraction(Long id, CampaignInteractionInsertDTO insertDTO) {
+        CampaignInteraction existingInteraction = getInteraction(id);
+
+        campaignInteractionMappers.updateEntity(existingInteraction, insertDTO);
+
+        campaignInteractionRepository.save(existingInteraction);
+
+        return campaignInteractionMappers.entityToDTO(existingInteraction);
     }
 
     public void deleteInteraction(Long id) {
-        Optional<CampaignInteraction> interaction = campaignInteractionRepository.findById(id);
-        if (interaction.isPresent()) {
-            campaignInteractionRepository.delete(interaction.get());
-        } else {
-            throw new RuntimeException("Interaction not found with ID: " + id);
-        }
+        CampaignInteraction interaction = getInteraction(id);
+
+        campaignInteractionRepository.delete(interaction);
     }
 
-    public CampaignInteraction getInteractionById(Long id) {
-        return campaignInteractionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Interaction not found with ID: " + id));
+    public CampaignInteractionDTO getInteractionById(Long id) {
+        CampaignInteraction interaction = getInteraction(id);
+
+        return campaignInteractionMappers.entityToDTO(interaction);
     }
 
     public List<CampaignInteraction> getInteractionsByCampaignId(Long campaignId) {
@@ -77,13 +68,16 @@ public class CampaignInteractionService {
     }
 
     public CampaignInteraction updateInteractionProperties(Long id, Map<String, String> properties) {
-        CampaignInteraction interaction = getInteractionById(id);
+        CampaignInteraction interaction = getInteraction(id);
+
         interaction.getProperties().putAll(properties);
+
         return campaignInteractionRepository.save(interaction);
     }
 
     public Double calculateTotalConversionValue(Long campaignId) {
         List<CampaignInteraction> interactions = campaignInteractionRepository.findByCampaignId(campaignId);
+
         return interactions.stream()
                 .map(CampaignInteraction::getConversionValue)
                 .filter(Objects::nonNull)
@@ -102,8 +96,25 @@ public class CampaignInteractionService {
         }
     }
 
+    private CampaignInteraction getInteraction(Long id) {
+        return campaignInteractionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Interaction not found with ID: " + id));
+    }
+
     private Customer getCustomerById(Long customerId) {
          return customerRepository.findById(customerId)
                 .orElseThrow(() -> new UnsupportedOperationException("Customer fetching logic needs to be implemented"));
+    }
+
+    private MarketingCampaign getCampaign(Long campaignID) {
+        return marketingCampaignRepository.findById(campaignID)
+                .orElseThrow(() -> new RuntimeException("Campaign not found with ID: " + campaignID));
+    }
+
+    private void fetchInteractionRelationships(CampaignInteraction interaction, Long campaignId, Long customerId) {
+        Customer customer = getCustomerById(customerId);
+        MarketingCampaign campaign = getCampaign(campaignId);
+        interaction.setCampaign(campaign);
+        interaction.setCustomer(customer);
     }
 }

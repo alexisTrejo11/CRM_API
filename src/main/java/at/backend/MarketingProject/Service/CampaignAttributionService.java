@@ -1,78 +1,72 @@
 package at.backend.MarketingProject.Service;
 
-
 import at.backend.CRM.Repository.DealRepository;
+import at.backend.MarketingProject.AutoMappers.CampaignAttributionMappers;
+import at.backend.MarketingProject.DTOs.CampaignAttributionDTO;
+import at.backend.MarketingProject.DTOs.CampaignAttributionInsertDTO;
 import at.backend.MarketingProject.Models.CampaignAttribution;
 import at.backend.MarketingProject.Models.MarketingCampaign;
 import at.backend.CRM.Models.Deal;
 import at.backend.MarketingProject.Repository.CampaignAttributionRepository;
 import at.backend.MarketingProject.Repository.MarketingCampaignRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CampaignAttributionService {
 
-    @Autowired
     private CampaignAttributionRepository campaignAttributionRepository;
-
-    @Autowired
     private MarketingCampaignRepository marketingCampaignRepository;
-
-    @Autowired
     private DealRepository dealRepository;
+    private CampaignAttributionMappers campaignAttributionMappers;
 
-    public CampaignAttribution createAttribution(Long campaignId, Long dealId, CampaignAttribution attribution) {
+    public CampaignAttributionDTO createAttribution(CampaignAttributionInsertDTO insertDTO) {
+        CampaignAttribution attribution = campaignAttributionMappers.inputToEntity(insertDTO);
+
         validateAttribution(attribution);
-        MarketingCampaign campaign = marketingCampaignRepository.findById(campaignId)
-                .orElseThrow(() -> new RuntimeException("Campaign not found with ID: " + campaignId));
-        Deal deal = dealRepository.findById(dealId)
-                .orElseThrow(() -> new RuntimeException("Deal not found with ID: " + dealId));
-        attribution.setCampaign(campaign);
-        attribution.setDeal(deal);
-        return campaignAttributionRepository.save(attribution);
+        fetchAttributionRelationship(attribution, insertDTO);
+
+        campaignAttributionRepository.save(attribution);
+
+        return campaignAttributionMappers.entityToDTO(attribution);
     }
 
-    public CampaignAttribution updateAttribution(Long id, CampaignAttribution updatedAttribution) {
-        Optional<CampaignAttribution> existingAttribution = campaignAttributionRepository.findById(id);
-        if (existingAttribution.isPresent()) {
-            CampaignAttribution attribution = existingAttribution.get();
-            attribution.setAttributionModel(updatedAttribution.getAttributionModel());
-            attribution.setAttributionPercentage(updatedAttribution.getAttributionPercentage());
-            attribution.setAttributedRevenue(updatedAttribution.getAttributedRevenue());
-            attribution.setFirstTouchDate(updatedAttribution.getFirstTouchDate());
-            attribution.setLastTouchDate(updatedAttribution.getLastTouchDate());
-            attribution.setTouchCount(updatedAttribution.getTouchCount());
-            return campaignAttributionRepository.save(attribution);
-        } else {
-            throw new RuntimeException("Attribution not found with ID: " + id);
-        }
+    public CampaignAttributionDTO updateAttribution(Long id, CampaignAttributionInsertDTO input) {
+        CampaignAttribution existingAttribution = campaignAttributionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Attribution not found with ID: " + id));
+
+        campaignAttributionMappers.updateEntity(existingAttribution, input);
+        campaignAttributionRepository.save(existingAttribution);
+
+        return campaignAttributionMappers.entityToDTO(existingAttribution);
     }
 
     public void deleteAttribution(Long id) {
-        Optional<CampaignAttribution> attribution = campaignAttributionRepository.findById(id);
-        if (attribution.isPresent()) {
-            campaignAttributionRepository.delete(attribution.get());
-        } else {
-            throw new RuntimeException("Attribution not found with ID: " + id);
-        }
+        CampaignAttribution attribution = campaignAttributionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Attribution not found with ID: " + id));
+
     }
 
-    public CampaignAttribution getAttributionById(Long id) {
+    public CampaignAttributionDTO getAttributionById(Long id) {
         return campaignAttributionRepository.findById(id)
+                .map(campaignAttributionMappers::entityToDTO)
                 .orElseThrow(() -> new RuntimeException("Attribution not found with ID: " + id));
     }
 
-    public List<CampaignAttribution> getAttributionsByCampaignId(Long campaignId) {
-        return campaignAttributionRepository.findByCampaignId(campaignId);
+    public List<CampaignAttributionDTO> getAttributionsByCampaignId(Long campaignId) {
+        return campaignAttributionRepository.findByCampaignId(campaignId).stream()
+                .map(campaignAttributionMappers::entityToDTO)
+                .toList();
     }
 
-    public List<CampaignAttribution> getAttributionsByDealId(Long dealId) {
-        return campaignAttributionRepository.findByDealId(dealId);
+    public List<CampaignAttributionDTO> getAttributionsByDealId(Long dealId) {
+        return campaignAttributionRepository.findByDealId(dealId).stream()
+                .map(campaignAttributionMappers::entityToDTO)
+                .toList();
     }
 
     public BigDecimal calculateTotalAttributedRevenue(Long campaignId) {
@@ -93,5 +87,24 @@ public class CampaignAttributionService {
         if (attribution.getAttributedRevenue() == null || attribution.getAttributedRevenue().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Attributed revenue must be greater than or equal to zero");
         }
+    }
+
+    private Deal getDeal(Long dealID){
+        return dealRepository.findById(dealID)
+                .orElseThrow(() -> new RuntimeException("Deal not found with ID: " + dealID));
+    }
+
+    private MarketingCampaign getCampaign(Long campaignID) {
+        return marketingCampaignRepository.findById(campaignID)
+                .orElseThrow(() -> new RuntimeException("Campaign not found with ID: " + campaignID));
+    }
+
+
+    private void fetchAttributionRelationship(CampaignAttribution attribution, CampaignAttributionInsertDTO insertDTO){
+        MarketingCampaign campaign = getCampaign(insertDTO.getCampaignId());
+        attribution.setCampaign(campaign);
+
+        Deal deal = getDeal(insertDTO.getDealId());
+        attribution.setDeal(deal);
     }
 }

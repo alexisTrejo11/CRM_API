@@ -1,9 +1,12 @@
 package at.backend.MarketingProject.Service;
 
+import at.backend.MarketingProject.AutoMappers.MarketingCampaignMappers;
+import at.backend.MarketingProject.DTOs.MarketingCampaignDTO;
+import at.backend.MarketingProject.DTOs.MarketingCampaignInsertDTO;
 import at.backend.MarketingProject.Models.MarketingCampaign;
 import at.backend.MarketingProject.Models.Utils.CampaignStatus;
 import at.backend.MarketingProject.Repository.MarketingCampaignRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,45 +16,46 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MarketingCampaignService {
 
-    @Autowired
-    private MarketingCampaignRepository marketingCampaignRepository;
+    private final MarketingCampaignMappers marketingCampaignMappers;
+    private final MarketingCampaignRepository marketingCampaignRepository;
 
-    public MarketingCampaign createCampaign(MarketingCampaign campaign) {
+    public MarketingCampaignDTO createCampaign(MarketingCampaignInsertDTO input) {
+        MarketingCampaign campaign = marketingCampaignMappers.inputToEntity(input);
+
         validateCampaign(campaign);
+
         campaign.setStatus(CampaignStatus.DRAFT);
-        return marketingCampaignRepository.save(campaign);
+
+        marketingCampaignRepository.save(campaign);
+
+        return marketingCampaignMappers.entityToDTO(campaign);
     }
 
-    public MarketingCampaign updateCampaign(Long id, MarketingCampaign updatedCampaign) {
-        Optional<MarketingCampaign> existingCampaign = marketingCampaignRepository.findById(id);
-        if (existingCampaign.isPresent()) {
-            MarketingCampaign campaign = existingCampaign.get();
-            campaign.setName(updatedCampaign.getName());
-            campaign.setDescription(updatedCampaign.getDescription());
-            campaign.setStartDate(updatedCampaign.getStartDate());
-            campaign.setEndDate(updatedCampaign.getEndDate());
-            campaign.setBudget(updatedCampaign.getBudget());
-            campaign.setTargetAudience(updatedCampaign.getTargetAudience());
-            campaign.setSuccessCriteria(updatedCampaign.getSuccessCriteria());
-            campaign.setType(updatedCampaign.getType());
-            return marketingCampaignRepository.save(campaign);
-        } else {
-            throw new RuntimeException("Campaign not found with ID: " + id);
-        }
+    public MarketingCampaignDTO updateCampaign(Long id, MarketingCampaignInsertDTO insertDTO) {
+        MarketingCampaign existingCampaign = getCampaign(id);
+
+        marketingCampaignMappers.updateEntity(existingCampaign, insertDTO);
+        marketingCampaignRepository.saveAndFlush(existingCampaign);
+
+        return marketingCampaignMappers.entityToDTO(existingCampaign);
     }
 
     public void deleteCampaign(Long id) {
-        Optional<MarketingCampaign> campaign = marketingCampaignRepository.findById(id);
-        if (campaign.isPresent()) {
-            marketingCampaignRepository.delete(campaign.get());
-        } else {
-            throw new RuntimeException("Campaign not found with ID: " + id);
-        }
+        MarketingCampaign campaign = getCampaign(id);
+
+        marketingCampaignRepository.delete(campaign);
     }
 
-    public MarketingCampaign getCampaignById(Long id) {
+    public MarketingCampaignDTO getCampaignById(Long id) {
+        MarketingCampaign campaign = getCampaign(id);
+
+        return marketingCampaignMappers.entityToDTO(campaign);
+    }
+
+    private MarketingCampaign getCampaign(Long id) {
         return marketingCampaignRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Campaign not found with ID: " + id));
     }
@@ -65,7 +69,8 @@ public class MarketingCampaignService {
     }
 
     public MarketingCampaign activateCampaign(Long id) {
-        MarketingCampaign campaign = getCampaignById(id);
+        MarketingCampaign campaign = getCampaign(id);
+
         if (campaign.getStatus() == CampaignStatus.DRAFT || campaign.getStatus() == CampaignStatus.PAUSED) {
             campaign.setStatus(CampaignStatus.ACTIVE);
             return marketingCampaignRepository.save(campaign);
@@ -75,7 +80,7 @@ public class MarketingCampaignService {
     }
 
     public MarketingCampaign pauseCampaign(Long id) {
-        MarketingCampaign campaign = getCampaignById(id);
+        MarketingCampaign campaign = getCampaign(id);
         if (campaign.getStatus() == CampaignStatus.ACTIVE) {
             campaign.setStatus(CampaignStatus.PAUSED);
             return marketingCampaignRepository.save(campaign);
@@ -85,12 +90,14 @@ public class MarketingCampaignService {
     }
 
     public BigDecimal calculateRemainingBudget(Long id) {
-        MarketingCampaign campaign = getCampaignById(id);
+        MarketingCampaign campaign = getCampaign(id);
+
         return campaign.getBudget().subtract(campaign.getCostToDate());
     }
 
     public MarketingCampaign updateCampaignTargets(Long id, Map<String, Double> targets) {
-        MarketingCampaign campaign = getCampaignById(id);
+        MarketingCampaign campaign = getCampaign(id);
+
         campaign.getTargets().putAll(targets);
         return marketingCampaignRepository.save(campaign);
     }
