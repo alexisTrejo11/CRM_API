@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class MarketingCampaignController {
+
     private final MarketingCampaignService marketingCampaignService;
 
     @QueryMapping

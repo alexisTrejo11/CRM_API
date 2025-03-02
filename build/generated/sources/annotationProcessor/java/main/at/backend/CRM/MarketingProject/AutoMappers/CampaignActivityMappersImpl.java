@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-02-28T15:17:37-0600",
+    date = "2025-02-28T16:25:06-0600",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.11.1.jar, environment: Java 23.0.2 (Homebrew)"
 )
 @Component
@@ -48,6 +48,7 @@ public class CampaignActivityMappersImpl implements CampaignActivityMappers {
         if ( id != null ) {
             campaignActivityDTO.setAssignedTo( String.valueOf( id ) );
         }
+        campaignActivityDTO.setId( entity.getId() );
         campaignActivityDTO.setName( entity.getName() );
         campaignActivityDTO.setDescription( entity.getDescription() );
         campaignActivityDTO.setActivityType( entity.getActivityType() );

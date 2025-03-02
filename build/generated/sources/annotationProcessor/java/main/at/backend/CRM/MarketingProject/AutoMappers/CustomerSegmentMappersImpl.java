@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-02-28T15:17:37-0600",
+    date = "2025-02-28T16:08:08-0600",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.11.1.jar, environment: Java 23.0.2 (Homebrew)"
 )
 @Component
@@ -44,6 +44,7 @@ public class CustomerSegmentMappersImpl implements CustomerSegmentMappers {
 
         CustomerSegmentDTO customerSegmentDTO = new CustomerSegmentDTO();
 
+        customerSegmentDTO.setId( entity.getId() );
         customerSegmentDTO.setName( entity.getName() );
         customerSegmentDTO.setDescription( entity.getDescription() );
         customerSegmentDTO.setSegmentCriteria( entity.getSegmentCriteria() );

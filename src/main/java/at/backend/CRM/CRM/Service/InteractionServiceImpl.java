@@ -8,6 +8,7 @@ import at.backend.CRM.CRM.Repository.CustomerRepository;
 import at.backend.CRM.CRM.Repository.InteractionRepository;
 import at.backend.CRM.CRM.Utils.enums.FeedbackType;
 import at.backend.CRM.CRM.Utils.enums.MarketingInteractionType;
+import at.backend.CRM.CommonClasses.Service.CommonService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class InteractionServiceImpl implements  CommonService<Interaction, InteractionInput>{
+public class InteractionServiceImpl implements CommonService<Interaction, InteractionInput> {
 
     public final InteractionRepository interactionRepository;
     public final CustomerRepository customerRepository;

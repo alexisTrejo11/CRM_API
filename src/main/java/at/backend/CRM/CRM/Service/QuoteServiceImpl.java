@@ -5,7 +5,7 @@ import at.backend.CRM.CRM.Inputs.QuoteItemInput;
 import at.backend.CRM.CRM.Mappers.QuoteMappers;
 import at.backend.CRM.CRM.Models.*;
 import at.backend.CRM.CRM.Repository.*;
-import at.backend.CRM.CRM.Utils.BusinessLogicException;
+import at.backend.CRM.CommonClasses.Exceptions.BusinessLogicException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package at.backend.CRM.CRM.Utils;
+package at.backend.CRM.CommonClasses;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

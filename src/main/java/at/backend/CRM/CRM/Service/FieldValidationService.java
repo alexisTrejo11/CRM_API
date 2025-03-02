@@ -1,7 +1,7 @@
 package at.backend.CRM.CRM.Service;
 
 import at.backend.CRM.CRM.Repository.UserRepository;
-import at.backend.CRM.CRM.Utils.BusinessLogicException;
+import at.backend.CRM.CommonClasses.Exceptions.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

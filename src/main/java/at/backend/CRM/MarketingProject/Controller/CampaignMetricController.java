@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class CampaignMetricController {
+
     private final CampaignMetricService campaignMetricService;
 
     @QueryMapping

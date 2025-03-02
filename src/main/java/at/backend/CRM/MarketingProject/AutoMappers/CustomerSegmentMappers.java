@@ -16,7 +16,6 @@ public interface CustomerSegmentMappers {
     CustomerSegment inputToEntity(CustomerSegmentInsertDTO input);
 
 
-    @Mapping(target = "id", ignore = true)
     CustomerSegmentDTO entityToDTO(CustomerSegment entity);
 
     void updateEntity(@MappingTarget CustomerSegment entity, CustomerSegmentInsertDTO input);

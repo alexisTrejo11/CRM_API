@@ -3,7 +3,7 @@ package at.backend.CRM.CRM.Controller;
 import at.backend.CRM.CRM.Inputs.TaskInput;
 import at.backend.CRM.CRM.Inputs.PageInput;
 import at.backend.CRM.CRM.Models.Task;
-import at.backend.CRM.CRM.Service.CommonService;
+import at.backend.CRM.CommonClasses.Service.CommonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

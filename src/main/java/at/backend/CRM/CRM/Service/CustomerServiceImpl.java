@@ -4,6 +4,7 @@ import at.backend.CRM.CRM.Inputs.CustomerInput;
 import at.backend.CRM.CRM.Mappers.CustomerMappers;
 import at.backend.CRM.CRM.Models.Customer;
 import at.backend.CRM.CRM.Repository.CustomerRepository;
+import at.backend.CRM.CommonClasses.Service.CommonService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerServiceImpl implements  CommonService<Customer, CustomerInput>{
+public class CustomerServiceImpl implements CommonService<Customer, CustomerInput> {
 
     public final CustomerRepository customerRepository;
     public final CustomerMappers customerMappers;

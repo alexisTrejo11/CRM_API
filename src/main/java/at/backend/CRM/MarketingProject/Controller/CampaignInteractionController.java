@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 public class CampaignInteractionController {
+
     private final CampaignInteractionService campaignInteractionService;
 
     @QueryMapping

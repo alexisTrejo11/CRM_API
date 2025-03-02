@@ -10,7 +10,8 @@ import at.backend.CRM.CRM.Repository.CustomerRepository;
 import at.backend.CRM.CRM.Repository.OpportunityRepository;
 import at.backend.CRM.CRM.Repository.TaskRepository;
 import at.backend.CRM.CRM.Repository.UserRepository;
-import at.backend.CRM.CRM.Utils.BusinessLogicException;
+import at.backend.CRM.CommonClasses.Exceptions.BusinessLogicException;
+import at.backend.CRM.CommonClasses.Service.CommonService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TaskServiceImpl implements  CommonService<Task, TaskInput>{
+public class TaskServiceImpl implements CommonService<Task, TaskInput> {
 
     public final TaskRepository TaskRepository;
     public final TaskMappers TaskMappers;

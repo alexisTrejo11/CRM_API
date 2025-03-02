@@ -16,7 +16,6 @@ public interface MarketingCampaignMappers {
     MarketingCampaign inputToEntity(MarketingCampaignInsertDTO input);
 
 
-    @Mapping(target = "id", ignore = true)
     MarketingCampaignDTO entityToDTO(MarketingCampaign entity);
 
     void updateEntity(@MappingTarget MarketingCampaign entity, MarketingCampaignInsertDTO input);

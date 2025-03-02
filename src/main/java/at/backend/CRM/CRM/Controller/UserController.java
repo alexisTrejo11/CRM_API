@@ -3,7 +3,7 @@ package at.backend.CRM.CRM.Controller;
 import at.backend.CRM.CRM.Inputs.PageInput;
 import at.backend.CRM.CRM.Inputs.UserInput;
 import at.backend.CRM.CRM.Models.User;
-import at.backend.CRM.CRM.Service.CommonService;
+import at.backend.CRM.CommonClasses.Service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

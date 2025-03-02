@@ -1,10 +1,12 @@
 package at.backend.CRM.MarketingProject.DTOs;
 
 import at.backend.CRM.MarketingProject.Models.Utils.CampaignType;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -30,7 +32,7 @@ public class MarketingCampaignInsertDTO {
     @Size(max = 500, message = "Success criteria cannot exceed 500 characters")
     private String successCriteria;
 
-    private Map<String, Double> targets;
+    private Map<String, Double> targets = new HashMap<>();
 
     @NotNull(message = "Type cannot be null")
     private CampaignType type;

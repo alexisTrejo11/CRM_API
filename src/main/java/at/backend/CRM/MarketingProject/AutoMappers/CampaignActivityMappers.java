@@ -15,8 +15,7 @@ public interface CampaignActivityMappers {
     @Mapping(target = "id", ignore = true)
     CampaignActivity inputToEntity(CampaignActivityInsertDTO input);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "assignedTo", source = "assignedTo.id")
+    @Mapping(target = "assignedTo", source   = "assignedTo.id")
     CampaignActivityDTO entityToDTO(CampaignActivity entity);
 
     void updateEntity(@MappingTarget CampaignActivity existingActivity, CampaignActivityInsertDTO input);

@@ -1,4 +1,4 @@
-package at.backend.CRM.CRM.Service;
+package at.backend.CRM.CommonClasses.Service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

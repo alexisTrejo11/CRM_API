@@ -1,4 +1,4 @@
-package at.backend.CRM.CRM.Utils;
+package at.backend.CRM.CommonClasses.Exceptions;
 
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;

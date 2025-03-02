@@ -4,7 +4,8 @@ import at.backend.CRM.CRM.Inputs.UserInput;
 import at.backend.CRM.CRM.Mappers.UserMappers;
 import at.backend.CRM.CRM.Models.User;
 import at.backend.CRM.CRM.Repository.UserRepository;
-import at.backend.CRM.CRM.Utils.PasswordHandler;
+import at.backend.CRM.CommonClasses.PasswordHandler;
+import at.backend.CRM.CommonClasses.Service.CommonService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements  CommonService<User, UserInput>{
+public class UserServiceImpl implements CommonService<User, UserInput> {
 
     public final UserRepository userRepository;
     public final FieldValidationService fieldValidationService;

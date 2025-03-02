@@ -6,7 +6,8 @@ import at.backend.CRM.CRM.Models.Customer;
 import at.backend.CRM.CRM.Models.Opportunity;
 import at.backend.CRM.CRM.Repository.CustomerRepository;
 import at.backend.CRM.CRM.Repository.OpportunityRepository;
-import at.backend.CRM.CRM.Utils.BusinessLogicException;
+import at.backend.CRM.CommonClasses.Exceptions.BusinessLogicException;
+import at.backend.CRM.CommonClasses.Service.CommonService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class OpportunityServiceImpl implements  CommonService<Opportunity, OpportunityInput>{
+public class OpportunityServiceImpl implements CommonService<Opportunity, OpportunityInput> {
 
     public final OpportunityRepository opportunityRepository;
     public final OpportunityMappers opportunityMappers;

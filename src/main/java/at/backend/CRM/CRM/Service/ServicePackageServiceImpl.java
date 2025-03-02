@@ -4,7 +4,8 @@ import at.backend.CRM.CRM.Inputs.ServicePackageInput;
 import at.backend.CRM.CRM.Mappers.ServicePackageMappers;
 import at.backend.CRM.CRM.Models.ServicePackage;
 import at.backend.CRM.CRM.Repository.ServicePackageRepository;
-import at.backend.CRM.CRM.Utils.BusinessLogicException;
+import at.backend.CRM.CommonClasses.Exceptions.BusinessLogicException;
+import at.backend.CRM.CommonClasses.Service.CommonService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ServicePackageServiceImpl implements  CommonService<ServicePackage, ServicePackageInput>{
+public class ServicePackageServiceImpl implements CommonService<ServicePackage, ServicePackageInput> {
 
     public final ServicePackageRepository servicePackageRepository;
     public final ServicePackageMappers servicePackageMappers;

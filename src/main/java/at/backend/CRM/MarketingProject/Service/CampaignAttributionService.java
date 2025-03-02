@@ -19,10 +19,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CampaignAttributionService {
 
-    private CampaignAttributionRepository campaignAttributionRepository;
-    private MarketingCampaignRepository marketingCampaignRepository;
-    private DealRepository dealRepository;
-    private CampaignAttributionMappers campaignAttributionMappers;
+    private final CampaignAttributionRepository campaignAttributionRepository;
+    private final MarketingCampaignRepository marketingCampaignRepository;
+    private final DealRepository dealRepository;
+    private final CampaignAttributionMappers campaignAttributionMappers;
 
     public CampaignAttributionDTO createAttribution(CampaignAttributionInsertDTO insertDTO) {
         CampaignAttribution attribution = campaignAttributionMappers.inputToEntity(insertDTO);
