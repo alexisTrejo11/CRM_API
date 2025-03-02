@@ -1,4 +1,4 @@
-package at.backend.CRM.MarketingProject.Utils;
+package at.backend.CRM.CommonClasses;
 
 import graphql.GraphQLContext;
 import graphql.execution.CoercedVariables;

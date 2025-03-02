@@ -29,13 +29,13 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
 
 
     @Override
-    public Page<Interaction> findAll(Pageable pageable) {
+    public Page<Interaction> getAll(Pageable pageable) {
         return interactionRepository.findAll(pageable);
     }
 
     @Override
-    public Optional<Interaction> findById(Long id) {
-        return interactionRepository.findById(id);
+    public Interaction getById(Long id) {
+        return getInteraction(id);
     }
 
     @Transactional
@@ -53,8 +53,7 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
     @Transactional
     @Override
     public Interaction update(Long id, InteractionInput input) {
-        Interaction existingInteraction = interactionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("interaction not found"));
+        Interaction existingInteraction = getInteraction(id);
 
         Interaction updatedInteraction = interactionMappers.inputToUpdatedEntity(existingInteraction, input);
 
@@ -68,12 +67,9 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
     @Transactional
     @Override
     public void delete(Long id) {
-        boolean isInteractionExisting = interactionRepository.existsById(id);
-        if (!isInteractionExisting) {
-            throw new EntityNotFoundException("interaction not found");
-        }
+        Interaction existingInteraction = getInteraction(id);
 
-        interactionRepository.deleteById(id);
+        interactionRepository.delete(existingInteraction);
     }
 
     @Override
@@ -100,8 +96,11 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
         }
     }
 
-
     private Customer getCustomer(Long customerId) {
         return customerRepository.findById(customerId).orElseThrow(() ->  new EntityNotFoundException("Customer not found"));
+    }
+
+    private Interaction getInteraction(Long id) {
+        return interactionRepository.findById(id).orElseThrow(() ->  new EntityNotFoundException("Interaction not found"));
     }
 }

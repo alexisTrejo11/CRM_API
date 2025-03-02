@@ -23,13 +23,12 @@ public class TaskController {
     public Page<Task> getAllTasks(@Argument PageInput input) {
         Pageable pageable = PageRequest.of(input.page(), input.size());
 
-        return service.findAll(pageable);
+        return service.getAll(pageable);
     }
 
     @QueryMapping
     public Task getTaskById(@Argument Long id) {
-        return service.findById(id)
-                .orElse(new Task());
+        return service.getById(id);
     }
 
     @MutationMapping

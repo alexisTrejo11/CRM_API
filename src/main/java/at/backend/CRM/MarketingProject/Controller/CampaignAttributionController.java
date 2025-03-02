@@ -15,28 +15,28 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CampaignAttributionController {
 
-    private final CampaignAttributionService campaignAttributionService;
+    private final CampaignAttributionService campaignAttributionServiceImpl;
 
     @QueryMapping
     public CampaignAttributionDTO getAttributionById(@Argument Long id) {
-        return campaignAttributionService.getAttributionById(id);
+        return campaignAttributionServiceImpl.getById(id);
     }
 
     @MutationMapping
     public CampaignAttributionDTO createAttribution(@Valid @Argument CampaignAttributionInsertDTO input) {
-        return campaignAttributionService.createAttribution(input);
+        return campaignAttributionServiceImpl.create(input);
     }
 
     @MutationMapping
     public CampaignAttributionDTO updateAttribution(@Valid @Argument CampaignAttributionInsertDTO input,
                                                @PathVariable Long id) {
-        return campaignAttributionService.updateAttribution(id, input);
+        return campaignAttributionServiceImpl.update(id, input);
     }
 
 
     @MutationMapping
     public boolean deleteAttribution(@Argument Long id) {
-        campaignAttributionService.deleteAttribution(id);
+        campaignAttributionServiceImpl.delete(id);
         
         return true;
     }

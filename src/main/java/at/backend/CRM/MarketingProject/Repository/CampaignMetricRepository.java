@@ -1,7 +1,7 @@
 package at.backend.CRM.MarketingProject.Repository;
 
 import at.backend.CRM.MarketingProject.Models.CampaignMetric;
-import at.backend.CRM.MarketingProject.Models.Utils.MetricType;
+import at.backend.CRM.MarketingProject.Utils.Enums.MetricType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

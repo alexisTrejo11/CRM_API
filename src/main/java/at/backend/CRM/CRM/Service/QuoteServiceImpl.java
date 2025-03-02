@@ -31,13 +31,13 @@ public class QuoteServiceImpl implements  QuoteService {
     public final QuoteMappers quoteMappers;
 
     @Override
-    public Page<Quote> findAll(Pageable pageable) {
+    public Page<Quote> getAll(Pageable pageable) {
         return quoteRepository.findAll(pageable);
     }
 
     @Override
-    public Optional<Quote> findById(Long id) {
-        return quoteRepository.findById(id);
+    public Quote getById(Long id) {
+        return getQuote(id);
     }
 
     @Override
@@ -92,18 +92,12 @@ public class QuoteServiceImpl implements  QuoteService {
         return quote;
     }
 
-
-
-
     @Override
     @Transactional
     public void delete(Long id) {
-        boolean isQuoteExisting = quoteRepository.existsById(id);
-        if (!isQuoteExisting) {
-            throw new EntityNotFoundException("quote not found");
-        }
+        Quote quote = getQuote(id);
 
-        quoteRepository.deleteById(id);
+        quoteRepository.delete(quote);
     }
 
     @Override
@@ -114,14 +108,6 @@ public class QuoteServiceImpl implements  QuoteService {
         if (validUntil.isAfter(validUntilLimit)) {
             throw new BusinessLogicException("The 'valid until' date exceeds the allowed limit. The maximum duration is 10 months from today.");
         }
-    }
-
-    private Customer getCustomer(Long customerId) {
-        return customerRepository.findById(customerId).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
-    }
-
-    private Opportunity getOpportunity(Long opportunityId) {
-        return opportunityRepository.findById(opportunityId).orElseThrow(() -> new EntityNotFoundException("Opportunity not found"));
     }
 
     private List<QuoteItem> generateItems(Quote createdQuote, List<QuoteItemInput> inputs) {
@@ -183,6 +169,18 @@ public class QuoteServiceImpl implements  QuoteService {
 
         item.setDiscount(discount);
         item.setTotal(total);
+    }
+
+    private Quote getQuote(Long id) {
+        return quoteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Quote not found"));
+    }
+
+    private Customer getCustomer(Long customerId) {
+        return customerRepository.findById(customerId).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+    }
+
+    private Opportunity getOpportunity(Long opportunityId) {
+        return opportunityRepository.findById(opportunityId).orElseThrow(() -> new EntityNotFoundException("Opportunity not found"));
     }
 
 }

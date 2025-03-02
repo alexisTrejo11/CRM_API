@@ -1,7 +1,7 @@
 package at.backend.CRM.MarketingProject.Models;
 
 import at.backend.CRM.CRM.Models.Deal;
-import at.backend.CRM.MarketingProject.Models.Utils.AttributionModel;
+import at.backend.CRM.MarketingProject.Utils.Enums.AttributionModel;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;

@@ -24,13 +24,12 @@ public class QuoteController {
     public Page<Quote> getAllQuotes(@Argument PageInput input) {
         Pageable pageable = PageRequest.of(input.page(), input.size());
 
-        return service.findAll(pageable);
+        return service.getAll(pageable);
     }
 
     @QueryMapping
     public Quote getQuoteById(@Argument Long id) {
-        return service.findById(id)
-                .orElse(new Quote());
+        return service.getById(id);
     }
 
     @MutationMapping

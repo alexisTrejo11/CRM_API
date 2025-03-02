@@ -23,13 +23,13 @@ public class UserServiceImpl implements CommonService<User, UserInput> {
     public final UserMappers userMappers;
 
     @Override
-    public Page<User> findAll(Pageable pageable) {
+    public Page<User> getAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
     @Override
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public User getById(Long id) {
+        return getUser(id);
     }
 
     @Override
@@ -46,8 +46,7 @@ public class UserServiceImpl implements CommonService<User, UserInput> {
 
     @Override
     public User update(Long id, UserInput input) {
-        User existingUser =  userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+        User existingUser = getUser(id);
 
         User updatedUser = userMappers.inputToUpdatedEntity(existingUser, input);
 
@@ -61,12 +60,9 @@ public class UserServiceImpl implements CommonService<User, UserInput> {
 
     @Override
     public void delete(Long id) {
-        boolean isUserExisting = userRepository.existsById(id);
-        if (!isUserExisting) {
-            throw new EntityNotFoundException("user not found");
-        }
+        User user = getUser(id);
 
-        userRepository.deleteById(id);
+        userRepository.delete(user);
     }
 
     @Override
@@ -74,5 +70,10 @@ public class UserServiceImpl implements CommonService<User, UserInput> {
         fieldValidationService.validateUsername(input.username());
         fieldValidationService.validateEmail(input.email());
         fieldValidationService.validatePassword(input.password());
+    }
+
+    private User getUser(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("user not found"));
     }
 }

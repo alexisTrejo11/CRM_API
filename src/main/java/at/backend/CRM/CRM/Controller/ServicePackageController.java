@@ -23,13 +23,12 @@ public class ServicePackageController {
     public Page<ServicePackage> getAllServicePackages(@Argument PageInput input) {
         Pageable pageable = PageRequest.of(input.page(), input.size());
 
-        return service.findAll(pageable);
+        return service.getAll(pageable);
     }
 
     @QueryMapping
     public ServicePackage getServicePackageById(@Argument Long id) {
-        return service.findById(id)
-                .orElse(new ServicePackage());
+        return service.getById(id);
     }
 
     @MutationMapping

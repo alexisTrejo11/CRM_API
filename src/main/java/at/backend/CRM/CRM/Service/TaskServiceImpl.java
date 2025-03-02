@@ -32,13 +32,13 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput> {
     public final UserRepository userRepository;
 
     @Override
-    public Page<Task> findAll(Pageable pageable) {
+    public Page<Task> getAll(Pageable pageable) {
         return TaskRepository.findAll(pageable);
     }
 
     @Override
-    public Optional<Task> findById(Long id) {
-        return TaskRepository.findById(id);
+    public Task getById(Long id) {
+        return getTask(id);
     }
 
     @Override
@@ -59,8 +59,7 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput> {
 
     @Override
     public Task update(Long id, TaskInput input) {
-        Task existingTask =  TaskRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+        Task existingTask = getTask(id);
 
         Task updatedTask = TaskMappers.inputToUpdatedEntity(existingTask, input);
 
@@ -79,12 +78,9 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput> {
 
     @Override
     public void delete(Long id) {
-        boolean isTaskExisting = TaskRepository.existsById(id);
-        if (!isTaskExisting) {
-            throw new EntityNotFoundException("Task not found");
-        }
+        Task task = getTask(id);
 
-        TaskRepository.deleteById(id);
+        TaskRepository.delete(task);
     }
 
     @Override
@@ -104,8 +100,6 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput> {
                 throw new BusinessLogicException("Expected due date cannot be more than one year in the future");
             }
         }
-
-
     }
 
     private Customer getCustomer(Long customerId) {
@@ -121,5 +115,10 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput> {
     private User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User Not found"));
+    }
+
+    private Task getTask(Long id) {
+        return TaskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task Not found"));
     }
 }

@@ -1,6 +1,6 @@
 package at.backend.CRM.MarketingProject.Models;
 
-import at.backend.CRM.MarketingProject.Models.Utils.MetricType;
+import at.backend.CRM.MarketingProject.Utils.Enums.MetricType;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;

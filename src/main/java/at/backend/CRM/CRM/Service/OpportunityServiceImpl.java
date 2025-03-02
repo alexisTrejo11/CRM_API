@@ -27,13 +27,13 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
     public final CustomerRepository customerRepository;
 
     @Override
-    public Page<Opportunity> findAll(Pageable pageable) {
+    public Page<Opportunity> getAll(Pageable pageable) {
         return opportunityRepository.findAll(pageable);
     }
 
     @Override
-    public Optional<Opportunity> findById(Long id) {
-        return opportunityRepository.findById(id);
+    public Opportunity getById(Long id) {
+        return getOpportunity(id);
     }
 
     @Override
@@ -51,8 +51,7 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
 
     @Override
     public Opportunity update(Long id, OpportunityInput input) {
-        Opportunity existingOpportunity =  opportunityRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("opportunity not found"));
+        Opportunity existingOpportunity = getOpportunity(id);
 
         Opportunity updatedOpportunity = opportunityMappers.inputToUpdatedEntity(existingOpportunity, input);
 
@@ -67,12 +66,9 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
 
     @Override
     public void delete(Long id) {
-        boolean isOpportunityExisting = opportunityRepository.existsById(id);
-        if (!isOpportunityExisting) {
-            throw new EntityNotFoundException("opportunity not found");
-        }
+        Opportunity opportunity = getOpportunity(id);
 
-        opportunityRepository.deleteById(id);
+        opportunityRepository.delete(opportunity);
     }
 
     @Override
@@ -112,5 +108,10 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
     private Customer getCustomer(Long customerId) {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer Not found"));
+    }
+
+    private Opportunity getOpportunity(Long id) {
+        return opportunityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Opportunity Not found"));
     }
 }

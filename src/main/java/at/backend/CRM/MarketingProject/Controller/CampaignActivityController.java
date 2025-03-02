@@ -18,24 +18,23 @@ public class CampaignActivityController {
 
     @QueryMapping
     public CampaignActivityDTO getActivityById(@Argument Long id) {
-        return campaignActivityService.getActivityById(id);
+        return campaignActivityService.getById(id);
     }
 
     @MutationMapping
     public CampaignActivityDTO createActivity(@Valid @Argument CampaignActivityInsertDTO input) {
-        return campaignActivityService.createActivity(input);
+        return campaignActivityService.create(input);
     }
 
     @MutationMapping
     public CampaignActivityDTO updateActivity(@Valid @Argument CampaignActivityInsertDTO input,
                                                @Argument Long id) {
-        return campaignActivityService.updateActivity(id, input);
+        return campaignActivityService.update(id, input);
     }
-
 
     @MutationMapping
     public boolean deleteActivity(@Argument Long id) {
-        campaignActivityService.deleteActivity(id);
+        campaignActivityService.delete(id);
         
         return true;
     }

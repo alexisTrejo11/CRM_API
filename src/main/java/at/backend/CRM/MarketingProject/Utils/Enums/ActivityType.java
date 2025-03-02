@@ -1,4 +1,4 @@
-package at.backend.CRM.MarketingProject.Models.Utils;
+package at.backend.CRM.MarketingProject.Utils.Enums;
 
 public enum ActivityType {
     EMAIL_BLAST,

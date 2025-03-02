@@ -1,9 +1,9 @@
 package at.backend.CRM.MarketingProject.Repository;
 
 import at.backend.CRM.MarketingProject.Models.CampaignActivity;
-import at.backend.CRM.MarketingProject.Models.Utils.ActivityStatus;
-import at.backend.CRM.MarketingProject.Models.Utils.ActivityType;
-import at.backend.CRM.MarketingProject.Models.Utils.CampaignType;
+import at.backend.CRM.MarketingProject.Utils.Enums.ActivityStatus;
+import at.backend.CRM.MarketingProject.Utils.Enums.ActivityType;
+import at.backend.CRM.MarketingProject.Utils.Enums.CampaignType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

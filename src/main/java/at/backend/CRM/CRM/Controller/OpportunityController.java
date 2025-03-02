@@ -24,13 +24,12 @@ public class OpportunityController {
     public Page<Opportunity> getAllOpportunities(@Argument PageInput input) {
         Pageable pageable = PageRequest.of(input.page(), input.size());
 
-        return service.findAll(pageable);
+        return service.getAll(pageable);
     }
 
     @QueryMapping
     public Opportunity getOpportunityById(@Argument Long id) {
-        return service.findById(id)
-                .orElse(new Opportunity());
+        return service.getById(id);
     }
 
     @MutationMapping

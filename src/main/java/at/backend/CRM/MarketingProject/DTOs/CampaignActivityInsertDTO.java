@@ -1,6 +1,6 @@
 package at.backend.CRM.MarketingProject.DTOs;
 
-import at.backend.CRM.MarketingProject.Models.Utils.ActivityType;
+import at.backend.CRM.MarketingProject.Utils.Enums.ActivityType;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

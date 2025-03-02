@@ -1,6 +1,6 @@
 package at.backend.CRM.MarketingProject.DTOs;
-import at.backend.CRM.MarketingProject.Models.Utils.CampaignStatus;
-import at.backend.CRM.MarketingProject.Models.Utils.CampaignType;
+import at.backend.CRM.MarketingProject.Utils.Enums.CampaignStatus;
+import at.backend.CRM.MarketingProject.Utils.Enums.CampaignType;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.math.BigDecimal;

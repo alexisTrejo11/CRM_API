@@ -3,6 +3,7 @@ package at.backend.CRM.CRM.Service;
 import at.backend.CRM.CRM.Inputs.CustomerInput;
 import at.backend.CRM.CRM.Mappers.CustomerMappers;
 import at.backend.CRM.CRM.Models.Customer;
+import at.backend.CRM.CRM.Models.User;
 import at.backend.CRM.CRM.Repository.CustomerRepository;
 import at.backend.CRM.CommonClasses.Service.CommonService;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,13 +23,13 @@ public class CustomerServiceImpl implements CommonService<Customer, CustomerInpu
     public final FieldValidationService fieldValidationService;
 
     @Override
-    public Page<Customer> findAll(Pageable pageable) {
+    public Page<Customer> getAll(Pageable pageable) {
         return customerRepository.findAll(pageable);
     }
 
     @Override
-    public Optional<Customer> findById(Long id) {
-        return customerRepository.findById(id);
+    public Customer getById(Long id) {
+        return getCustomer(id);
     }
 
     @Override
@@ -42,8 +43,7 @@ public class CustomerServiceImpl implements CommonService<Customer, CustomerInpu
 
     @Override
     public Customer update(Long id, CustomerInput input) {
-        Customer existingCustomer =  customerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+        Customer existingCustomer = getCustomer(id);
 
         Customer updatedUser = customerMappers.inputToUpdatedEntity(existingCustomer, input);
 
@@ -54,17 +54,19 @@ public class CustomerServiceImpl implements CommonService<Customer, CustomerInpu
 
     @Override
     public void delete(Long id) {
-        boolean isCustomerExisting = customerRepository.existsById(id);
-        if (!isCustomerExisting) {
-            throw new EntityNotFoundException("customer not found");
-        }
+        Customer customer = getCustomer(id);
 
-        customerRepository.deleteById(id);
+        customerRepository.delete(customer);
     }
 
     @Override
     public void validate(CustomerInput input) {
         fieldValidationService.validateEmail(input.email());
         fieldValidationService.validatePhone(input.phone());
+    }
+
+    private Customer getCustomer(Long id) {
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("user not found"));
     }
 }

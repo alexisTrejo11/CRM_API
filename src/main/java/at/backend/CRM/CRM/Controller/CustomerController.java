@@ -23,13 +23,12 @@ public class CustomerController {
     public Page<Customer> getAllCustomers(@Argument PageInput input) {
         Pageable pageable = PageRequest.of(input.page(), input.size());
 
-        return service.findAll(pageable);
+        return service.getAll(pageable);
     }
 
     @QueryMapping
     public Customer getCustomerById(@Argument Long id) {
-        return service.findById(id)
-                .orElse(new Customer());
+        return service.getById(id);
     }
 
     @MutationMapping

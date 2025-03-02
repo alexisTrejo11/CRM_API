@@ -1,7 +1,6 @@
 package at.backend.CRM.MarketingProject.DTOs;
 
-import at.backend.CRM.MarketingProject.Models.Utils.CampaignType;
-import jakarta.annotation.Nullable;
+import at.backend.CRM.MarketingProject.Utils.Enums.CampaignType;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.math.BigDecimal;

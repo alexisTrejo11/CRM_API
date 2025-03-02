@@ -23,13 +23,12 @@ public class UserController {
     public Page<User> getAllUsers(@Argument PageInput input) {
         Pageable pageable = PageRequest.of(input.page(), input.size());
 
-        return service.findAll(pageable);
+        return service.getAll(pageable);
     }
 
     @QueryMapping
     public User getUserById(@Argument Long id) {
-        return service.findById(id)
-                .orElse(new User());
+        return service.getById(id);
     }
 
     @MutationMapping

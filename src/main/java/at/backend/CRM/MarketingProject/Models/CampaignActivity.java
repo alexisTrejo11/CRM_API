@@ -1,8 +1,8 @@
 package at.backend.CRM.MarketingProject.Models;
 
 import at.backend.CRM.CRM.Models.User;
-import at.backend.CRM.MarketingProject.Models.Utils.ActivityStatus;
-import at.backend.CRM.MarketingProject.Models.Utils.ActivityType;
+import at.backend.CRM.MarketingProject.Utils.Enums.ActivityStatus;
+import at.backend.CRM.MarketingProject.Utils.Enums.ActivityType;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;

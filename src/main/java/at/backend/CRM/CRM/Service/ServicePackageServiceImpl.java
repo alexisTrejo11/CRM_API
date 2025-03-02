@@ -23,13 +23,13 @@ public class ServicePackageServiceImpl implements CommonService<ServicePackage, 
     public final ServicePackageMappers servicePackageMappers;
 
     @Override
-    public Page<ServicePackage> findAll(Pageable pageable) {
+    public Page<ServicePackage> getAll(Pageable pageable) {
         return servicePackageRepository.findAll(pageable);
     }
 
     @Override
-    public Optional<ServicePackage> findById(Long id) {
-        return servicePackageRepository.findById(id);
+    public ServicePackage getById(Long id) {
+        return getPackage(id);
     }
 
     @Override
@@ -43,8 +43,7 @@ public class ServicePackageServiceImpl implements CommonService<ServicePackage, 
 
     @Override
     public ServicePackage update(Long id, ServicePackageInput input) {
-        ServicePackage existingServicePackage =  servicePackageRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("service package not found"));
+        ServicePackage existingServicePackage = getPackage(id);
 
         ServicePackage updatedServicePackage = servicePackageMappers.inputToUpdatedEntity(existingServicePackage, input);
 
@@ -55,12 +54,9 @@ public class ServicePackageServiceImpl implements CommonService<ServicePackage, 
 
     @Override
     public void delete(Long id) {
-        boolean isServicePackageExisting = servicePackageRepository.existsById(id);
-        if (!isServicePackageExisting) {
-            throw new EntityNotFoundException("Service Package not found");
-        }
+        ServicePackage servicePackage = getPackage(id);
 
-        servicePackageRepository.deleteById(id);
+        servicePackageRepository.delete(servicePackage);
     }
 
     @Override
@@ -87,4 +83,8 @@ public class ServicePackageServiceImpl implements CommonService<ServicePackage, 
 
     }
 
+    private ServicePackage getPackage(Long id) {
+        return servicePackageRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("service package not found"));
+    }
 }

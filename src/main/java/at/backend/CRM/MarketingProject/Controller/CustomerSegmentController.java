@@ -18,24 +18,23 @@ public class CustomerSegmentController {
 
     @QueryMapping
     public CustomerSegmentDTO getSegmentById(@Argument Long id) {
-        return campaignSegmentService.getSegmentById(id);
+        return campaignSegmentService.getById(id);
     }
 
     @MutationMapping
     public CustomerSegmentDTO createSegment(@Valid @Argument CustomerSegmentInsertDTO input) {
-        return campaignSegmentService.createSegment(input);
+        return campaignSegmentService.create(input);
     }
 
     @MutationMapping
     public CustomerSegmentDTO updateSegment(@Valid @Argument CustomerSegmentInsertDTO input,
-                                               @Argument Long id) {
-        return campaignSegmentService.updateSegment(id, input);
+                                            @Argument Long id) {
+        return campaignSegmentService.update(id, input);
     }
-
 
     @MutationMapping
     public boolean deleteSegment(@Argument Long id) {
-        campaignSegmentService.deleteSegment(id);
+        campaignSegmentService.delete(id);
         
         return true;
     }

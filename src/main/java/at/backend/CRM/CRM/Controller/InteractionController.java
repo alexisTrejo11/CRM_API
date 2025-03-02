@@ -23,13 +23,12 @@ public class InteractionController {
     public Page<Interaction> getAllInteractions(@Argument PageInput input) {
         Pageable pageable = PageRequest.of(input.page(), input.size());
 
-        return service.findAll(pageable);
+        return service.getAll(pageable);
     }
 
     @QueryMapping
     public Interaction getInteractionById(@Argument Long id) {
-        return service.findById(id)
-                .orElse(new Interaction());
+        return service.getById(id);
     }
 
     @MutationMapping

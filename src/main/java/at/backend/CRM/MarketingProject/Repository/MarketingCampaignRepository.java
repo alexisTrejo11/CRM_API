@@ -1,8 +1,8 @@
 package at.backend.CRM.MarketingProject.Repository;
 
 import at.backend.CRM.MarketingProject.Models.MarketingCampaign;
-import at.backend.CRM.MarketingProject.Models.Utils.CampaignStatus;
-import at.backend.CRM.MarketingProject.Models.Utils.CampaignType;
+import at.backend.CRM.MarketingProject.Utils.Enums.CampaignStatus;
+import at.backend.CRM.MarketingProject.Utils.Enums.CampaignType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -23,13 +23,12 @@ public class DealController {
     public Page<Deal> getAllDeals(@Argument PageInput input) {
         Pageable pageable = PageRequest.of(input.page(), input.size());
 
-        return service.findAll(pageable);
+        return service.getAll(pageable);
     }
 
     @QueryMapping
     public Deal getDealById(@Argument Long id) {
-        return service.findById(id)
-                .orElse(new Deal());
+        return service.getById(id);
     }
 
     @MutationMapping

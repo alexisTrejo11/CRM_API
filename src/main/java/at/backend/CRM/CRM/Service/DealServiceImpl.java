@@ -34,13 +34,13 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
     public final OpportunityRepository opportunityRepository;
 
     @Override
-    public Page<Deal> findAll(Pageable pageable) {
+    public Page<Deal> getAll(Pageable pageable) {
         return customerRepository.findAll(pageable);
     }
 
     @Override
-    public Optional<Deal> findById(Long id) {
-        return customerRepository.findById(id);
+    public Deal getById(Long id) {
+        return getDeal(id);
     }
 
     @Override
@@ -55,8 +55,7 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
 
     @Override
     public Deal update(Long id, DealInput input) {
-        Deal existingDeal =  customerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+        Deal existingDeal = getDeal(id);
 
         Deal updatedDeal = customerMappers.inputToUpdatedEntity(existingDeal, input);
         fetchRelationships(existingDeal, input);
@@ -68,12 +67,9 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
 
     @Override
     public void delete(Long id) {
-        boolean isDealExisting = customerRepository.existsById(id);
-        if (!isDealExisting) {
-            throw new EntityNotFoundException("customer not found");
-        }
+        Deal deal = getDeal(id);
 
-        customerRepository.deleteById(id);
+        customerRepository.delete(deal);
     }
 
     @Override
@@ -115,7 +111,6 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
         return input.dealStatus() == DealStatus.SIGNED || input.dealStatus() == DealStatus.PAID;
     }
 
-
     private void fetchRelationships(Deal deal, DealInput input) {
         if (input.campaignManagerId() != null) {
             User user = userRepository.findById(input.campaignManagerId())
@@ -131,5 +126,11 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
         List<ServicePackage> servicePackages = servicePackageRepository.findAllById(input.servicePackageIds());
 
         deal.setServices(servicePackages);
+    }
+
+    private Deal getDeal(Long id) {
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("deal not found"));
+
     }
 }
