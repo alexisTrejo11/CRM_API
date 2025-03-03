@@ -290,7 +290,7 @@ input PropertyInput {
 }
 
 # MARKETING #
-# Type for CampaignActivity
+# Type for CampaignActivityModel
 scalar JSON
 
 type CampaignActivity {
@@ -311,7 +311,7 @@ type CampaignActivity {
     deliveryChannel: String
 }
 
-# Input for creating a new CampaignActivity
+# Input for creating a new CampaignActivityModel
 input CampaignActivityInput {
     name: String!
     description: String
@@ -342,7 +342,7 @@ enum ActivityStatus {
     CANCELLED
 }
 
-# Type for CampaignAttribution
+# Type for CampaignAttributionModel
 type CampaignAttribution {
     id: ID!
     dealId: ID!
@@ -355,7 +355,7 @@ type CampaignAttribution {
     touchCount: Int
 }
 
-# Input for creating a new CampaignAttribution
+# Input for creating a new CampaignAttributionModel
 input CampaignAttributionInput {
     dealId: ID!
     campaignId: ID!
@@ -375,7 +375,7 @@ enum AttributionModel {
     CUSTOM
 }
 
-# Type for CampaignInteraction
+# Type for CampaignInteractionModel
 type CampaignInteraction {
     id: ID
     campaignId: ID
@@ -394,7 +394,7 @@ type CampaignInteraction {
     conversionValue: Float
 }
 
-# Input for creating a new CampaignInteraction
+# Input for creating a new CampaignInteractionModel
 input CampaignInteractionInput {
     campaignId: ID
     customerId: ID
@@ -474,7 +474,7 @@ input CustomerSegmentInput {
 }
 
 
-# Type for CampaignMetric
+# Type for CampaignMetricModel
 type CampaignMetric {
     id: ID
     campaignId: ID
@@ -490,7 +490,7 @@ type CampaignMetric {
     automated: Boolean
 }
 
-# Input for creating a new CampaignMetric
+# Input for creating a new CampaignMetricModel
 input CampaignMetricInput {
     campaignId: ID!
     name: String!
