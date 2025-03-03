@@ -7,7 +7,7 @@ import at.backend.CRM.CRM.Models.Interaction;
 import at.backend.CRM.CRM.Repository.CustomerRepository;
 import at.backend.CRM.CRM.Repository.InteractionRepository;
 import at.backend.CRM.CRM.Utils.enums.FeedbackType;
-import at.backend.CRM.CRM.Utils.enums.MarketingInteractionType;
+import at.backend.CRM.CRM.Utils.enums.InteractionType;
 import at.backend.CRM.CommonClasses.Service.CommonService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -82,15 +81,15 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
             throw new IllegalArgumentException("For feedback type 'STRATEGY', the outcome must include a follow-up action");
         }
 
-        if (MarketingInteractionType.MEETING.equals(input.type()) && input.feedbackType() == null) {
+        if (InteractionType.MEETING.equals(input.type()) && input.feedbackType() == null) {
             throw new IllegalArgumentException("Feedback type must be specified for 'MEETING' interactions");
         }
 
         if (input.channelPreference() != null) {
-            if (MarketingInteractionType.CALL.equals(input.type()) && !"Phone".equalsIgnoreCase(input.channelPreference())) {
+            if (InteractionType.CALL.equals(input.type()) && !"Phone".equalsIgnoreCase(input.channelPreference())) {
                 throw new IllegalArgumentException("For 'CALL' interactions, channel preference must be 'Phone'");
             }
-            if (MarketingInteractionType.EMAIL.equals(input.type()) && !"Email".equalsIgnoreCase(input.channelPreference())) {
+            if (InteractionType.EMAIL.equals(input.type()) && !"Email".equalsIgnoreCase(input.channelPreference())) {
                 throw new IllegalArgumentException("For 'EMAIL' interactions, channel preference must be 'Email'");
             }
         }

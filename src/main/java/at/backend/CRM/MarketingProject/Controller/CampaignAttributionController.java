@@ -29,7 +29,7 @@ public class CampaignAttributionController {
 
     @MutationMapping
     public CampaignAttributionDTO updateAttribution(@Valid @Argument CampaignAttributionInsertDTO input,
-                                               @PathVariable Long id) {
+                                               @Argument Long id) {
         return campaignAttributionServiceImpl.update(id, input);
     }
 

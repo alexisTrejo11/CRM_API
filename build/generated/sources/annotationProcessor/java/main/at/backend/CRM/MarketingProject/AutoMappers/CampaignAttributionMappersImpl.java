@@ -1,14 +1,16 @@
 package at.backend.CRM.MarketingProject.AutoMappers;
 
+import at.backend.CRM.CRM.Models.Deal;
 import at.backend.CRM.MarketingProject.DTOs.CampaignAttributionDTO;
 import at.backend.CRM.MarketingProject.DTOs.CampaignAttributionInsertDTO;
 import at.backend.CRM.MarketingProject.Models.CampaignAttribution;
+import at.backend.CRM.MarketingProject.Models.MarketingCampaign;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-02-28T15:17:36-0600",
+    date = "2025-03-03T12:58:49-0600",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.11.1.jar, environment: Java 23.0.2 (Homebrew)"
 )
 @Component
@@ -38,6 +40,8 @@ public class CampaignAttributionMappersImpl implements CampaignAttributionMapper
 
         CampaignAttributionDTO campaignAttributionDTO = new CampaignAttributionDTO();
 
+        campaignAttributionDTO.setCampaignId( entityCampaignId( entity ) );
+        campaignAttributionDTO.setDealId( entityDealId( entity ) );
         campaignAttributionDTO.setId( entity.getId() );
         campaignAttributionDTO.setAttributionModel( entity.getAttributionModel() );
         campaignAttributionDTO.setAttributionPercentage( entity.getAttributionPercentage() );
@@ -59,5 +63,35 @@ public class CampaignAttributionMappersImpl implements CampaignAttributionMapper
         entity.setAttributionPercentage( input.getAttributionPercentage() );
         entity.setAttributedRevenue( input.getAttributedRevenue() );
         entity.setTouchCount( input.getTouchCount() );
+    }
+
+    private Long entityCampaignId(CampaignAttribution campaignAttribution) {
+        if ( campaignAttribution == null ) {
+            return null;
+        }
+        MarketingCampaign campaign = campaignAttribution.getCampaign();
+        if ( campaign == null ) {
+            return null;
+        }
+        Long id = campaign.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
+    }
+
+    private Long entityDealId(CampaignAttribution campaignAttribution) {
+        if ( campaignAttribution == null ) {
+            return null;
+        }
+        Deal deal = campaignAttribution.getDeal();
+        if ( deal == null ) {
+            return null;
+        }
+        Long id = deal.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
     }
 }

@@ -1,6 +1,6 @@
 package at.backend.CRM.MarketingProject.Utils.Enums;
 
-public enum InteractionType {
+public enum MarketingInteractionType {
     EMAIL_SENT,
     EMAIL_OPENED,
     EMAIL_CLICKED,

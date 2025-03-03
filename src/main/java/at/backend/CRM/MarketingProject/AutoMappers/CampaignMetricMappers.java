@@ -15,9 +15,9 @@ public interface CampaignMetricMappers {
     @Mapping(target = "id", ignore = true)
     CampaignMetric inputToEntity(CampaignMetricInsertDTO input);
 
-
+    @Mapping(target = "campaignId", source = "campaign.id")
     CampaignMetricDTO entityToDTO(CampaignMetric entity);
 
-    void updateEntity(@MappingTarget  CampaignMetric entity, CampaignMetricInsertDTO input);
+    void updateEntity(@MappingTarget CampaignMetric entity, CampaignMetricInsertDTO input);
 }
 

@@ -15,7 +15,11 @@ public interface CampaignAttributionMappers {
     @Mapping(target = "id", ignore = true)
     CampaignAttribution inputToEntity(CampaignAttributionInsertDTO input);
 
+    @Mapping(target = "campaignId", source = "campaign.id")
+    @Mapping(target = "dealId", source = "deal.id")
     CampaignAttributionDTO entityToDTO(CampaignAttribution entity);
+
+
     void updateEntity(@MappingTarget CampaignAttribution entity, CampaignAttributionInsertDTO input);
 }
 

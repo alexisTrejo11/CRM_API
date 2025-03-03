@@ -18,24 +18,24 @@ public class MarketingCampaignController {
 
     @QueryMapping
     public MarketingCampaignDTO getCampaignById(@Argument Long id) {
-        return marketingCampaignServiceImpl.getCampaignById(id);
+        return marketingCampaignServiceImpl.getById(id);
     }
 
     @MutationMapping
     public MarketingCampaignDTO createCampaign(@Valid @Argument MarketingCampaignInsertDTO input) {
-        return marketingCampaignServiceImpl.createCampaign(input);
+        return marketingCampaignServiceImpl.create(input);
     }
 
     @MutationMapping
     public MarketingCampaignDTO updateCampaign(@Valid @Argument MarketingCampaignInsertDTO input,
                                                @Argument Long id) {
-        return marketingCampaignServiceImpl.updateCampaign(id, input);
+        return marketingCampaignServiceImpl.update(id, input);
     }
 
 
     @MutationMapping
     public boolean deleteCampaign(@Argument Long id) {
-        marketingCampaignServiceImpl.deleteCampaign(id);
+        marketingCampaignServiceImpl.delete(id);
 
         return true;
     }

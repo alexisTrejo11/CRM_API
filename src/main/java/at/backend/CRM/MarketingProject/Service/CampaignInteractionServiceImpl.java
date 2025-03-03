@@ -110,7 +110,7 @@ public class CampaignInteractionServiceImpl implements CampaignInteractionServic
 
     @Override
     public void validate(CampaignInteractionInsertDTO insertDTO) {
-        if (insertDTO.getMarketingInteractionType() == null) {
+        if (insertDTO.getInteractionType() == null) {
             throw new InvalidInputException("Interaction type cannot be null");
         }
         if (insertDTO.getInteractionDate() == null) {

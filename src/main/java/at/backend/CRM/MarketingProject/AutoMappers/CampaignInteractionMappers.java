@@ -15,6 +15,8 @@ public interface CampaignInteractionMappers {
     @Mapping(target = "id", ignore = true)
     CampaignInteraction inputToEntity(CampaignInteractionInsertDTO input);
 
+    @Mapping(target = "campaignId", source = "campaign.id")
+    @Mapping(target = "customerId", source = "customer.id")
     CampaignInteractionDTO entityToDTO(CampaignInteraction entity);
 
     void updateEntity(@MappingTarget CampaignInteraction entity, CampaignInteractionInsertDTO input);

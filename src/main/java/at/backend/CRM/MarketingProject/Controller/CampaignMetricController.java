@@ -2,6 +2,7 @@ package at.backend.CRM.MarketingProject.Controller;
 
 import at.backend.CRM.MarketingProject.DTOs.CampaignMetricDTO;
 import at.backend.CRM.MarketingProject.DTOs.CampaignMetricInsertDTO;
+import at.backend.CRM.MarketingProject.Service.CampaignMetricService;
 import at.backend.CRM.MarketingProject.Service.CampaignMetricServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,28 +15,27 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class CampaignMetricController {
 
-    private final CampaignMetricServiceImpl campaignMetricServiceImpl;
+    private final CampaignMetricService campaignMetricService;
 
     @QueryMapping
     public CampaignMetricDTO getMetricById(@Argument Long id) {
-        return campaignMetricServiceImpl.getById(id);
+        return campaignMetricService.getById(id);
     }
 
     @MutationMapping
     public CampaignMetricDTO createMetric(@Valid @Argument CampaignMetricInsertDTO input) {
-        return campaignMetricServiceImpl.create(input);
+        return campaignMetricService.create(input);
     }
 
     @MutationMapping
     public CampaignMetricDTO updateMetric(@Valid @Argument CampaignMetricInsertDTO input,
                                                @Argument Long id) {
-        return campaignMetricServiceImpl.update(id, input);
+        return campaignMetricService.update(id, input);
     }
-
 
     @MutationMapping
     public boolean deleteMetric(@Argument Long id) {
-        campaignMetricServiceImpl.delete(id);
+        campaignMetricService.delete(id);
         
         return true;
     }

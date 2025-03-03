@@ -1,6 +1,7 @@
 package at.backend.CRM.MarketingProject.DTOs;
 
-import at.backend.CRM.CRM.Utils.enums.MarketingInteractionType;
+import at.backend.CRM.CRM.Utils.enums.InteractionType;
+import at.backend.CRM.MarketingProject.Utils.Enums.MarketingInteractionType;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class CampaignInteractionInsertDTO {
     private Long customerId;
 
     @NotNull(message = "Interaction type cannot be null")
-    private MarketingInteractionType marketingInteractionType;
+    private MarketingInteractionType interactionType;
 
     @FutureOrPresent(message = "Interaction date must be in the present or future")
     private LocalDateTime interactionDate;

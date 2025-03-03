@@ -15,27 +15,27 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CampaignInteractionController {
 
-    private final CampaignInteractionService campaignInteractionServiceImpl;
+    private final CampaignInteractionService campaignInteractionService;
 
     @QueryMapping
     public CampaignInteractionDTO getCampaignInteractionById(@Argument Long id) {
-        return campaignInteractionServiceImpl.getById(id);
+        return campaignInteractionService.getById(id);
     }
 
     @MutationMapping
     public CampaignInteractionDTO createCampaignInteraction(@Valid @Argument CampaignInteractionInsertDTO input) {
-        return campaignInteractionServiceImpl.create(input);
+        return campaignInteractionService.create(input);
     }
 
     @MutationMapping
     public CampaignInteractionDTO updateCampaignInteraction(@Valid @Argument CampaignInteractionInsertDTO input,
-                                               @PathVariable Long id) {
-        return campaignInteractionServiceImpl.update(id, input);
+                                               @Argument Long id) {
+        return campaignInteractionService.update(id, input);
     }
 
     @MutationMapping
     public boolean deleteCampaignInteraction(@Argument Long id) {
-        campaignInteractionServiceImpl.delete(id);
+        campaignInteractionService.delete(id);
         
         return true;
     }

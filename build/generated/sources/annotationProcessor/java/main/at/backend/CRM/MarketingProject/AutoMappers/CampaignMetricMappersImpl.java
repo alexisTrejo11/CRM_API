@@ -3,12 +3,13 @@ package at.backend.CRM.MarketingProject.AutoMappers;
 import at.backend.CRM.MarketingProject.DTOs.CampaignMetricDTO;
 import at.backend.CRM.MarketingProject.DTOs.CampaignMetricInsertDTO;
 import at.backend.CRM.MarketingProject.Models.CampaignMetric;
+import at.backend.CRM.MarketingProject.Models.MarketingCampaign;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-02-28T15:17:36-0600",
+    date = "2025-03-03T12:58:49-0600",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.11.1.jar, environment: Java 23.0.2 (Homebrew)"
 )
 @Component
@@ -43,6 +44,7 @@ public class CampaignMetricMappersImpl implements CampaignMetricMappers {
 
         CampaignMetricDTO campaignMetricDTO = new CampaignMetricDTO();
 
+        campaignMetricDTO.setCampaignId( entityCampaignId( entity ) );
         campaignMetricDTO.setId( entity.getId() );
         campaignMetricDTO.setName( entity.getName() );
         campaignMetricDTO.setDescription( entity.getDescription() );
@@ -73,5 +75,20 @@ public class CampaignMetricMappersImpl implements CampaignMetricMappers {
         entity.setCalculationFormula( input.getCalculationFormula() );
         entity.setDataSource( input.getDataSource() );
         entity.setAutomated( input.isAutomated() );
+    }
+
+    private Long entityCampaignId(CampaignMetric campaignMetric) {
+        if ( campaignMetric == null ) {
+            return null;
+        }
+        MarketingCampaign campaign = campaignMetric.getCampaign();
+        if ( campaign == null ) {
+            return null;
+        }
+        Long id = campaign.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
     }
 }
