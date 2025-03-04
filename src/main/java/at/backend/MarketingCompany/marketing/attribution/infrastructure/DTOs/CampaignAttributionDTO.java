@@ -2,20 +2,27 @@ package at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs;
 
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.AttributionModel;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
 @Data
+@Builder
 public class CampaignAttributionDTO {
 
-    private Long id;
+    private String id;
 
     @NotNull(message = "Deal ID cannot be null")
-    private Long dealId;
+    private String dealId;
 
     @NotNull(message = "Campaign ID cannot be null")
-    private Long campaignId;
+    private String campaignId;
 
     @NotNull(message = "Attribution model cannot be null")
     private AttributionModel attributionModel;
@@ -33,4 +40,6 @@ public class CampaignAttributionDTO {
 
     @Min(value = 0, message = "Touch count must be greater than or equal to zero")
     private Integer touchCount;
+
+    List<CampaignAttributionDTO> distribution;
 }

@@ -1,5 +1,6 @@
 package at.backend.MarketingCompany.marketing.attribution.infrastructure.automappers;
 
+import at.backend.MarketingCompany.marketing.attribution.domain.CampaignAttribution;
 import at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs.CampaignAttributionDTO;
 import at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs.CampaignAttributionInsertDTO;
 import at.backend.MarketingCompany.marketing.attribution.api.repository.CampaignAttributionModel;
@@ -13,13 +14,20 @@ public interface CampaignAttributionMappers {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "id", ignore = true)
-    CampaignAttributionModel inputToEntity(CampaignAttributionInsertDTO input);
+    CampaignAttribution insertDTOToDomain(CampaignAttributionInsertDTO insertDTO);
 
     @Mapping(target = "campaignId", source = "campaign.id")
     @Mapping(target = "dealId", source = "deal.id")
-    CampaignAttributionDTO entityToDTO(CampaignAttributionModel entity);
+    CampaignAttribution dtoToDomain(CampaignAttributionDTO domain);
+
+    CampaignAttributionModel domainToModel(CampaignAttribution domain);
+    CampaignAttributionDTO domainToDTO(CampaignAttribution domain);
 
 
-    void updateEntity(@MappingTarget CampaignAttributionModel entity, CampaignAttributionInsertDTO input);
+    CampaignAttributionDTO modelToDTO(CampaignAttributionModel model);
+    CampaignAttribution modelToDomain(CampaignAttributionModel domain);
+
+
+    void updateDomain(@MappingTarget CampaignAttribution entity, CampaignAttributionInsertDTO input);
 }
 

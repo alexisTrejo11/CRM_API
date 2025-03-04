@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -14,10 +15,10 @@ import java.math.BigDecimal;
 public class CampaignAttributionInsertDTO {
 
     @NotNull(message = "Deal ID cannot be null")
-    private Long dealId;
+    private UUID dealId;
 
     @NotNull(message = "Campaign ID cannot be null")
-    private Long campaignId;
+    private UUID campaignId;
 
     @NotNull(message = "Attribution model cannot be null")
     private AttributionModel attributionModel;
