@@ -23,7 +23,7 @@ public class UserServiceImpl implements CommonService<User, UserInput> {
     }
 
     @Override
-    public User getById(Long id) {
+    public User getById(Object id) {
         return getUser(id);
     }
 
@@ -54,7 +54,7 @@ public class UserServiceImpl implements CommonService<User, UserInput> {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Object id) {
         User user = getUser(id);
 
         userRepository.delete(user);

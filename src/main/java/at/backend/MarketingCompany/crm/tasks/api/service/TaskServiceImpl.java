@@ -37,7 +37,7 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput> {
     }
 
     @Override
-    public Task getById(Long id) {
+    public Task getById(Object id) {
         return getTask(id);
     }
 
@@ -77,7 +77,7 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput> {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Object id) {
         Task task = getTask(id);
 
         TaskRepository.delete(task);

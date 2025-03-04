@@ -44,7 +44,7 @@ public class QuoteServiceImpl implements  QuoteService {
     }
 
     @Override
-    public Quote getById(Long id) {
+    public Quote getById(Object id) {
         return getQuote(id);
     }
 
@@ -102,7 +102,7 @@ public class QuoteServiceImpl implements  QuoteService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
+    public void delete(Object id) {
         Quote quote = getQuote(id);
 
         quoteRepository.delete(quote);

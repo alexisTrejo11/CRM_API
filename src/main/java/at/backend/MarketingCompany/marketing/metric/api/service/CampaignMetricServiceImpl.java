@@ -51,7 +51,7 @@ public class CampaignMetricServiceImpl implements CampaignMetricService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Object id) {
         CampaignMetric metric = getMetric(id);
 
         campaignMetricRepository.delete(metric);
@@ -63,7 +63,7 @@ public class CampaignMetricServiceImpl implements CampaignMetricService {
     }
 
     @Override
-    public CampaignMetricDTO getById(Long id) {
+    public CampaignMetricDTO getById(Object id) {
         CampaignMetric campaignMetric = getMetric(id);
 
         return campaignMetricMappers.entityToDTO(campaignMetric);

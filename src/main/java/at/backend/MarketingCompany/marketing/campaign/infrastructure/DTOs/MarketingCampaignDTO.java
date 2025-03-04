@@ -2,13 +2,17 @@ package at.backend.MarketingCompany.marketing.campaign.infrastructure.DTOs;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.CampaignStatus;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.CampaignType;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 @Data
+@Builder
 public class MarketingCampaignDTO {
 
     private Long id;
@@ -47,4 +51,5 @@ public class MarketingCampaignDTO {
     private List<Long> relatedDealIds;
 
     private List<Long> targetSegmentIds;
+
 }

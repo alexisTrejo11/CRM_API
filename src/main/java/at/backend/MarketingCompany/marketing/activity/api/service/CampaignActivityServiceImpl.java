@@ -34,7 +34,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     }
 
     @Override
-    public CampaignActivityDTO getById(Long id) {
+    public CampaignActivityDTO getById(Object id) {
         return campaignActivityRepository.findById(id)
                 .map(campaignActivityMappers::entityToDTO)
                 .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
@@ -66,7 +66,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Object id) {
         CampaignActivityModel activity = campaignActivityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
 

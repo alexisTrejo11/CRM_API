@@ -26,7 +26,7 @@ public class CustomerServiceImpl implements CommonService<Customer, CustomerInpu
     }
 
     @Override
-    public Customer getById(Long id) {
+    public Customer getById(Object id) {
         return getCustomer(id);
     }
 
@@ -51,7 +51,7 @@ public class CustomerServiceImpl implements CommonService<Customer, CustomerInpu
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Object id) {
         Customer customer = getCustomer(id);
 
         customerRepository.delete(customer);

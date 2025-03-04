@@ -54,7 +54,7 @@ public class CampaignInteractionServiceImpl implements CampaignInteractionServic
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Object id) {
         CampaignInteractionModel interaction = getInteraction(id);
 
         campaignInteractionRepository.delete(interaction);
@@ -66,7 +66,7 @@ public class CampaignInteractionServiceImpl implements CampaignInteractionServic
     }
 
     @Override
-    public CampaignInteractionDTO getById(Long id) {
+    public CampaignInteractionDTO getById(Object id) {
         CampaignInteractionModel interaction = getInteraction(id);
 
         return campaignInteractionMappers.entityToDTO(interaction);

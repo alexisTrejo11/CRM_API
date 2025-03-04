@@ -38,7 +38,7 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
     }
 
     @Override
-    public Deal getById(Long id) {
+    public Deal getById(Object id) {
         return getDeal(id);
     }
 
@@ -65,7 +65,7 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Object id) {
         Deal deal = getDeal(id);
 
         customerRepository.delete(deal);

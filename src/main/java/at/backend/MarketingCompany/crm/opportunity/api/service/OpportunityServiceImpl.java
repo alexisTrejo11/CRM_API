@@ -32,7 +32,7 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
     }
 
     @Override
-    public Opportunity getById(Long id) {
+    public Opportunity getById(Object id) {
         return getOpportunity(id);
     }
 
@@ -65,7 +65,7 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Object id) {
         Opportunity opportunity = getOpportunity(id);
 
         opportunityRepository.delete(opportunity);

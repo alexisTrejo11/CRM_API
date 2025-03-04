@@ -87,5 +87,9 @@ public class CampaignMetric {
         return false;
     }
 
+    public BigDecimal getRevenue() {
+        return BigDecimal.ONE;
+    }
+
 
 }

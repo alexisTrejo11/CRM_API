@@ -33,7 +33,7 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
     }
 
     @Override
-    public Interaction getById(Long id) {
+    public Interaction getById(Object id) {
         return getInteraction(id);
     }
 
@@ -65,7 +65,7 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
 
     @Transactional
     @Override
-    public void delete(Long id) {
+    public void delete(Object id) {
         Interaction existingInteraction = getInteraction(id);
 
         interactionRepository.delete(existingInteraction);

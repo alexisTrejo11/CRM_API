@@ -10,9 +10,10 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface MarketingCampaignRepository extends JpaRepository<MarketingCampaignModel, Long> {
+public interface MarketingCampaignRepository extends JpaRepository<MarketingCampaignModel, UUID> {
 
     List<MarketingCampaignModel> findByStatus(CampaignStatus status);
 

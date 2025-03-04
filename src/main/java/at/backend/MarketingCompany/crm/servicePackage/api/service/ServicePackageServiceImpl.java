@@ -27,7 +27,7 @@ public class ServicePackageServiceImpl implements CommonService<ServicePackage, 
     }
 
     @Override
-    public ServicePackage getById(Long id) {
+    public ServicePackage getById(Object id) {
         return getPackage(id);
     }
 
@@ -52,7 +52,7 @@ public class ServicePackageServiceImpl implements CommonService<ServicePackage, 
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Object id) {
         ServicePackage servicePackage = getPackage(id);
 
         servicePackageRepository.delete(servicePackage);

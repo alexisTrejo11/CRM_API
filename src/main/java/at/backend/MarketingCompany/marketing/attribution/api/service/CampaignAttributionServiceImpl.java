@@ -35,7 +35,7 @@ public class CampaignAttributionServiceImpl implements CampaignAttributionServic
     }
 
     @Override
-    public CampaignAttributionDTO getById(Long id) {
+    public CampaignAttributionDTO getById(Object id) {
         CampaignAttributionModel existingAttribution = getAttribution(id);
 
         return campaignAttributionMappers.entityToDTO(existingAttribution);
@@ -64,7 +64,7 @@ public class CampaignAttributionServiceImpl implements CampaignAttributionServic
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Object id) {
         CampaignAttributionModel existingAttribution = getAttribution(id);
 
         campaignAttributionRepository.delete(existingAttribution);

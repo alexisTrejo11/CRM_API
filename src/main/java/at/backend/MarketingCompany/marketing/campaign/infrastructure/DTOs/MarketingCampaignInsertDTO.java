@@ -26,10 +26,10 @@ public class MarketingCampaignInsertDTO {
     private BigDecimal budget;
 
     @Size(max = 500, message = "Target audience cannot exceed 500 characters")
-    private String targetAudience;
+    private TargetAudienceDetailsDTO targetAudience;
 
     @Size(max = 500, message = "Success criteria cannot exceed 500 characters")
-    private String successCriteria;
+    private SuccessCriteriaDetailsDTO successCriteria;
 
     private Map<String, Double> targets = new HashMap<>();
 
