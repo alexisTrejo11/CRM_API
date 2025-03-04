@@ -2,12 +2,14 @@ package at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs;
 
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.MetricType;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
+@Builder
 public class CampaignMetricDTO {
 
     private UUID id;

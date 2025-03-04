@@ -1,7 +1,7 @@
 package at.backend.MarketingCompany.marketing.metric.infrastructure.autoMappers;
 
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
-import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetric;
+import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetricModel;
 import at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs.CampaignMetricDTO;
 import at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs.CampaignMetricInsertDTO;
 import java.util.UUID;
@@ -10,59 +10,59 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-04T15:19:10-0600",
+    date = "2025-03-04T17:10:55-0600",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.11.1.jar, environment: Java 23.0.2 (Homebrew)"
 )
 @Component
 public class CampaignMetricMappersImpl implements CampaignMetricMappers {
 
     @Override
-    public CampaignMetric inputToEntity(CampaignMetricInsertDTO input) {
+    public CampaignMetricModel inputToEntity(CampaignMetricInsertDTO input) {
         if ( input == null ) {
             return null;
         }
 
-        CampaignMetric campaignMetric = new CampaignMetric();
+        CampaignMetricModel.CampaignMetricModelBuilder campaignMetricModel = CampaignMetricModel.builder();
 
-        campaignMetric.setName( input.getName() );
-        campaignMetric.setDescription( input.getDescription() );
-        campaignMetric.setType( input.getType() );
-        campaignMetric.setValue( input.getValue() );
-        campaignMetric.setTargetValue( input.getTargetValue() );
-        campaignMetric.setMeasurementUnit( input.getMeasurementUnit() );
-        campaignMetric.setCalculationFormula( input.getCalculationFormula() );
-        campaignMetric.setDataSource( input.getDataSource() );
-        campaignMetric.setAutomated( input.isAutomated() );
+        campaignMetricModel.name( input.getName() );
+        campaignMetricModel.description( input.getDescription() );
+        campaignMetricModel.type( input.getType() );
+        campaignMetricModel.value( input.getValue() );
+        campaignMetricModel.targetValue( input.getTargetValue() );
+        campaignMetricModel.measurementUnit( input.getMeasurementUnit() );
+        campaignMetricModel.calculationFormula( input.getCalculationFormula() );
+        campaignMetricModel.dataSource( input.getDataSource() );
+        campaignMetricModel.automated( input.isAutomated() );
 
-        return campaignMetric;
+        return campaignMetricModel.build();
     }
 
     @Override
-    public CampaignMetricDTO entityToDTO(CampaignMetric entity) {
+    public CampaignMetricDTO entityToDTO(CampaignMetricModel entity) {
         if ( entity == null ) {
             return null;
         }
 
-        CampaignMetricDTO campaignMetricDTO = new CampaignMetricDTO();
+        CampaignMetricDTO.CampaignMetricDTOBuilder campaignMetricDTO = CampaignMetricDTO.builder();
 
-        campaignMetricDTO.setCampaignId( entityCampaignId( entity ) );
-        campaignMetricDTO.setId( entity.getId() );
-        campaignMetricDTO.setName( entity.getName() );
-        campaignMetricDTO.setDescription( entity.getDescription() );
-        campaignMetricDTO.setType( entity.getType() );
-        campaignMetricDTO.setValue( entity.getValue() );
-        campaignMetricDTO.setTargetValue( entity.getTargetValue() );
-        campaignMetricDTO.setMeasurementUnit( entity.getMeasurementUnit() );
-        campaignMetricDTO.setLastCalculated( entity.getLastCalculated() );
-        campaignMetricDTO.setCalculationFormula( entity.getCalculationFormula() );
-        campaignMetricDTO.setDataSource( entity.getDataSource() );
-        campaignMetricDTO.setAutomated( entity.isAutomated() );
+        campaignMetricDTO.campaignId( entityCampaignId( entity ) );
+        campaignMetricDTO.id( entity.getId() );
+        campaignMetricDTO.name( entity.getName() );
+        campaignMetricDTO.description( entity.getDescription() );
+        campaignMetricDTO.type( entity.getType() );
+        campaignMetricDTO.value( entity.getValue() );
+        campaignMetricDTO.targetValue( entity.getTargetValue() );
+        campaignMetricDTO.measurementUnit( entity.getMeasurementUnit() );
+        campaignMetricDTO.lastCalculated( entity.getLastCalculated() );
+        campaignMetricDTO.calculationFormula( entity.getCalculationFormula() );
+        campaignMetricDTO.dataSource( entity.getDataSource() );
+        campaignMetricDTO.automated( entity.isAutomated() );
 
-        return campaignMetricDTO;
+        return campaignMetricDTO.build();
     }
 
     @Override
-    public void updateEntity(CampaignMetric entity, CampaignMetricInsertDTO input) {
+    public void updateEntity(CampaignMetricModel entity, CampaignMetricInsertDTO input) {
         if ( input == null ) {
             return;
         }
@@ -78,11 +78,11 @@ public class CampaignMetricMappersImpl implements CampaignMetricMappers {
         entity.setAutomated( input.isAutomated() );
     }
 
-    private UUID entityCampaignId(CampaignMetric campaignMetric) {
-        if ( campaignMetric == null ) {
+    private UUID entityCampaignId(CampaignMetricModel campaignMetricModel) {
+        if ( campaignMetricModel == null ) {
             return null;
         }
-        MarketingCampaignModel campaign = campaignMetric.getCampaign();
+        MarketingCampaignModel campaign = campaignMetricModel.getCampaign();
         if ( campaign == null ) {
             return null;
         }

@@ -1,18 +1,22 @@
 package at.backend.MarketingCompany.marketing.metric.api.service;
 
 import at.backend.MarketingCompany.common.exceptions.InvalidInputException;
-import at.backend.MarketingCompany.marketing.metric.infrastructure.autoMappers.CampaignMetricMappers;
+import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.MetricType;
+import at.backend.MarketingCompany.marketing.campaign.domain.MarketingCampaign;
+import at.backend.MarketingCompany.marketing.campaign.infrastructure.autoMappers.CampaignMappers;
+import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetricModel;
+import at.backend.MarketingCompany.marketing.metric.domain.CampaignMetric;
 import at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs.CampaignMetricDTO;
 import at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs.CampaignMetricInsertDTO;
-import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignRepository;
-import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetric;
 import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetricRepository;
+import at.backend.MarketingCompany.marketing.metric.infrastructure.autoMappers.MetricMappers;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,88 +28,120 @@ public class CampaignMetricServiceImpl implements CampaignMetricService {
 
     private final CampaignMetricRepository campaignMetricRepository;
     private final MarketingCampaignRepository marketingCampaignRepository;
-    private final CampaignMetricMappers campaignMetricMappers;
+    private final MetricMappers metricMappers;
+    private final CampaignMappers campaignMappers;
 
     @Override
+    @Transactional
     public CampaignMetricDTO create(CampaignMetricInsertDTO insertDTO) {
-        CampaignMetric metric = campaignMetricMappers.inputToEntity(insertDTO);
-
         validate(insertDTO);
 
-        MarketingCampaignModel campaign = getCampaign(insertDTO.getCampaignId());
+        MarketingCampaign campaign = getCampaign(insertDTO.getCampaignId());
+
+        CampaignMetric metric = metricMappers.insertDTOToDomain(insertDTO);
         metric.setCampaign(campaign);
 
-        campaignMetricRepository.save(metric);
+        validateMetricCompatibility(metric, campaign);
+        save(metric);
 
-        return campaignMetricMappers.entityToDTO(metric);
+        return metricMappers.domainToDTO(metric);
     }
 
     @Override
-    public CampaignMetricDTO update(Long id, CampaignMetricInsertDTO insertDTO) {
-        CampaignMetric existingMetric = getMetric(id);
+    @Transactional
+    public CampaignMetricDTO update(UUID id, CampaignMetricInsertDTO updateDTO) {
+        CampaignMetric existing = getMetric(id);
+        validate(updateDTO);
 
-        campaignMetricMappers.updateEntity(existingMetric, insertDTO);
+        //metricMappers.updateDomainFromDTO(existing, updateDTO);
+        validateMetricCompatibility(existing, existing.getCampaign());
 
-        campaignMetricRepository.save(existingMetric);
-
-        return campaignMetricMappers.entityToDTO(existingMetric);
+        save(existing);
+        return metricMappers.domainToDTO(existing);
     }
 
     @Override
-    public void delete(Long id) {
+    @Transactional
+    public void delete(UUID id) {
         CampaignMetric metric = getMetric(id);
-
-        campaignMetricRepository.delete(metric);
+        validateDeletionConditions(metric);
+        campaignMetricRepository.deleteById(id);
     }
 
     @Override
     public Page<CampaignMetricDTO> getAll(Pageable pageable) {
-        return campaignMetricRepository.findAll(pageable).map(campaignMetricMappers::entityToDTO);
+        return campaignMetricRepository.findAll(pageable)
+                .map(metricMappers::modelToDTO);
     }
 
     @Override
-    public CampaignMetricDTO getById(Long id) {
-        CampaignMetric campaignMetric = getMetric(id);
-
-        return campaignMetricMappers.entityToDTO(campaignMetric);
+    public CampaignMetricDTO getById(UUID id) {
+        return metricMappers.domainToDTO(getMetric(id));
     }
 
     @Override
-    public List<CampaignMetric> getMetricsByCampaignId(Long campaignId) {
-        return campaignMetricRepository.findByCampaignId(campaignId);
+    public List<CampaignMetricDTO> getMetricsByCampaignId(UUID campaignId) {
+        return campaignMetricRepository.findByCampaignId(campaignId).stream()
+                .map(metricMappers::modelToDTO)
+                .toList();
     }
 
-    public CampaignMetric calculateMetricValue(Long id) {
+    @Override
+    @Transactional
+    public BigDecimal calculateCurrentPerformance(UUID id) {
         CampaignMetric metric = getMetric(id);
-        metric.calculateMetricValue();
-        return campaignMetricRepository.save(metric);
-    }
-
-    public boolean isTargetAchieved(Long id) {
-        CampaignMetric metric = getMetric(id);
-        return metric.isTargetAchieved();
+        BigDecimal performance = metric.calculatePerformanceRatio();
+        save(metric);
+        return performance;
     }
 
     @Override
-    public void validate(CampaignMetricInsertDTO insertDTO) {
-        if (insertDTO.getName() == null || insertDTO.getName().isEmpty()) {
-            throw new InvalidInputException("Metric name cannot be empty");
-        }
-        if (insertDTO.getType() == null) {
-            throw new InvalidInputException("Metric type cannot be null");
-        }
-        if (insertDTO.getTargetValue() == null || insertDTO.getTargetValue().compareTo(BigDecimal.ZERO) < 0) {
-            throw new InvalidInputException("Target value must be greater than or equal to zero");
-        }
+    public boolean isTargetAchieved(UUID id) {
+        return getMetric(id).isTargetAchieved();
     }
 
-    private CampaignMetric getMetric(Long id) {
+    public void validate(CampaignMetricInsertDTO dto) {
+        if (dto.getName() == null || dto.getName().isBlank())
+            throw new InvalidInputException("Name is required");
+
+        if (dto.getType() == null)
+            throw new InvalidInputException("Metric type is required");
+
+        if (dto.getTargetValue() == null || dto.getTargetValue().compareTo(BigDecimal.ZERO) < 0)
+            throw new InvalidInputException("Invalid target value");
+
+        if (dto.getType() == MetricType.PERCENTAGE && dto.getTargetValue().compareTo(BigDecimal.valueOf(100)) > 0)
+            throw new InvalidInputException("Percentage cannot exceed 100%");
+    }
+
+    private void validateMetricCompatibility(CampaignMetric metric, MarketingCampaign campaign) {
+        if (!campaign.isActive())
+            throw new InvalidInputException("Cannot add metrics to inactive campaigns");
+
+        if (campaign.getMetrics().stream()
+                .anyMatch(m -> m.getName().equals(metric.getName())))
+            throw new InvalidInputException("Metric name must be unique per campaign");
+    }
+
+    private void validateDeletionConditions(CampaignMetric metric) {
+        if (metric.getCampaign().isCompleted())
+            throw new InvalidInputException("Cannot delete metrics from completed campaigns");
+    }
+
+    private CampaignMetric getMetric(UUID id) {
         return campaignMetricRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Metric not found with ID: " + id));
+                .map(metricMappers::modelToDomain)
+                .orElseThrow(() -> new EntityNotFoundException("Metric not found"));
     }
 
-    private MarketingCampaignModel getCampaign(UUID campaignID) {
-        return marketingCampaignRepository.findById(campaignID)
-                .orElseThrow(() -> new EntityNotFoundException("Campaign not found with ID: " + campaignID));
+    private MarketingCampaign getCampaign(UUID campaignId) {
+        return marketingCampaignRepository.findById(campaignId)
+                .map(campaignMappers::modelToDomain)
+                .orElseThrow(() -> new EntityNotFoundException("Campaign not found"));
+    }
+
+    private void save(CampaignMetric metric) {
+        CampaignMetricModel model = metricMappers.domainToModel(metric);
+        campaignMetricRepository.save(model);
     }
 }

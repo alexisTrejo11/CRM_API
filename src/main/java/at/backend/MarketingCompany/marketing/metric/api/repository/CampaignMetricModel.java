@@ -3,6 +3,7 @@ package at.backend.MarketingCompany.marketing.metric.api.repository;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.MetricType;
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,7 +12,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "campaign_metrics")
 @Data
-public class CampaignMetric {
+@Builder
+public class CampaignMetricModel {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -70,11 +72,6 @@ public class CampaignMetric {
         updatedAt = LocalDateTime.now();
     }
 
-    public void calculateMetricValue() {
-        // In a real implementation, this would calculate the metric based on the formula and data source
-        // For now, we'll just set the lastCalculated timestamp
-        lastCalculated = LocalDateTime.now();
-    }
 
     public boolean isTargetAchieved() {
         if (value == null || targetValue == null) return false;

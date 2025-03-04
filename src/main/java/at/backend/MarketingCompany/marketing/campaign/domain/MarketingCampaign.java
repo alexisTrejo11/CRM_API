@@ -6,7 +6,7 @@ import at.backend.MarketingCompany.marketing.activity.api.repository.CampaignAct
 import at.backend.MarketingCompany.marketing.campaign.domain.Exceptions.CampaignException;
 import at.backend.MarketingCompany.marketing.campaign.domain.HelperClasses.*;
 import at.backend.MarketingCompany.marketing.interaction.api.repository.CampaignInteractionModel;
-import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetric;
+import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetricModel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,19 +29,19 @@ public class MarketingCampaign {
     private final CampaignId id;
     private String name;
     private String description;
-    private final CampaignPeriod period;
+    private CampaignPeriod period;
     private Budget budget;
     private CampaignStatus status;
-    private final CampaignType type;
-    private final TargetAudience targetAudience;
-    private final SuccessCriteria successCriteria;
+    private CampaignType type;
+    private TargetAudience targetAudience;
+    private SuccessCriteria successCriteria;
 
-    private final Set<CampaignTarget> targets = new HashSet<>();
-    private final List<CampaignInteractionModel> interactions = new ArrayList<>();
-    private final List<CampaignMetric> metrics = new ArrayList<>();
-    private final List<CampaignActivityModel> activities = new ArrayList<>();
-    private final Set<Long> relatedDeals = new HashSet<>();
-    private final Set<Long> targetSegments = new HashSet<>();
+    private Set<CampaignTarget> targets = new HashSet<>();
+    private List<CampaignInteractionModel> interactions = new ArrayList<>();
+    private List<CampaignMetricModel> metrics = new ArrayList<>();
+    private List<CampaignActivityModel> activities = new ArrayList<>();
+    private Set<Long> relatedDeals = new HashSet<>();
+    private Set<Long> targetSegments = new HashSet<>();
 
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -148,7 +148,7 @@ public class MarketingCampaign {
             return 0.0;
         }
         BigDecimal totalRevenue = metrics.stream()
-                .map(CampaignMetric::getRevenue)
+                .map(CampaignMetricModel::getRevenue)
                 .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -157,7 +157,7 @@ public class MarketingCampaign {
                 .doubleValue();
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         if (name == null || name.trim().isEmpty()) {
             throw new CampaignException("The campaign name is required");
         }
@@ -167,7 +167,7 @@ public class MarketingCampaign {
         this.name = name.trim();
     }
 
-    private void setDescription(String description) {
+    public void setDescription(String description) {
         if (description != null && description.length() > 1000) {
             throw new CampaignException("The description cannot exceed 1000 characters");
         }

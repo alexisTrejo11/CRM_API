@@ -6,11 +6,10 @@ import at.backend.MarketingCompany.marketing.interaction.api.repository.Campaign
 import at.backend.MarketingCompany.marketing.interaction.api.repository.CustomerSegment;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.CampaignStatus;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.CampaignType;
-import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetric;
+import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetricModel;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Generated;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -79,7 +78,7 @@ public class MarketingCampaignModel {
     private List<CampaignInteractionModel> interactions = new ArrayList<>();
 
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CampaignMetric> metrics = new ArrayList<>();
+    private List<CampaignMetricModel> metrics = new ArrayList<>();
 
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CampaignActivityModel> activities = new ArrayList<>();
@@ -114,11 +113,6 @@ public class MarketingCampaignModel {
         updatedAt = LocalDateTime.now();
     }
 
-    public void updateMetrics() {
-        for (CampaignMetric metric : metrics) {
-            metric.calculateMetricValue();
-        }
-    }
 
     public boolean isActive() {
         return status == CampaignStatus.ACTIVE;

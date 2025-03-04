@@ -10,6 +10,8 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.UUID;
+
 @Controller
 @RequiredArgsConstructor
 public class CampaignMetricController {
@@ -17,7 +19,7 @@ public class CampaignMetricController {
     private final CampaignMetricService campaignMetricService;
 
     @QueryMapping
-    public CampaignMetricDTO getMetricById(@Argument Long id) {
+    public CampaignMetricDTO getMetricById(@Argument UUID id) {
         return campaignMetricService.getById(id);
     }
 
@@ -28,12 +30,12 @@ public class CampaignMetricController {
 
     @MutationMapping
     public CampaignMetricDTO updateMetric(@Valid @Argument CampaignMetricInsertDTO input,
-                                          @Argument Long id) {
+                                          @Argument UUID id) {
         return campaignMetricService.update(id, input);
     }
 
     @MutationMapping
-    public boolean deleteMetric(@Argument Long id) {
+    public boolean deleteMetric(@Argument UUID id) {
         campaignMetricService.delete(id);
 
         return true;
