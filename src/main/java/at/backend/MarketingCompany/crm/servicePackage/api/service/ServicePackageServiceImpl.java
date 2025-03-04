@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
-public class ServicePackageServiceImpl implements CommonService<ServicePackage, ServicePackageInput> {
+public class ServicePackageServiceImpl implements CommonService<ServicePackage, ServicePackageInput, Long> {
 
     public final ServicePackageRepository servicePackageRepository;
     public final ServicePackageMappers servicePackageMappers;
@@ -27,7 +27,7 @@ public class ServicePackageServiceImpl implements CommonService<ServicePackage, 
     }
 
     @Override
-    public ServicePackage getById(Object id) {
+    public ServicePackage getById(Long id) {
         return getPackage(id);
     }
 
@@ -52,7 +52,7 @@ public class ServicePackageServiceImpl implements CommonService<ServicePackage, 
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(Long id) {
         ServicePackage servicePackage = getPackage(id);
 
         servicePackageRepository.delete(servicePackage);

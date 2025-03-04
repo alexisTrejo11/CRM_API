@@ -16,13 +16,13 @@ import java.util.UUID;
 @Builder
 public class CampaignAttributionDTO {
 
-    private String id;
+    private UUID id;
 
     @NotNull(message = "Deal ID cannot be null")
-    private String dealId;
+    private Long dealId;
 
     @NotNull(message = "Campaign ID cannot be null")
-    private String campaignId;
+    private UUID campaignId;
 
     @NotNull(message = "Attribution model cannot be null")
     private AttributionModel attributionModel;

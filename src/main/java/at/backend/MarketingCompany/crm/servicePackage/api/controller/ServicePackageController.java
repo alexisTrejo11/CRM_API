@@ -17,7 +17,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class ServicePackageController {
-    private final CommonService<ServicePackage, ServicePackageInput> service;
+    private final CommonService<ServicePackage, ServicePackageInput, Long> service;
 
     @QueryMapping
     public Page<ServicePackage> getAllServicePackages(@Argument PageInput input) {

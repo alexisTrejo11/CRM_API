@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TaskServiceImpl implements CommonService<Task, TaskInput> {
+public class TaskServiceImpl implements CommonService<Task, TaskInput, Long> {
 
     public final TaskRepository TaskRepository;
     public final TaskMappers TaskMappers;
@@ -37,7 +37,7 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput> {
     }
 
     @Override
-    public Task getById(Object id) {
+    public Task getById(Long id) {
         return getTask(id);
     }
 
@@ -77,7 +77,7 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput> {
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(Long id) {
         Task task = getTask(id);
 
         TaskRepository.delete(task);

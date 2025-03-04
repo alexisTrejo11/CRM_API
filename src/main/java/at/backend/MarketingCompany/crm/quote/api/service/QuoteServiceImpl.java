@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class QuoteServiceImpl implements  QuoteService {
+public class QuoteServiceImpl implements QuoteService {
 
     public final QuoteRepository quoteRepository;
     public final QuoteItemRepository quoteItemRepository;
@@ -44,7 +44,7 @@ public class QuoteServiceImpl implements  QuoteService {
     }
 
     @Override
-    public Quote getById(Object id) {
+    public Quote getById(Long id) {
         return getQuote(id);
     }
 
@@ -102,7 +102,7 @@ public class QuoteServiceImpl implements  QuoteService {
 
     @Override
     @Transactional
-    public void delete(Object id) {
+    public void delete(Long id) {
         Quote quote = getQuote(id);
 
         quoteRepository.delete(quote);

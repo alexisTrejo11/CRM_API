@@ -45,14 +45,14 @@ public class CustomerSegmentServiceImpl implements CustomerSegmentService {
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(Long id) {
         CustomerSegment segment = getSegment(id);
 
         customerSegmentRepository.delete(segment);
     }
 
     @Override
-    public CustomerSegmentDTO getById(Object id) {
+    public CustomerSegmentDTO getById(Long id) {
         CustomerSegment segment = getSegment(id);
         return customerSegmentMappers.entityToDTO(segment);
     }

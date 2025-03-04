@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     }
 
     @Override
-    public CampaignActivityDTO getById(Object id) {
+    public CampaignActivityDTO getById(Long id) {
         return campaignActivityRepository.findById(id)
                 .map(campaignActivityMappers::entityToDTO)
                 .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
@@ -66,7 +67,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(Long id) {
         CampaignActivityModel activity = campaignActivityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
 
@@ -134,7 +135,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
                 .orElseThrow(() -> new EntityNotFoundException("Campaign Activity not found with ID: " + activityID));
     }
 
-    private MarketingCampaignModel getCampaign(Long campaignID) {
+    private MarketingCampaignModel getCampaign(UUID campaignID) {
         return marketingCampaignRepository.findById(campaignID)
                 .orElseThrow(() -> new EntityNotFoundException("Campaign not found with ID: " + campaignID));
     }

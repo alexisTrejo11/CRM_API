@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 public class CampaignInteractionInsertDTO {
 
     @NotNull(message = "Campaign ID cannot be null")
-    private Long campaignId;
+    private UUID campaignId;
 
     @NotNull(message = "Customer ID cannot be null")
     private Long customerId;

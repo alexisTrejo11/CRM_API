@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class InteractionServiceImpl implements CommonService<Interaction, InteractionInput> {
+public class InteractionServiceImpl implements CommonService<Interaction, InteractionInput, Long> {
 
     public final InteractionRepository interactionRepository;
     public final CustomerRepository customerRepository;
@@ -33,7 +33,7 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
     }
 
     @Override
-    public Interaction getById(Object id) {
+    public Interaction getById(Long id) {
         return getInteraction(id);
     }
 
@@ -65,7 +65,7 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
 
     @Transactional
     @Override
-    public void delete(Object id) {
+    public void delete(Long id) {
         Interaction existingInteraction = getInteraction(id);
 
         interactionRepository.delete(existingInteraction);

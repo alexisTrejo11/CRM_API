@@ -4,7 +4,7 @@ import at.backend.MarketingCompany.common.exceptions.CampaignServiceException;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.CampaignStatus;
 import at.backend.MarketingCompany.marketing.campaign.domain.HelperClasses.*;
 import at.backend.MarketingCompany.marketing.campaign.domain.MarketingCampaign;
-import at.backend.MarketingCompany.marketing.campaign.infrastructure.autoMappers.MarketingCampaignMappers;
+import at.backend.MarketingCompany.marketing.campaign.infrastructure.autoMappers.CampaignMappers;
 import at.backend.MarketingCompany.marketing.campaign.infrastructure.DTOs.MarketingCampaignDTO;
 import at.backend.MarketingCompany.marketing.campaign.infrastructure.DTOs.MarketingCampaignInsertDTO;
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
@@ -24,14 +24,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MarketingCampaignServiceImpl implements MarketingCampaignService {
 
-    private final MarketingCampaignMappers campaignMappers;
+    private final CampaignMappers mappers;
     private final MarketingCampaignRepository campaignRepository;
 
     @Override
     public List<MarketingCampaignDTO> getActiveCampaigns(LocalDate date) {
         return campaignRepository.findByStatus(CampaignStatus.ACTIVE)
                 .stream()
-                .map(campaignMappers::modelToDTO)
+                .map(mappers::modelToDTO)
                 .toList();
     }
 
@@ -43,7 +43,7 @@ public class MarketingCampaignServiceImpl implements MarketingCampaignService {
 
         saveCampaign(campaign);
 
-        return campaignMappers.domainToDTO(campaign);
+        return mappers.domainToDTO(campaign);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class MarketingCampaignServiceImpl implements MarketingCampaignService {
 
         saveCampaign(campaign);
 
-        return campaignMappers.domainToDTO(campaign);
+        return mappers.domainToDTO(campaign);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class MarketingCampaignServiceImpl implements MarketingCampaignService {
 
         saveCampaign(campaign);
 
-        return campaignMappers.domainToDTO(campaign);
+        return mappers.domainToDTO(campaign);
     }
 
     @Override
@@ -85,14 +85,14 @@ public class MarketingCampaignServiceImpl implements MarketingCampaignService {
 
     @Override
     public Page<MarketingCampaignDTO> getAll(Pageable pageable) {
-        return campaignRepository.findAll(pageable).map(campaignMappers::modelToDTO);
+        return campaignRepository.findAll(pageable).map(mappers::modelToDTO);
     }
 
     @Override
     public MarketingCampaignDTO getById(UUID id) {
         MarketingCampaign campaign = getCampaign(id);
 
-        return campaignMappers.domainToDTO(campaign);
+        return mappers.domainToDTO(campaign);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class MarketingCampaignServiceImpl implements MarketingCampaignService {
 
         saveCampaign(campaign);
 
-        return campaignMappers.domainToDTO(campaign);
+        return mappers.domainToDTO(campaign);
     }
 
     @Override
@@ -111,11 +111,11 @@ public class MarketingCampaignServiceImpl implements MarketingCampaignService {
         validate(insertDTO);
 
         MarketingCampaign campaign = getCampaign(id);
-        campaignMappers.updateEntity(campaign, insertDTO);
+        // TODO
 
         saveCampaign(campaign);
 
-        return campaignMappers.domainToDTO(campaign);
+        return mappers.domainToDTO(campaign);
 
     }
 
@@ -146,21 +146,21 @@ public class MarketingCampaignServiceImpl implements MarketingCampaignService {
      */
 
     private void saveCampaign(MarketingCampaign campaign) {
-        MarketingCampaignModel campaignModel = campaignMappers.domainToModel(campaign);
+        MarketingCampaignModel campaignModel = mappers.domainToModel(campaign);
         campaignRepository.save(campaignModel);
     }
 
     private MarketingCampaign getCampaign(UUID id) {
         return campaignRepository.findById(id)
-                .map(campaignMappers::modelToDomain)
+                .map(mappers::modelToDomain)
                 .orElseThrow(() -> new EntityNotFoundException("Campaign not found"));
     }
 
     private MarketingCampaign generateCampaign(MarketingCampaignInsertDTO insertDTO) {
         CampaignPeriod period = new CampaignPeriod(insertDTO.getStartDate(), insertDTO.getEndDate());
         Budget campaignBudget = new Budget(insertDTO.getBudget(), BigDecimal.ZERO);
-        TargetAudience audience = campaignMappers.toTargetAudience(insertDTO.getTargetAudience());
-        SuccessCriteria criteria = campaignMappers.toSuccessCriteria(insertDTO.getSuccessCriteria());
+        TargetAudience audience = mappers.toTargetAudience(insertDTO.getTargetAudience());
+        SuccessCriteria criteria = mappers.toSuccessCriteria(insertDTO.getSuccessCriteria());
 
         // TODO: Validate Fields
         return MarketingCampaign.builder()

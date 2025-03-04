@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 @Data
 public class CampaignInteractionDTO {
@@ -12,10 +13,10 @@ public class CampaignInteractionDTO {
     private Long id;
 
     @NotNull(message = "Campaign ID cannot be null")
-    private Long campaignId;
+    private UUID campaignId;
 
     @NotNull(message = "Customer ID cannot be null")
-    private Long customerId;
+    private UUID customerId;
 
     @NotNull(message = "Interaction type cannot be null")
     private MarketingInteractionType interactionType;

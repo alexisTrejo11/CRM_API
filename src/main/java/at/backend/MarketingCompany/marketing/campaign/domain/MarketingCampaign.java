@@ -7,8 +7,12 @@ import at.backend.MarketingCompany.marketing.campaign.domain.Exceptions.Campaign
 import at.backend.MarketingCompany.marketing.campaign.domain.HelperClasses.*;
 import at.backend.MarketingCompany.marketing.interaction.api.repository.CampaignInteractionModel;
 import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetric;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,6 +21,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class MarketingCampaign {
     private final CampaignId id;
@@ -28,14 +35,16 @@ public class MarketingCampaign {
     private final CampaignType type;
     private final TargetAudience targetAudience;
     private final SuccessCriteria successCriteria;
+
     private final Set<CampaignTarget> targets = new HashSet<>();
-    private final LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private final List<CampaignInteractionModel> interactions = new ArrayList<>();
     private final List<CampaignMetric> metrics = new ArrayList<>();
     private final List<CampaignActivityModel> activities = new ArrayList<>();
     private final Set<Long> relatedDeals = new HashSet<>();
     private final Set<Long> targetSegments = new HashSet<>();
+
+    private final LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public MarketingCampaign(
             String name,
@@ -133,7 +142,6 @@ public class MarketingCampaign {
 
         updatedAt = LocalDateTime.now();
     }
-
 
     public double calculateROI() {
         if (budget.totalBudget() == null || budget.totalBudget().compareTo(BigDecimal.ZERO) == 0) {

@@ -15,7 +15,7 @@ public interface CampaignAttributionRepository extends JpaRepository<CampaignAtt
     Page<CampaignAttributionModel> findByCampaignId(UUID campaignId, Pageable pageable);
     List<CampaignAttributionModel> findByDealId(UUID dealId);
 
-    boolean existByDealId(String dealId);
-    boolean existByCampaignId(String campaignId);
+    boolean existByDealId(Long dealId);
+    boolean existByCampaignId(UUID campaignId);
 
 }

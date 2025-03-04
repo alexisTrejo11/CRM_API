@@ -5,14 +5,15 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 public class CampaignMetricDTO {
 
-    private Long id;
+    private UUID id;
 
     @NotNull(message = "Campaign ID cannot be null")
-    private Long campaignId;
+    private UUID campaignId;
 
     @NotBlank(message = "Name cannot be empty")
     private String name;

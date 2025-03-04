@@ -3,7 +3,7 @@ package at.backend.MarketingCompany.marketing.attribution.api.service;
 import at.backend.MarketingCompany.marketing.attribution.api.repository.CampaignAttributionModel;
 import at.backend.MarketingCompany.marketing.attribution.domain.CampaignAttribution;
 import at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs.TouchPointDTO;
-import at.backend.MarketingCompany.marketing.attribution.infrastructure.automappers.CampaignAttributionMappers;
+import at.backend.MarketingCompany.marketing.attribution.infrastructure.automappers.AttributionMappers;
 import at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs.CampaignAttributionDTO;
 import at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs.CampaignAttributionInsertDTO;
 import at.backend.MarketingCompany.marketing.attribution.api.repository.CampaignAttributionRepository;
@@ -22,32 +22,32 @@ import java.util.UUID;
 public class CampaignAttributionServiceImpl implements CampaignAttributionService {
     private final CampaignAttributionRepository attributionRepository;
     private final AttributionCalculator calculator;
-    private final CampaignAttributionMappers attributionMappers;
+    private final AttributionMappers mappers;
 
     @Override
     public Page<CampaignAttributionDTO> getAll(Pageable pageable) {
         return attributionRepository.findAll(pageable)
-                .map(attributionMappers::modelToDTO);
+                .map(mappers::modelToDTO);
     }
 
     @Override
     public CampaignAttributionDTO getById(UUID id) {
         CampaignAttribution attribution = getDomainAttribution(id);
 
-        return attributionMappers.domainToDTO(attribution);
+        return mappers.domainToDTO(attribution);
     }
 
     @Override
     public Page<CampaignAttributionDTO> getAttributionsByCampaign(UUID campaignId, Pageable pageable) {
         return attributionRepository.findByCampaignId(campaignId, pageable)
-                .map(attributionMappers::modelToDTO);
+                .map(mappers::modelToDTO);
     }
 
     @Override
     public List<CampaignAttributionDTO> getAttributionsByDealId(UUID dealId) {
         return attributionRepository.findByDealId(dealId)
                 .stream()
-                .map(attributionMappers::modelToDTO)
+                .map(mappers::modelToDTO)
                 .toList();
     }
 
@@ -55,21 +55,21 @@ public class CampaignAttributionServiceImpl implements CampaignAttributionServic
     public List<CampaignAttributionDTO> getAttributionsByCampaignId(UUID campaignId) {
         return attributionRepository.findByCampaignId(campaignId)
                 .stream()
-                .map(attributionMappers::modelToDTO)
+                .map(mappers::modelToDTO)
                 .toList();    }
 
 
     @Override
     @Transactional
     public CampaignAttributionDTO create(CampaignAttributionInsertDTO dto) {
-        CampaignAttribution attribution = attributionMappers.insertDTOToDomain(dto);
+        CampaignAttribution attribution = mappers.insertDTOToDomain(dto);
 
         validateRelationships(attribution);
         attribution = calculator.initialCalculation(attribution);
 
         save(attribution);
 
-        return attributionMappers.domainToDTO(attribution);
+        return mappers.domainToDTO(attribution);
     }
 
     @Override
@@ -77,12 +77,11 @@ public class CampaignAttributionServiceImpl implements CampaignAttributionServic
     public CampaignAttributionDTO update(UUID id, CampaignAttributionInsertDTO insertDTO) {
         CampaignAttribution attribution = getDomainAttribution(id);
 
-        attributionMappers.updateDomain(attribution, insertDTO);
-
+        // UnMutable mappers.updateDomain(attribution, insertDTO);
         CampaignAttribution updatedAttribution = calculator.recalculateForModel(attribution);
         save(updatedAttribution);
 
-        return attributionMappers.domainToDTO(updatedAttribution);
+        return mappers.domainToDTO(updatedAttribution);
     }
 
 
@@ -110,7 +109,7 @@ public class CampaignAttributionServiceImpl implements CampaignAttributionServic
         updated = calculator.adjustForNewTouch(updated);
         save(updated);
 
-        return attributionMappers.domainToDTO(updated);
+        return mappers.domainToDTO(updated);
     }
 
     @Override
@@ -118,9 +117,9 @@ public class CampaignAttributionServiceImpl implements CampaignAttributionServic
     public void recalculateAllForCampaign(UUID campaignId) {
         List<CampaignAttributionModel> recalculatedModels = attributionRepository.findByCampaignId(campaignId)
                 .stream()
-                .map(attributionMappers::modelToDomain)
+                .map(mappers::modelToDomain)
                 .map(calculator::recalculateForModel)
-                .map(attributionMappers::domainToModel)
+                .map(mappers::domainToModel)
                 .toList();
 
         attributionRepository.saveAll(recalculatedModels);
@@ -136,7 +135,7 @@ public class CampaignAttributionServiceImpl implements CampaignAttributionServic
     public CampaignAttributionDTO getRevenueDistribution(UUID campaignId) {
         List<CampaignAttribution> attributions = attributionRepository.findByCampaignId(campaignId)
                 .stream()
-                .map(attributionMappers::modelToDomain)
+                .map(mappers::modelToDomain)
                 .toList();
 
         if (attributions.isEmpty()) {
@@ -148,7 +147,7 @@ public class CampaignAttributionServiceImpl implements CampaignAttributionServic
 
     private CampaignAttribution getDomainAttribution(UUID id) {
         return attributionRepository.findById(id)
-                .map(attributionMappers::modelToDomain)
+                .map(mappers::modelToDomain)
                 .orElseThrow(() -> new EntityNotFoundException("Attribution not found: " + id));
     }
 
@@ -163,7 +162,7 @@ public class CampaignAttributionServiceImpl implements CampaignAttributionServic
     }
 
     private void save(CampaignAttribution attribution) {
-        CampaignAttributionModel model = attributionMappers.domainToModel(attribution);
+        CampaignAttributionModel model = mappers.domainToModel(attribution);
         attributionRepository.save(model);
     }
 }

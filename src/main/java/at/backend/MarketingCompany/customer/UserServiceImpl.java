@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements CommonService<User, UserInput> {
+public class UserServiceImpl implements CommonService<User, UserInput, Long> {
 
     public final UserRepository userRepository;
     public final FieldValidationService fieldValidationService;
@@ -23,7 +23,7 @@ public class UserServiceImpl implements CommonService<User, UserInput> {
     }
 
     @Override
-    public User getById(Object id) {
+    public User getById(Long id) {
         return getUser(id);
     }
 
@@ -54,7 +54,7 @@ public class UserServiceImpl implements CommonService<User, UserInput> {
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(Long id) {
         User user = getUser(id);
 
         userRepository.delete(user);

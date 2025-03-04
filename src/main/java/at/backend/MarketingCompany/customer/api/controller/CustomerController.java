@@ -1,6 +1,7 @@
 package at.backend.MarketingCompany.customer.api.controller;
 
 import at.backend.MarketingCompany.common.utils.PageInput;
+import at.backend.MarketingCompany.customer.api.service.CustomerServiceImpl;
 import at.backend.MarketingCompany.customer.infrastructure.CustomerInput;
 import at.backend.MarketingCompany.customer.domain.Customer;
 import at.backend.MarketingCompany.common.service.CommonService;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class CustomerController {
-    private final CommonService<Customer, CustomerInput> service;
+    private CustomerServiceImpl service;
 
     @QueryMapping
     public Page<Customer> getAllCustomers(@Argument PageInput input) {

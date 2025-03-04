@@ -21,10 +21,11 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class DealServiceImpl implements CommonService<Deal, DealInput> {
+public class DealServiceImpl implements CommonService<Deal, DealInput, UUID> {
 
     public final DealRepository customerRepository;
     public final DealMappers customerMappers;
@@ -38,7 +39,7 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
     }
 
     @Override
-    public Deal getById(Object id) {
+    public Deal getById(UUID id) {
         return getDeal(id);
     }
 
@@ -53,7 +54,7 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
     }
 
     @Override
-    public Deal update(Long id, DealInput input) {
+    public Deal update(UUID id, DealInput input) {
         Deal existingDeal = getDeal(id);
 
         Deal updatedDeal = customerMappers.inputToUpdatedEntity(existingDeal, input);
@@ -65,7 +66,7 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(UUID id) {
         Deal deal = getDeal(id);
 
         customerRepository.delete(deal);
@@ -127,9 +128,8 @@ public class DealServiceImpl implements CommonService<Deal, DealInput> {
         deal.setServices(servicePackages);
     }
 
-    private Deal getDeal(Long id) {
+    private Deal getDeal(UUID id) {
         return customerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("deal not found"));
-
     }
 }

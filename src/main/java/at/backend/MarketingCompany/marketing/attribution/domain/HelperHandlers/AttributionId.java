@@ -2,7 +2,9 @@ package at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers;
 
 import lombok.Value;
 
+import java.util.UUID;
+
 @Value(staticConstructor = "of")
 public class AttributionId {
-    Long value;
+    UUID value;
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +52,7 @@ public class CampaignMetricServiceImpl implements CampaignMetricService {
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(Long id) {
         CampaignMetric metric = getMetric(id);
 
         campaignMetricRepository.delete(metric);
@@ -63,7 +64,7 @@ public class CampaignMetricServiceImpl implements CampaignMetricService {
     }
 
     @Override
-    public CampaignMetricDTO getById(Object id) {
+    public CampaignMetricDTO getById(Long id) {
         CampaignMetric campaignMetric = getMetric(id);
 
         return campaignMetricMappers.entityToDTO(campaignMetric);
@@ -103,7 +104,7 @@ public class CampaignMetricServiceImpl implements CampaignMetricService {
                 .orElseThrow(() -> new EntityNotFoundException("Metric not found with ID: " + id));
     }
 
-    private MarketingCampaignModel getCampaign(Long campaignID) {
+    private MarketingCampaignModel getCampaign(UUID campaignID) {
         return marketingCampaignRepository.findById(campaignID)
                 .orElseThrow(() -> new EntityNotFoundException("Campaign not found with ID: " + campaignID));
     }

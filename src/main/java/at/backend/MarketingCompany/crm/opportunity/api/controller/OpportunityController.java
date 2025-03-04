@@ -18,7 +18,7 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class OpportunityController {
     
-    private final CommonService<Opportunity, OpportunityInput> service;
+    private final CommonService<Opportunity, OpportunityInput, Long> service;
 
     @QueryMapping
     public Page<Opportunity> getAllOpportunities(@Argument PageInput input) {

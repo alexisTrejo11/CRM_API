@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerServiceImpl implements CommonService<Customer, CustomerInput> {
+public class CustomerServiceImpl implements CommonService<Customer, CustomerInput, Long> {
 
     public final CustomerRepository customerRepository;
     public final CustomerMappers customerMappers;
@@ -26,7 +26,7 @@ public class CustomerServiceImpl implements CommonService<Customer, CustomerInpu
     }
 
     @Override
-    public Customer getById(Object id) {
+    public Customer getById(Long id) {
         return getCustomer(id);
     }
 
@@ -51,7 +51,7 @@ public class CustomerServiceImpl implements CommonService<Customer, CustomerInpu
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(Long id) {
         Customer customer = getCustomer(id);
 
         customerRepository.delete(customer);

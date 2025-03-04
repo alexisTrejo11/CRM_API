@@ -8,7 +8,7 @@ import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.Activity
 
 import java.util.List;
 
-public interface CampaignActivityService extends CommonService<CampaignActivityDTO, CampaignActivityInsertDTO> {
+public interface CampaignActivityService extends CommonService<CampaignActivityDTO, CampaignActivityInsertDTO, Long> {
     List<CampaignActivityModel> getActivitiesByCampaignId(Long campaignId);
     List<CampaignActivityModel> getActivitiesByStatus(ActivityStatus status);
 

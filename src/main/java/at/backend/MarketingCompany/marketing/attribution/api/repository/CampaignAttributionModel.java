@@ -4,18 +4,21 @@ import at.backend.MarketingCompany.crm.deal.domain.Deal;
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.AttributionModel;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "campaign_attributions")
 @Data
+@Builder
 public class CampaignAttributionModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deal_id", nullable = false)

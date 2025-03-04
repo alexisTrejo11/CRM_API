@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 public class CampaignMetricInsertDTO {
 
     @NotNull(message = "Campaign ID cannot be null")
-    private Long campaignId;
+    private UUID campaignId;
 
     @NotBlank(message = "Name cannot be empty")
     private String name;

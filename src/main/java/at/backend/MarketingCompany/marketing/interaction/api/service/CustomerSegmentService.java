@@ -8,7 +8,7 @@ import at.backend.MarketingCompany.marketing.customer.CustomerSegmentInsertDTO;
 import java.util.List;
 import java.util.Map;
 
-public interface CustomerSegmentService extends CommonService<CustomerSegmentDTO, CustomerSegmentInsertDTO> {
+public interface CustomerSegmentService extends CommonService<CustomerSegmentDTO, CustomerSegmentInsertDTO, Long> {
     CustomerSegmentDTO updateSegmentRules(Long id, Map<String, String> rules);
     List<CustomerSegmentDTO> getSegmentsByDynamic(boolean dynamic);
     CustomerSegmentDTO addCustomersToSegment(Long id, List<Customer> customers);

@@ -10,12 +10,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Data
 @Builder
 public class MarketingCampaignDTO {
 
-    private Long id;
+    private UUID id;
 
     @NotBlank(message = "Name cannot be empty")
     private String name;

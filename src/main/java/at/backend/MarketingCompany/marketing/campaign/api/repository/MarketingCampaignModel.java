@@ -8,23 +8,25 @@ import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.Campaign
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.CampaignType;
 import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetric;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Generated;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Table(name = "marketing_campaigns")
 @Data
+@Builder
 public class MarketingCampaignModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @Column(updatable = false, nullable = false)
+    private UUID id;
 
     @Column(nullable = false)
     private String name;

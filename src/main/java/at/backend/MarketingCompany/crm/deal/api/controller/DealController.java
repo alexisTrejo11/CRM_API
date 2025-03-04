@@ -1,5 +1,6 @@
 package at.backend.MarketingCompany.crm.deal.api.controller;
 
+import at.backend.MarketingCompany.crm.deal.api.service.DealServiceImpl;
 import at.backend.MarketingCompany.crm.deal.infrastructure.DTOs.DealInput;
 import at.backend.MarketingCompany.common.utils.PageInput;
 import at.backend.MarketingCompany.crm.deal.domain.Deal;
@@ -14,10 +15,12 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.UUID;
+
 @Controller
 @RequiredArgsConstructor
 public class DealController {
-    private final CommonService<Deal, DealInput> service;
+    private final DealServiceImpl service;
 
     @QueryMapping
     public Page<Deal> getAllDeals(@Argument PageInput input) {
@@ -27,7 +30,7 @@ public class DealController {
     }
 
     @QueryMapping
-    public Deal getDealById(@Argument Long id) {
+    public Deal getDealById(@Argument UUID id) {
         return service.getById(id);
     }
 
@@ -39,14 +42,14 @@ public class DealController {
     }
 
     @MutationMapping
-    public Deal updateDeal(@Valid @Argument Long id, @Argument DealInput input) {
+    public Deal updateDeal(@Valid @Argument UUID id, @Argument DealInput input) {
         service.validate(input);
 
         return service.update(id, input);
     }
 
     @MutationMapping
-    public boolean deleteDeal(@Argument Long id) {
+    public boolean deleteDeal(@Argument UUID id) {
         service.delete(id);
         return true;
     }

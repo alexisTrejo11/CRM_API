@@ -1,5 +1,6 @@
 package at.backend.MarketingCompany.crm.tasks.api.controller;
 
+import at.backend.MarketingCompany.crm.tasks.api.service.TaskServiceImpl;
 import at.backend.MarketingCompany.crm.tasks.infrastructure.DTOs.TaskInput;
 import at.backend.MarketingCompany.common.utils.PageInput;
 import at.backend.MarketingCompany.crm.tasks.domain.Task;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class TaskController {
-    private final CommonService<Task, TaskInput> service;
+    private final TaskServiceImpl service;
 
     @QueryMapping
     public Page<Task> getAllTasks(@Argument PageInput input) {

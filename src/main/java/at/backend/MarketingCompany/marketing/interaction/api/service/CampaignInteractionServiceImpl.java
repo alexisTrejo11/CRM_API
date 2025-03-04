@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +55,7 @@ public class CampaignInteractionServiceImpl implements CampaignInteractionServic
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(Long id) {
         CampaignInteractionModel interaction = getInteraction(id);
 
         campaignInteractionRepository.delete(interaction);
@@ -66,7 +67,7 @@ public class CampaignInteractionServiceImpl implements CampaignInteractionServic
     }
 
     @Override
-    public CampaignInteractionDTO getById(Object id) {
+    public CampaignInteractionDTO getById(Long id) {
         CampaignInteractionModel interaction = getInteraction(id);
 
         return campaignInteractionMappers.entityToDTO(interaction);
@@ -131,12 +132,12 @@ public class CampaignInteractionServiceImpl implements CampaignInteractionServic
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
     }
 
-    private MarketingCampaignModel getCampaign(Long campaignID) {
+    private MarketingCampaignModel getCampaign(UUID campaignID) {
         return marketingCampaignRepository.findById(campaignID)
                 .orElseThrow(() -> new EntityNotFoundException("Campaign not found with ID: " + campaignID));
     }
 
-    private void fetchInteractionRelationships(CampaignInteractionModel interaction, Long campaignId, Long customerId) {
+    private void fetchInteractionRelationships(CampaignInteractionModel interaction, UUID campaignId, Long customerId) {
         Customer customer = getCustomerById(customerId);
         MarketingCampaignModel campaign = getCampaign(campaignId);
         interaction.setCampaign(campaign);

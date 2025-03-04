@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -42,5 +43,5 @@ public class CampaignActivityInsertDTO {
 
     @NotNull(message = "campaign_id is obligatory")
     @Positive(message = "campaign_id must be positive")
-    private Long campaignId;
+    private UUID campaignId;
 }

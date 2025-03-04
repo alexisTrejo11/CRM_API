@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final CommonService<User, UserInput> service;
+    private final UserServiceImpl service;
 
     @QueryMapping
     public Page<User> getAllUsers(@Argument PageInput input) {

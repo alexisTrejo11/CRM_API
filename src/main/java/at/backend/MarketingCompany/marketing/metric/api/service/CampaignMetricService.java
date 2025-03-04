@@ -8,6 +8,6 @@ import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetri
 
 import java.util.List;
 
-public interface CampaignMetricService extends CommonService<CampaignMetricDTO, CampaignMetricInsertDTO> {
+public interface CampaignMetricService extends CommonService<CampaignMetricDTO, CampaignMetricInsertDTO, Long> {
     List<CampaignMetric> getMetricsByCampaignId(Long campaignId);
 }

@@ -7,7 +7,7 @@ import at.backend.MarketingCompany.marketing.interaction.infrastructure.DTOs.Cam
 import java.util.List;
 import java.util.Map;
 
-public interface CampaignInteractionService extends CommonService<CampaignInteractionDTO, CampaignInteractionInsertDTO> {
+public interface CampaignInteractionService extends CommonService<CampaignInteractionDTO, CampaignInteractionInsertDTO, Long> {
     List<CampaignInteractionDTO> getInteractionsByCampaignId(Long campaignId);
     List<CampaignInteractionDTO> getInteractionsByCustomerId(Long customerId);
     CampaignInteractionDTO updateInteractionProperties(Long id, Map<String, String> properties);

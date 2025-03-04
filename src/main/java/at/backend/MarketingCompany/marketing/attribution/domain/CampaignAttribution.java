@@ -1,5 +1,6 @@
 package at.backend.MarketingCompany.marketing.attribution.domain;
 
+import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.AttributionModel;
 import at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -62,8 +63,8 @@ public class CampaignAttribution {
         );
     }
 
-    private static Long generateId() {
-        return Math.abs(UUID.randomUUID().getMostSignificantBits());
+    private static UUID generateId() {
+        return UUID.randomUUID();
     }
 
     public CampaignAttribution addTouch(LocalDateTime touchTime) {

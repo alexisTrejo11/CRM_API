@@ -1,6 +1,6 @@
 package at.backend.MarketingCompany.marketing.attribution.api.service;
 
-import at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers.AttributionModel;
+import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.AttributionModel;
 import at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers.AttributionPercentage;
 import at.backend.MarketingCompany.marketing.attribution.domain.CampaignAttribution;
 import at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs.CampaignAttributionDTO;
@@ -69,7 +69,7 @@ public class AttributionCalculatorImpl implements AttributionCalculator {
 
         List<CampaignAttributionDTO> distribution = attributions.stream()
                 .map(attribution -> CampaignAttributionDTO.builder()
-                        .id(attribution.getId().toString())
+                        .id(attribution.getId().getValue())
                         .dealId(attribution.getDealId().getValue())
                         .campaignId(attribution.getCampaignId().getValue())
                         .attributionPercentage(attribution.getPercentage().value())

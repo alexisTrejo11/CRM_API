@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class OpportunityServiceImpl implements CommonService<Opportunity, OpportunityInput> {
+public class OpportunityServiceImpl implements CommonService<Opportunity, OpportunityInput, Long> {
 
     public final OpportunityRepository opportunityRepository;
     public final OpportunityMappers opportunityMappers;
@@ -32,7 +32,7 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
     }
 
     @Override
-    public Opportunity getById(Object id) {
+    public Opportunity getById(Long id) {
         return getOpportunity(id);
     }
 
@@ -65,7 +65,7 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(Long id) {
         Opportunity opportunity = getOpportunity(id);
 
         opportunityRepository.delete(opportunity);

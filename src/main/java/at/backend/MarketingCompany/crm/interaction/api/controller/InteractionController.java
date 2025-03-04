@@ -1,5 +1,6 @@
 package at.backend.MarketingCompany.crm.interaction.api.controller;
 
+import at.backend.MarketingCompany.crm.interaction.api.service.InteractionServiceImpl;
 import at.backend.MarketingCompany.crm.interaction.infrastructure.DTOs.InteractionInput;
 import at.backend.MarketingCompany.common.utils.PageInput;
 import at.backend.MarketingCompany.crm.interaction.domain.Interaction;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class InteractionController {
-    private final CommonService<Interaction, InteractionInput> service;
+    private final InteractionServiceImpl service;
 
     @QueryMapping
     public Page<Interaction> getAllInteractions(@Argument PageInput input) {
