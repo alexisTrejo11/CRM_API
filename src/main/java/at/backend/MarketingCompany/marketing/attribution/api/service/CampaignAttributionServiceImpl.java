@@ -152,11 +152,11 @@ public class CampaignAttributionServiceImpl implements CampaignAttributionServic
     }
 
     private void validateRelationships(CampaignAttribution attribution) {
-        if (!attributionRepository.existByCampaignId(attribution.getCampaignId().getValue())) {
+        if (!attributionRepository.existsByCampaignId(attribution.getCampaignId().getValue())) {
             throw new EntityNotFoundException("Invalid campaign ID: " + attribution.getCampaignId());
         }
 
-        if (!attributionRepository.existByDealId(attribution.getDealId().getValue())) {
+        if (!attributionRepository.existsByDealId(attribution.getDealId().getValue())) {
             throw new EntityNotFoundException("Invalid deal ID: " + attribution.getDealId());
         }
     }

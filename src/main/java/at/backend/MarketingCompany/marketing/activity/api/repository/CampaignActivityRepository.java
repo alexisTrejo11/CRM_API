@@ -9,17 +9,18 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface CampaignActivityRepository extends JpaRepository<CampaignActivityModel, Long> {
+public interface CampaignActivityRepository extends JpaRepository<CampaignActivityModel, UUID> {
 
-    List<CampaignActivityModel> findByCampaignId(Long campaignId);
+    List<CampaignActivityModel> findByCampaignId(UUID campaignId);
 
     List<CampaignActivityModel> findByStatus(ActivityStatus status);
 
     List<CampaignActivityModel> findByActivityType(ActivityType activityType);
 
-    List<CampaignActivityModel> findByAssignedToId(Long userId);
+    List<CampaignActivityModel> findByAssignedToId(UUID userId);
 
     List<CampaignActivityModel> findByStatusAndPlannedStartDateBefore(ActivityStatus status, LocalDateTime dateTime);
 

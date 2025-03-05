@@ -42,7 +42,7 @@ public class CampaignInteractionDTO {
     @Size(max = 1000, message = "Details cannot exceed 1000 characters")
     private String details;
 
-    private Long resultedDealId;
+    private UUID resultedDealId;
 
     @Min(value = 0, message = "Conversion value must be greater than or equal to zero")
     private Double conversionValue;

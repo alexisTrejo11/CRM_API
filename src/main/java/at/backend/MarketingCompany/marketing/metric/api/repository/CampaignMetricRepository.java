@@ -16,16 +16,16 @@ public interface CampaignMetricRepository extends JpaRepository<CampaignMetricMo
 
     List<CampaignMetricModel> findByCampaignId(UUID campaignId);
 
-    List<CampaignMetricModel> findByCampaignIdAndType(Long campaignId, MetricType type);
+    List<CampaignMetricModel> findByCampaignIdAndType(UUID campaignId, MetricType type);
 
-    Optional<CampaignMetricModel> findByCampaignIdAndName(Long campaignId, String name);
+    Optional<CampaignMetricModel> findByCampaignIdAndName(UUID campaignId, String name);
 
     @Query("SELECT cm FROM CampaignMetricModel cm WHERE cm.campaign.id = :campaignId AND cm.value >= cm.targetValue")
     List<CampaignMetricModel> findAchievedMetricsByCampaignId(@Param("campaignId") Long campaignId);
 
     @Query("SELECT cm FROM CampaignMetricModel cm WHERE cm.campaign.id = :campaignId " +
             "AND cm.targetValue IS NOT NULL AND cm.value < cm.targetValue")
-    List<CampaignMetricModel> findUnderperformingMetricsByCampaignId(@Param("campaignId") Long campaignId);
+    List<CampaignMetricModel> findUnderperformingMetricsByCampaignId(@Param("campaignId") UUID campaignId);
 
     @Query("SELECT AVG(cm.value) FROM CampaignMetricModel cm WHERE cm.name = :metricName " +
             "AND cm.campaign.type = :campaignType")

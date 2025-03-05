@@ -1,15 +1,16 @@
 package at.backend.MarketingCompany.marketing.attribution.infrastructure.automappers;
 
-import at.backend.MarketingCompany.crm.deal.domain.Deal;
 import at.backend.MarketingCompany.marketing.attribution.api.repository.CampaignAttributionModel;
 import at.backend.MarketingCompany.marketing.attribution.domain.CampaignAttribution;
 import at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers.*;
 import at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs.CampaignAttributionDTO;
 import at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs.CampaignAttributionInsertDTO;
-import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
+import lombok.experimental.UtilityClass;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+@Component
 public class AttributionMappers {
 
     public CampaignAttribution insertDTOToDomain(CampaignAttributionInsertDTO insertDTO) {

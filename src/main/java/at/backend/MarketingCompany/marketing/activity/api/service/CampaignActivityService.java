@@ -7,11 +7,12 @@ import at.backend.MarketingCompany.marketing.activity.api.repository.CampaignAct
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.ActivityStatus;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface CampaignActivityService extends CommonService<CampaignActivityDTO, CampaignActivityInsertDTO, Long> {
-    List<CampaignActivityModel> getActivitiesByCampaignId(Long campaignId);
+public interface CampaignActivityService extends CommonService<CampaignActivityDTO, CampaignActivityInsertDTO, UUID> {
+    List<CampaignActivityModel> getActivitiesByCampaignId(UUID campaignId);
     List<CampaignActivityModel> getActivitiesByStatus(ActivityStatus status);
 
-    CampaignActivityDTO startActivity(Long id);
-    CampaignActivityDTO completeActivity(Long id);
+    CampaignActivityDTO startActivity(UUID id);
+    CampaignActivityDTO completeActivity(UUID id);
 }

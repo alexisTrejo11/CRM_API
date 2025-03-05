@@ -35,7 +35,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     }
 
     @Override
-    public CampaignActivityDTO getById(Long id) {
+    public CampaignActivityDTO getById(UUID id) {
         return campaignActivityRepository.findById(id)
                 .map(campaignActivityMappers::entityToDTO)
                 .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
@@ -56,7 +56,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     }
 
     @Override
-    public CampaignActivityDTO update(Long id, CampaignActivityInsertDTO input) {
+    public CampaignActivityDTO update(UUID id, CampaignActivityInsertDTO input) {
         CampaignActivityModel existingActivity = campaignActivityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
 
@@ -67,7 +67,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         CampaignActivityModel activity = campaignActivityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
 
@@ -75,7 +75,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     }
 
     @Override
-    public List<CampaignActivityModel> getActivitiesByCampaignId(Long campaignId) {
+    public List<CampaignActivityModel> getActivitiesByCampaignId(UUID campaignId) {
         return campaignActivityRepository.findByCampaignId(campaignId);
     }
 
@@ -85,7 +85,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     }
 
     @Override
-    public CampaignActivityDTO startActivity(Long id) {
+    public CampaignActivityDTO startActivity(UUID id) {
         CampaignActivityModel activity = getActivity(id);
         if (activity.getStatus() != ActivityStatus.PLANNED) {
             throw new InvalidStatusTransitionException(activity.getStatus(), ActivityStatus.PLANNED);
@@ -98,7 +98,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     }
 
     @Override
-    public CampaignActivityDTO completeActivity(Long id) {
+    public CampaignActivityDTO completeActivity(UUID id) {
         CampaignActivityModel activity = getActivity(id);
 
         if (activity.getStatus() != ActivityStatus.IN_PROGRESS) {
@@ -112,7 +112,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
         return campaignActivityMappers.entityToDTO(activity);
     }
 
-    public BigDecimal calculateRemainingBudget(Long id) {
+    public BigDecimal calculateRemainingBudget(UUID id) {
         CampaignActivityModel activity = getActivity(id);
         return activity.getPlannedCost().subtract(activity.getActualCost() != null ? activity.getActualCost() : BigDecimal.ZERO);
     }
@@ -130,7 +130,7 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
         }
     }
 
-    private CampaignActivityModel getActivity(Long activityID) {
+    private CampaignActivityModel getActivity(UUID activityID) {
         return campaignActivityRepository.findById(activityID)
                 .orElseThrow(() -> new EntityNotFoundException("Campaign Activity not found with ID: " + activityID));
     }

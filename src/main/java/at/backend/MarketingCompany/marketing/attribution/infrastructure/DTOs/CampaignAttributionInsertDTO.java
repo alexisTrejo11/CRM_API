@@ -15,7 +15,7 @@ import java.util.UUID;
 public class CampaignAttributionInsertDTO {
 
     @NotNull(message = "Deal ID cannot be null")
-    private Long dealId;
+    private UUID dealId;
 
     @NotNull(message = "Campaign ID cannot be null")
     private UUID campaignId;

@@ -28,7 +28,7 @@ public class CampaignInteractionModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
-    private CustomerModel customerModel;
+    private CustomerModel customer;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

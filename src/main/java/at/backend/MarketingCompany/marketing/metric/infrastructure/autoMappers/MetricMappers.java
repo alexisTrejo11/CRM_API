@@ -12,10 +12,11 @@ import at.backend.MarketingCompany.marketing.metric.domain.CampaignMetric;
 import at.backend.MarketingCompany.marketing.metric.domain.CampaignMetricId;
 import at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs.CampaignMetricDTO;
 import at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs.CampaignMetricInsertDTO;
+import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Component
 public class MetricMappers {
 
     public CampaignMetric insertDTOToDomain(CampaignMetricInsertDTO insertDTO) {

@@ -4,12 +4,13 @@ import at.backend.MarketingCompany.marketing.activity.api.repository.CampaignAct
 import at.backend.MarketingCompany.marketing.activity.infrastructure.DTOs.CampaignActivityDTO;
 import at.backend.MarketingCompany.marketing.activity.infrastructure.DTOs.CampaignActivityInsertDTO;
 import at.backend.MarketingCompany.user.api.Model.User;
+import java.util.UUID;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-04T19:56:51-0600",
+    date = "2025-03-05T11:21:48-0600",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.11.1.jar, environment: Java 23.0.2 (Homebrew)"
 )
 @Component
@@ -44,9 +45,9 @@ public class CampaignActivityMappersImpl implements CampaignActivityMappers {
 
         CampaignActivityDTO campaignActivityDTO = new CampaignActivityDTO();
 
-        Long id = entityAssignedToId( entity );
+        UUID id = entityAssignedToId( entity );
         if ( id != null ) {
-            campaignActivityDTO.setAssignedTo( String.valueOf( id ) );
+            campaignActivityDTO.setAssignedTo( id.toString() );
         }
         campaignActivityDTO.setId( entity.getId() );
         campaignActivityDTO.setName( entity.getName() );
@@ -83,7 +84,7 @@ public class CampaignActivityMappersImpl implements CampaignActivityMappers {
         existingActivity.setDeliveryChannel( input.getDeliveryChannel() );
     }
 
-    private Long entityAssignedToId(CampaignActivityModel campaignActivityModel) {
+    private UUID entityAssignedToId(CampaignActivityModel campaignActivityModel) {
         if ( campaignActivityModel == null ) {
             return null;
         }
@@ -91,7 +92,7 @@ public class CampaignActivityMappersImpl implements CampaignActivityMappers {
         if ( assignedTo == null ) {
             return null;
         }
-        Long id = assignedTo.getId();
+        UUID id = assignedTo.getId();
         if ( id == null ) {
             return null;
         }

@@ -10,6 +10,8 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.UUID;
+
 @Controller
 @RequiredArgsConstructor
 public class CampaignActivityController {
@@ -17,7 +19,7 @@ public class CampaignActivityController {
     private final CampaignActivityService campaignActivityService;
 
     @QueryMapping
-    public CampaignActivityDTO getActivityById(@Argument Long id) {
+    public CampaignActivityDTO getActivityById(@Argument UUID id) {
         return campaignActivityService.getById(id);
     }
 
@@ -28,12 +30,12 @@ public class CampaignActivityController {
 
     @MutationMapping
     public CampaignActivityDTO updateActivity(@Valid @Argument CampaignActivityInsertDTO input,
-                                               @Argument Long id) {
+                                               @Argument UUID id) {
         return campaignActivityService.update(id, input);
     }
 
     @MutationMapping
-    public boolean deleteActivity(@Argument Long id) {
+    public boolean deleteActivity(@Argument UUID id) {
         campaignActivityService.delete(id);
         
         return true;

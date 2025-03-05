@@ -7,6 +7,7 @@ import at.backend.MarketingCompany.marketing.campaign.infrastructure.DTOs.Market
 import at.backend.MarketingCompany.marketing.campaign.infrastructure.DTOs.MarketingCampaignInsertDTO;
 import at.backend.MarketingCompany.marketing.campaign.infrastructure.DTOs.SuccessCriteriaDetailsDTO;
 import at.backend.MarketingCompany.marketing.campaign.infrastructure.DTOs.TargetAudienceDetailsDTO;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 // TODO: HANDLE LEFT FIELDS
+@Component
 public class CampaignMappers {
     public MarketingCampaign insertDTOToDomain(MarketingCampaignInsertDTO insertDTO) {
         return MarketingCampaign.builder()

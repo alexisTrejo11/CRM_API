@@ -7,11 +7,12 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 public class CampaignActivityDTO {
 
-    private Long id;
+    private UUID id;
 
     @NotBlank(message = "Name cannot be empty")
     private String name;
