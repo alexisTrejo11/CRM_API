@@ -2,7 +2,7 @@ package at.backend.MarketingCompany.crm.interaction.api.service;
 
 import at.backend.MarketingCompany.crm.interaction.infrastructure.DTOs.InteractionInput;
 import at.backend.MarketingCompany.crm.interaction.infrastructure.autoMappers.InteractionMappers;
-import at.backend.MarketingCompany.customer.domain.Customer;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
 import at.backend.MarketingCompany.crm.interaction.domain.Interaction;
 import at.backend.MarketingCompany.customer.api.repository.CustomerRepository;
 import at.backend.MarketingCompany.crm.interaction.api.repository.InteractionRepository;
@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,6 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
     public final InteractionRepository interactionRepository;
     public final CustomerRepository customerRepository;
     public final InteractionMappers interactionMappers;
-
 
     @Override
     public Page<Interaction> getAll(Pageable pageable) {
@@ -42,7 +42,7 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
     public Interaction create(InteractionInput input) {
         Interaction newInteraction = interactionMappers.inputToEntity(input);
 
-        newInteraction.setCustomer(getCustomer(input.customerId()));
+        newInteraction.setCustomerModel(getCustomer(input.customerId()));
 
         interactionRepository.saveAndFlush(newInteraction);
 
@@ -56,7 +56,7 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
 
         Interaction updatedInteraction = interactionMappers.inputToUpdatedEntity(existingInteraction, input);
 
-        updatedInteraction.setCustomer(getCustomer(input.customerId()));
+        updatedInteraction.setCustomerModel(getCustomer(input.customerId()));
 
         interactionRepository.saveAndFlush(updatedInteraction);
 
@@ -95,8 +95,8 @@ public class InteractionServiceImpl implements CommonService<Interaction, Intera
         }
     }
 
-    private Customer getCustomer(Long customerId) {
-        return customerRepository.findById(customerId).orElseThrow(() ->  new EntityNotFoundException("Customer not found"));
+    private CustomerModel getCustomer(UUID customerId) {
+        return customerRepository.findById(customerId).orElseThrow(() ->  new EntityNotFoundException("CustomerModel not found"));
     }
 
     private Interaction getInteraction(Long id) {

@@ -3,6 +3,7 @@ package at.backend.MarketingCompany.crm.opportunity.infrastructure.DTOs;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record OpportunityInput(
 
@@ -23,5 +24,5 @@ public record OpportunityInput(
         LocalDate expectedCloseDate,
 
         @Positive
-        Long customerId
+        UUID customerId
 ) {}

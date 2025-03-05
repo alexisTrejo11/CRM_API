@@ -13,7 +13,7 @@ import at.backend.MarketingCompany.crm.quote.domain.QuoteItem;
 import at.backend.MarketingCompany.crm.servicePackage.api.repostiory.ServicePackageRepository;
 import at.backend.MarketingCompany.crm.servicePackage.domain.ServicePackage;
 import at.backend.MarketingCompany.customer.api.repository.CustomerRepository;
-import at.backend.MarketingCompany.customer.domain.Customer;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +53,7 @@ public class QuoteServiceImpl implements QuoteService {
     public Quote create(QuoteInput input) {
         Quote newQuote = quoteMappers.inputToEntity(input);
 
-        newQuote.setCustomer(getCustomer(input.customerId()));
+        newQuote.setCustomerModel(getCustomer(input.customerId()));
         newQuote.setOpportunity(getOpportunity(input.opportunityId()));
 
         List<QuoteItem> items = generateItems(newQuote, input.items());
@@ -183,8 +183,8 @@ public class QuoteServiceImpl implements QuoteService {
         return quoteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Quote not found"));
     }
 
-    private Customer getCustomer(Long customerId) {
-        return customerRepository.findById(customerId).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+    private CustomerModel getCustomer(UUID customerId) {
+        return customerRepository.findById(customerId).orElseThrow(() -> new EntityNotFoundException("CustomerModel not found"));
     }
 
     private Opportunity getOpportunity(Long opportunityId) {

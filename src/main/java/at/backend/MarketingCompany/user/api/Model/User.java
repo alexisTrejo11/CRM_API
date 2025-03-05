@@ -1,4 +1,4 @@
-package at.backend.MarketingCompany.customer;
+package at.backend.MarketingCompany.user.api.Model;
 
 import at.backend.MarketingCompany.crm.Utils.enums.UserRole;
 import jakarta.persistence.*;

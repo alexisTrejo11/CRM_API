@@ -1,6 +1,6 @@
 package at.backend.MarketingCompany.marketing.interaction.infrastructure.autoMappers;
 
-import at.backend.MarketingCompany.customer.domain.Customer;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
 import at.backend.MarketingCompany.marketing.interaction.api.repository.CampaignInteractionModel;
 import at.backend.MarketingCompany.marketing.interaction.infrastructure.DTOs.CampaignInteractionDTO;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-04T17:10:55-0600",
+    date = "2025-03-04T19:56:51-0600",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.11.1.jar, environment: Java 23.0.2 (Homebrew)"
 )
 @Component
@@ -25,24 +25,24 @@ public class CampaignInteractionMappersImpl implements CampaignInteractionMapper
             return null;
         }
 
-        CampaignInteractionModel campaignInteractionModel = new CampaignInteractionModel();
+        CampaignInteractionModel.CampaignInteractionModelBuilder campaignInteractionModel = CampaignInteractionModel.builder();
 
-        campaignInteractionModel.setInteractionType( input.getInteractionType() );
-        campaignInteractionModel.setInteractionDate( input.getInteractionDate() );
-        campaignInteractionModel.setSourceChannel( input.getSourceChannel() );
-        campaignInteractionModel.setSourceMedium( input.getSourceMedium() );
-        campaignInteractionModel.setSourceCampaign( input.getSourceCampaign() );
-        campaignInteractionModel.setDeviceType( input.getDeviceType() );
-        campaignInteractionModel.setIpAddress( input.getIpAddress() );
-        campaignInteractionModel.setGeoLocation( input.getGeoLocation() );
+        campaignInteractionModel.interactionType( input.getInteractionType() );
+        campaignInteractionModel.interactionDate( input.getInteractionDate() );
+        campaignInteractionModel.sourceChannel( input.getSourceChannel() );
+        campaignInteractionModel.sourceMedium( input.getSourceMedium() );
+        campaignInteractionModel.sourceCampaign( input.getSourceCampaign() );
+        campaignInteractionModel.deviceType( input.getDeviceType() );
+        campaignInteractionModel.ipAddress( input.getIpAddress() );
+        campaignInteractionModel.geoLocation( input.getGeoLocation() );
         Map<String, String> map = input.getProperties();
         if ( map != null ) {
-            campaignInteractionModel.setProperties( new LinkedHashMap<String, String>( map ) );
+            campaignInteractionModel.properties( new LinkedHashMap<String, String>( map ) );
         }
-        campaignInteractionModel.setDetails( input.getDetails() );
-        campaignInteractionModel.setConversionValue( input.getConversionValue() );
+        campaignInteractionModel.details( input.getDetails() );
+        campaignInteractionModel.conversionValue( input.getConversionValue() );
 
-        return campaignInteractionModel;
+        return campaignInteractionModel.build();
     }
 
     @Override
@@ -51,27 +51,27 @@ public class CampaignInteractionMappersImpl implements CampaignInteractionMapper
             return null;
         }
 
-        CampaignInteractionDTO campaignInteractionDTO = new CampaignInteractionDTO();
+        CampaignInteractionDTO.CampaignInteractionDTOBuilder campaignInteractionDTO = CampaignInteractionDTO.builder();
 
-        campaignInteractionDTO.setCampaignId( entityCampaignId( entity ) );
-        campaignInteractionDTO.setCustomerId( entityCustomerId( entity ) );
-        campaignInteractionDTO.setId( entity.getId() );
-        campaignInteractionDTO.setInteractionType( entity.getInteractionType() );
-        campaignInteractionDTO.setInteractionDate( entity.getInteractionDate() );
-        campaignInteractionDTO.setSourceChannel( entity.getSourceChannel() );
-        campaignInteractionDTO.setSourceMedium( entity.getSourceMedium() );
-        campaignInteractionDTO.setSourceCampaign( entity.getSourceCampaign() );
-        campaignInteractionDTO.setDeviceType( entity.getDeviceType() );
-        campaignInteractionDTO.setIpAddress( entity.getIpAddress() );
-        campaignInteractionDTO.setGeoLocation( entity.getGeoLocation() );
+        campaignInteractionDTO.campaignId( entityCampaignId( entity ) );
+        campaignInteractionDTO.customerId( entityCustomerModelId( entity ) );
+        campaignInteractionDTO.id( entity.getId() );
+        campaignInteractionDTO.interactionType( entity.getInteractionType() );
+        campaignInteractionDTO.interactionDate( entity.getInteractionDate() );
+        campaignInteractionDTO.sourceChannel( entity.getSourceChannel() );
+        campaignInteractionDTO.sourceMedium( entity.getSourceMedium() );
+        campaignInteractionDTO.sourceCampaign( entity.getSourceCampaign() );
+        campaignInteractionDTO.deviceType( entity.getDeviceType() );
+        campaignInteractionDTO.ipAddress( entity.getIpAddress() );
+        campaignInteractionDTO.geoLocation( entity.getGeoLocation() );
         Map<String, String> map = entity.getProperties();
         if ( map != null ) {
-            campaignInteractionDTO.setProperties( new LinkedHashMap<String, String>( map ) );
+            campaignInteractionDTO.properties( new LinkedHashMap<String, String>( map ) );
         }
-        campaignInteractionDTO.setDetails( entity.getDetails() );
-        campaignInteractionDTO.setConversionValue( entity.getConversionValue() );
+        campaignInteractionDTO.details( entity.getDetails() );
+        campaignInteractionDTO.conversionValue( entity.getConversionValue() );
 
-        return campaignInteractionDTO;
+        return campaignInteractionDTO.build();
     }
 
     @Override
@@ -123,15 +123,15 @@ public class CampaignInteractionMappersImpl implements CampaignInteractionMapper
         return id;
     }
 
-    private UUID entityCustomerId(CampaignInteractionModel campaignInteractionModel) {
+    private UUID entityCustomerModelId(CampaignInteractionModel campaignInteractionModel) {
         if ( campaignInteractionModel == null ) {
             return null;
         }
-        Customer customer = campaignInteractionModel.getCustomer();
-        if ( customer == null ) {
+        CustomerModel customerModel = campaignInteractionModel.getCustomerModel();
+        if ( customerModel == null ) {
             return null;
         }
-        UUID id = customer.getId();
+        UUID id = customerModel.getId();
         if ( id == null ) {
             return null;
         }

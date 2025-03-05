@@ -26,7 +26,7 @@ public interface MarketingCampaignRepository extends JpaRepository<MarketingCamp
     List<MarketingCampaignModel> findByDealId(@Param("dealId") Long dealId);
 
     @Query("SELECT mc FROM MarketingCampaign mc WHERE mc.status = 'ACTIVE' " +
-            "AND EXISTS (SELECT ci FROM CampaignInteractionModel ci WHERE ci.campaign = mc AND ci.customer.id = :customerId)")
+            "AND EXISTS (SELECT ci FROM CampaignInteractionModel ci WHERE ci.campaign = mc AND ci.customerModel.id = :customerId)")
     List<MarketingCampaignModel> findActiveByCustomerId(@Param("customerId") Long customerId);
 
     @Query("SELECT DISTINCT mc FROM MarketingCampaign mc " +

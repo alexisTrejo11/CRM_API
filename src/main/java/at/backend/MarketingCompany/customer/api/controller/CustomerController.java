@@ -1,54 +1,63 @@
 package at.backend.MarketingCompany.customer.api.controller;
 
-import at.backend.MarketingCompany.common.utils.PageInput;
-import at.backend.MarketingCompany.customer.api.service.CustomerServiceImpl;
-import at.backend.MarketingCompany.customer.infrastructure.CustomerInput;
-import at.backend.MarketingCompany.customer.domain.Customer;
-import at.backend.MarketingCompany.common.service.CommonService;
+import at.backend.MarketingCompany.customer.api.service.CustomerService;
+import at.backend.MarketingCompany.customer.infrastructure.CustomerDTO;
+import at.backend.MarketingCompany.customer.infrastructure.CustomerInsertDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.*;
 import org.springframework.stereotype.Controller;
+
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
 public class CustomerController {
-    private CustomerServiceImpl service;
+
+    private final CustomerService service;
 
     @QueryMapping
-    public Page<Customer> getAllCustomers(@Argument PageInput input) {
-        Pageable pageable = PageRequest.of(input.page(), input.size());
-
+    public Page<CustomerDTO> getAllCustomers(Pageable pageable) {
         return service.getAll(pageable);
     }
 
     @QueryMapping
-    public Customer getCustomerById(@Argument Long id) {
+    public CustomerDTO getCustomerById(@Argument UUID id) {
         return service.getById(id);
     }
 
-    @MutationMapping
-    public Customer createCustomer(@Valid @Argument CustomerInput input) {
-        service.validate(input);
+    @QueryMapping
+    public boolean isCustomerBlocked(@Argument UUID id) {
+        return service.isBlocked(id);
+    }
 
+    @QueryMapping
+    public boolean hasSocialMediaHandles(@Argument UUID id) {
+        return service.hasSocialMediaHandles(id);
+    }
+
+    @QueryMapping
+    public boolean hasCompetitors(@Argument UUID id) {
+        return service.hasCompetitors(id);
+    }
+
+    @MutationMapping
+    public CustomerDTO createCustomer(@Argument @Valid CustomerInsertDTO input) {
         return service.create(input);
     }
 
     @MutationMapping
-    public Customer updateCustomer(@Valid @Argument Long id, @Argument CustomerInput input) {
-        service.validate(input);
-
+    public CustomerDTO updateCustomer(
+            @Argument UUID id,
+            @Argument CustomerInsertDTO input
+    ) {
         return service.update(id, input);
     }
 
     @MutationMapping
-    public boolean deleteCustomer(@Argument Long id) {
+    public void deleteCustomer(@Argument UUID id) {
         service.delete(id);
-        return true;
     }
 }

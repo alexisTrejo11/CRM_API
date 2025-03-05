@@ -11,8 +11,8 @@ import at.backend.MarketingCompany.crm.opportunity.api.repository.OpportunityRep
 import at.backend.MarketingCompany.crm.opportunity.domain.Opportunity;
 import at.backend.MarketingCompany.crm.servicePackage.api.repostiory.ServicePackageRepository;
 import at.backend.MarketingCompany.crm.servicePackage.domain.ServicePackage;
-import at.backend.MarketingCompany.customer.User;
-import at.backend.MarketingCompany.customer.UserRepository;
+import at.backend.MarketingCompany.user.api.Model.User;
+import at.backend.MarketingCompany.user.api.Repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -121,7 +121,7 @@ public class DealServiceImpl implements CommonService<Deal, DealInput, UUID> {
         Opportunity opportunity = opportunityRepository.findById(input.opportunityId())
                 .orElseThrow(() -> new EntityNotFoundException("opportunity not found"));
         deal.setOpportunity(opportunity);
-        deal.setCustomer(opportunity.getCustomer());
+        deal.setCustomerModel(opportunity.getCustomerModel());
 
         List<ServicePackage> servicePackages = servicePackageRepository.findAllById(input.servicePackageIds());
 

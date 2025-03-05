@@ -2,20 +2,21 @@ package at.backend.MarketingCompany.marketing.interaction.infrastructure.DTOs;
 
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.MarketingInteractionType;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
 @Data
+@Builder
 public class CampaignInteractionDTO {
-
-    private Long id;
+    private UUID id;
 
     @NotNull(message = "Campaign ID cannot be null")
     private UUID campaignId;
 
-    @NotNull(message = "Customer ID cannot be null")
+    @NotNull(message = "CustomerModel ID cannot be null")
     private UUID customerId;
 
     @NotNull(message = "Interaction type cannot be null")

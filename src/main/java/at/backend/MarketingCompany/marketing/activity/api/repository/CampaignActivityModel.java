@@ -1,6 +1,6 @@
 package at.backend.MarketingCompany.marketing.activity.api.repository;
 
-import at.backend.MarketingCompany.customer.User;
+import at.backend.MarketingCompany.user.api.Model.User;
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.ActivityStatus;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.ActivityType;

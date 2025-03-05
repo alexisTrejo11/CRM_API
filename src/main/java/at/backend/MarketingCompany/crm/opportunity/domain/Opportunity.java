@@ -1,7 +1,7 @@
 package at.backend.MarketingCompany.crm.opportunity.domain;
 
 import at.backend.MarketingCompany.crm.tasks.domain.Task;
-import at.backend.MarketingCompany.customer.domain.Customer;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class Opportunity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Customer customer;
+    private CustomerModel customerModel;
 
     @Column(name = "title")
     private String title;

@@ -1,10 +1,10 @@
 package at.backend.MarketingCompany.crm.tasks.domain;
 
 import at.backend.MarketingCompany.crm.opportunity.domain.Opportunity;
-import at.backend.MarketingCompany.customer.User;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
+import at.backend.MarketingCompany.user.api.Model.User;
 import at.backend.MarketingCompany.crm.Utils.enums.TaskPriority;
 import at.backend.MarketingCompany.crm.Utils.enums.TaskStatus;
-import at.backend.MarketingCompany.customer.domain.Customer;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Customer customer;
+    private CustomerModel customerModel;
 
     @ManyToOne
     @JoinColumn(name = "opportunity_id")

@@ -1,11 +1,12 @@
-package at.backend.MarketingCompany.customer;
+package at.backend.MarketingCompany.user.infrastructure;
 
+import at.backend.MarketingCompany.user.api.Model.User;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-04T17:10:55-0600",
+    date = "2025-03-04T19:56:51-0600",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.11.1.jar, environment: Java 23.0.2 (Homebrew)"
 )
 @Component

@@ -1,7 +1,9 @@
-package at.backend.MarketingCompany.customer;
+package at.backend.MarketingCompany.user.api.Controller;
 
 import at.backend.MarketingCompany.common.utils.PageInput;
-import at.backend.MarketingCompany.common.service.CommonService;
+import at.backend.MarketingCompany.user.api.Service.UserServiceImpl;
+import at.backend.MarketingCompany.user.api.Model.User;
+import at.backend.MarketingCompany.user.infrastructure.UserInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

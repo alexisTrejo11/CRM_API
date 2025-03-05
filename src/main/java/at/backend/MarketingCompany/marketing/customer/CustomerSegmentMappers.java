@@ -1,6 +1,5 @@
 package at.backend.MarketingCompany.marketing.customer;
 
-import at.backend.MarketingCompany.marketing.interaction.api.repository.CustomerSegment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

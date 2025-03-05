@@ -2,7 +2,7 @@ package at.backend.MarketingCompany.crm.opportunity.api.service;
 
 import at.backend.MarketingCompany.crm.opportunity.infrastructure.DTOs.OpportunityInput;
 import at.backend.MarketingCompany.crm.opportunity.infrastructure.autoMappers.OpportunityMappers;
-import at.backend.MarketingCompany.customer.domain.Customer;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
 import at.backend.MarketingCompany.crm.opportunity.domain.Opportunity;
 import at.backend.MarketingCompany.customer.api.repository.CustomerRepository;
 import at.backend.MarketingCompany.crm.opportunity.api.repository.OpportunityRepository;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
         Opportunity newOpportunity = opportunityMappers.inputToEntity(input);
 
         if (input.customerId() != null) {
-            newOpportunity.setCustomer(getCustomer(input.customerId()));
+            newOpportunity.setCustomerModel(getCustomer(input.customerId()));
         }
 
         opportunityRepository.saveAndFlush(newOpportunity);
@@ -56,7 +57,7 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
         Opportunity updatedOpportunity = opportunityMappers.inputToUpdatedEntity(existingOpportunity, input);
 
         if (input.customerId() != null) {
-            updatedOpportunity.setCustomer(getCustomer(input.customerId()));
+            updatedOpportunity.setCustomerModel(getCustomer(input.customerId()));
         }
 
         opportunityRepository.saveAndFlush(updatedOpportunity);
@@ -74,9 +75,9 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
     @Override
     public void validate(OpportunityInput input) {
         if (input.customerId() != null) {
-            Optional<Customer> customer = customerRepository.findById(input.customerId());
+            Optional<CustomerModel> customer = customerRepository.findById(input.customerId());
             if (customer.isEmpty()) {
-                throw new EntityNotFoundException("Customer Not Found");
+                throw new EntityNotFoundException("CustomerModel Not Found");
             }
 
         }
@@ -105,9 +106,9 @@ public class OpportunityServiceImpl implements CommonService<Opportunity, Opport
 
     }
 
-    private Customer getCustomer(Long customerId) {
+    private CustomerModel getCustomer(UUID customerId) {
         return customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer Not found"));
+                .orElseThrow(() -> new RuntimeException("CustomerModel Not found"));
     }
 
     private Opportunity getOpportunity(Long id) {

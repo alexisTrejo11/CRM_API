@@ -7,10 +7,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record TaskInput(
-        @NotNull(message = "Customer ID is required")
-        Long customerId,
+        @NotNull(message = "CustomerModel ID is required")
+        UUID customerId,
 
         @NotNull(message = "Opportunity ID is required")
         Long opportunityId,

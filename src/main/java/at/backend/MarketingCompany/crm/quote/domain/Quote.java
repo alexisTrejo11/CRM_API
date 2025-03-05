@@ -2,7 +2,7 @@ package at.backend.MarketingCompany.crm.quote.domain;
 
 import at.backend.MarketingCompany.crm.opportunity.domain.Opportunity;
 import at.backend.MarketingCompany.crm.Utils.enums.QuoteStatus;
-import at.backend.MarketingCompany.customer.domain.Customer;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +26,7 @@ public class Quote {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    private CustomerModel customerModel;
 
     @ManyToOne
     @JoinColumn(name = "opportunity_id", nullable = true)

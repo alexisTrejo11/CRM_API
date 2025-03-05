@@ -4,10 +4,11 @@ import at.backend.MarketingCompany.crm.Utils.enums.FeedbackType;
 import at.backend.MarketingCompany.crm.Utils.enums.InteractionType;
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record InteractionInput(
-        @NotNull(message = "Customer ID cannot be null")
-        Long customerId,
+        @NotNull(message = "CustomerModel ID cannot be null")
+        UUID customerId,
 
         @NotNull(message = "Type cannot be null")
         InteractionType type,

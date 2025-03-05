@@ -16,7 +16,7 @@ public class CampaignInteractionInsertDTO {
     @NotNull(message = "Campaign ID cannot be null")
     private UUID campaignId;
 
-    @NotNull(message = "Customer ID cannot be null")
+    @NotNull(message = "CustomerModel ID cannot be null")
     private Long customerId;
 
     @NotNull(message = "Interaction type cannot be null")
@@ -42,7 +42,7 @@ public class CampaignInteractionInsertDTO {
     @Size(max = 1000, message = "Details cannot exceed 1000 characters")
     private String details;
 
-    private Long resultedDealId;
+    private UUID resultedDealId;
 
     @Min(value = 0, message = "Conversion value must be greater than or equal to zero")
     private Double conversionValue;

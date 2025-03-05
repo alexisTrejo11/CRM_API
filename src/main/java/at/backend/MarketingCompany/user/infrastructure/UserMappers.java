@@ -1,5 +1,6 @@
-package at.backend.MarketingCompany.customer;
+package at.backend.MarketingCompany.user.infrastructure;
 
+import at.backend.MarketingCompany.user.api.Model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

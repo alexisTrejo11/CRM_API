@@ -1,6 +1,6 @@
 package at.backend.MarketingCompany.common.service;
 
-import at.backend.MarketingCompany.customer.UserRepository;
+import at.backend.MarketingCompany.user.api.Repository.UserRepository;
 import at.backend.MarketingCompany.common.exceptions.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

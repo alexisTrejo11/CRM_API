@@ -1,6 +1,6 @@
-    package at.backend.MarketingCompany.marketing.interaction.api.repository;
+    package at.backend.MarketingCompany.marketing.customer;
 
-    import at.backend.MarketingCompany.customer.domain.Customer;
+    import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
     import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
     import jakarta.persistence.*;
     import lombok.Data;
@@ -49,7 +49,7 @@
                 joinColumns = @JoinColumn(name = "segment_id"),
                 inverseJoinColumns = @JoinColumn(name = "customer_id")
         )
-        private List<Customer> customers = new ArrayList<>();
+        private List<CustomerModel> customerModels = new ArrayList<>();
 
         @Column(name = "last_updated")
         private LocalDateTime lastUpdated;

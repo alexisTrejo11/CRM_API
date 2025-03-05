@@ -50,7 +50,7 @@ enum OpportunityStage {
 }
 type Opportunity {
     id: ID
-    customer: Customer
+    customerModel: Customer
     title: String
     amount: Float
     stage: OpportunityStage
@@ -80,7 +80,7 @@ enum TaskPriority {
 }
 type Task {
     id: ID!
-    customer: Customer!
+    customerModel: Customer!
     opportunity: Opportunity!
     title: String!
     description: String
@@ -167,7 +167,7 @@ input ServicePackageInput {
 # Quote
 type Quote {
     id: ID!
-    customer: Customer!
+    customerModel: Customer!
     opportunity: Opportunity
     validUntil: String!
     subTotal: Float!
@@ -210,7 +210,7 @@ enum QuoteStatus {
 # Interaction
 type Interaction {
     id: ID!
-    customer: Customer!
+    customerModel: Customer!
     type: InteractionType!
     dateTime: String!
     description: String
@@ -246,7 +246,7 @@ enum FeedbackType {
 # Deals
 type Deal {
     id: ID!
-    customer: Customer!
+    customerModel: Customer!
     opportunity: Opportunity!
     dealStatus: DealStatus!
     finalAmount: Float!

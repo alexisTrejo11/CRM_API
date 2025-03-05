@@ -2,9 +2,9 @@ package at.backend.MarketingCompany.crm.deal.domain;
 
 import at.backend.MarketingCompany.crm.opportunity.domain.Opportunity;
 import at.backend.MarketingCompany.crm.servicePackage.domain.ServicePackage;
-import at.backend.MarketingCompany.customer.User;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
+import at.backend.MarketingCompany.user.api.Model.User;
 import at.backend.MarketingCompany.crm.Utils.enums.DealStatus;
-import at.backend.MarketingCompany.customer.domain.Customer;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +27,7 @@ public class Deal {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    private CustomerModel customerModel;
 
     @ManyToOne
     @JoinColumn(name = "opportunity_id", nullable = false)

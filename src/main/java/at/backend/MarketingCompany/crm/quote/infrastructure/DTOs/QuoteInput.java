@@ -4,11 +4,12 @@ import at.backend.MarketingCompany.crm.Utils.enums.QuoteStatus;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public record QuoteInput(
 
-        @NotNull(message = "Customer ID is required.")
-        Long customerId,
+        @NotNull(message = "CustomerModel ID is required.")
+        UUID customerId,
 
         @NotNull(message = "Opportunity ID is required.")
         Long opportunityId,

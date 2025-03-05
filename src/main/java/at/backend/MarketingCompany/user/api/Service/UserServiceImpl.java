@@ -1,8 +1,12 @@
-package at.backend.MarketingCompany.customer;
+package at.backend.MarketingCompany.user.api.Service;
 
 import at.backend.MarketingCompany.common.service.FieldValidationService;
 import at.backend.MarketingCompany.common.utils.PasswordHandler;
 import at.backend.MarketingCompany.common.service.CommonService;
+import at.backend.MarketingCompany.user.api.Model.User;
+import at.backend.MarketingCompany.user.api.Repository.UserRepository;
+import at.backend.MarketingCompany.user.infrastructure.UserInput;
+import at.backend.MarketingCompany.user.infrastructure.UserMappers;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

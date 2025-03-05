@@ -2,7 +2,7 @@ package at.backend.MarketingCompany.crm.interaction.domain;
 
 import at.backend.MarketingCompany.crm.Utils.enums.FeedbackType;
 import at.backend.MarketingCompany.crm.Utils.enums.InteractionType;
-import at.backend.MarketingCompany.customer.domain.Customer;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,7 @@ public class Interaction {
     private Long id;
 
     @ManyToOne
-    private Customer customer;
+    private CustomerModel customerModel;
 
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)

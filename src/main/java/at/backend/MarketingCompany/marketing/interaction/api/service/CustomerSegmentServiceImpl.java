@@ -1,12 +1,12 @@
 package at.backend.MarketingCompany.marketing.interaction.api.service;
 
 import at.backend.MarketingCompany.common.exceptions.InvalidInputException;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
 import at.backend.MarketingCompany.marketing.customer.CustomerSegmentMappers;
 import at.backend.MarketingCompany.marketing.customer.CustomerSegmentDTO;
 import at.backend.MarketingCompany.marketing.customer.CustomerSegmentInsertDTO;
-import at.backend.MarketingCompany.marketing.interaction.api.repository.CustomerSegment;
-import at.backend.MarketingCompany.customer.domain.Customer;
-import at.backend.MarketingCompany.marketing.interaction.api.repository.CustomerSegmentRepository;
+import at.backend.MarketingCompany.marketing.customer.CustomerSegment;
+import at.backend.MarketingCompany.marketing.customer.CustomerSegmentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -81,20 +81,20 @@ public class CustomerSegmentServiceImpl implements CustomerSegmentService {
     }
 
     @Override
-    public CustomerSegmentDTO addCustomersToSegment(Long id, List<Customer> customers) {
+    public CustomerSegmentDTO addCustomersToSegment(Long id, List<CustomerModel> customerModels) {
         CustomerSegment segment = getSegment(id);
 
-        segment.getCustomers().addAll(customers);
+        segment.getCustomerModels().addAll(customerModels);
         customerSegmentRepository.save(segment);
 
         return customerSegmentMappers.entityToDTO(segment);
     }
 
     @Override
-    public CustomerSegmentDTO removeCustomersFromSegment(Long id, List<Customer> customers) {
+    public CustomerSegmentDTO removeCustomersFromSegment(Long id, List<CustomerModel> customerModels) {
         CustomerSegment segment = getSegment(id);
 
-        segment.getCustomers().removeAll(customers);
+        segment.getCustomerModels().removeAll(customerModels);
         customerSegmentRepository.save(segment);
 
         return customerSegmentMappers.entityToDTO(segment);
@@ -112,6 +112,6 @@ public class CustomerSegmentServiceImpl implements CustomerSegmentService {
 
     private CustomerSegment getSegment(Long id) {
         return customerSegmentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Customer segment not found with ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("CustomerModel segment not found with ID: " + id));
     }
 }

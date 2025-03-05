@@ -7,11 +7,11 @@ import at.backend.MarketingCompany.crm.tasks.infrastructure.DTOs.TaskInput;
 import at.backend.MarketingCompany.crm.tasks.infrastructure.autoMappers.TaskMappers;
 import at.backend.MarketingCompany.crm.opportunity.domain.Opportunity;
 import at.backend.MarketingCompany.crm.tasks.domain.Task;
-import at.backend.MarketingCompany.customer.User;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
+import at.backend.MarketingCompany.user.api.Model.User;
 import at.backend.MarketingCompany.crm.opportunity.api.repository.OpportunityRepository;
-import at.backend.MarketingCompany.customer.UserRepository;
+import at.backend.MarketingCompany.user.api.Repository.UserRepository;
 import at.backend.MarketingCompany.customer.api.repository.CustomerRepository;
-import at.backend.MarketingCompany.customer.domain.Customer;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +46,7 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput, Long> {
     public Task create(TaskInput input) {
         Task newTask = TaskMappers.inputToEntity(input);
 
-        newTask.setCustomer(getCustomer(input.customerId()));
+        newTask.setCustomerModel(getCustomer(input.customerId()));
         newTask.setOpportunity(getOpportunity(input.opportunityId()));
 
         if (input.assignedToUserId() != null) {
@@ -63,7 +64,7 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput, Long> {
 
         Task updatedTask = TaskMappers.inputToUpdatedEntity(existingTask, input);
 
-        updatedTask.setCustomer(getCustomer(input.customerId()));
+        updatedTask.setCustomerModel(getCustomer(input.customerId()));
         updatedTask.setOpportunity(getOpportunity(input.opportunityId()));
 
         if (input.assignedToUserId() != null) {
@@ -85,9 +86,9 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput, Long> {
 
     @Override
     public void validate(TaskInput input) {
-        Optional<Customer> customer = customerRepository.findById(input.customerId());
+        Optional<CustomerModel> customer = customerRepository.findById(input.customerId());
         if (customer.isEmpty()) {
-            throw new EntityNotFoundException("Customer Not Found");
+            throw new EntityNotFoundException("CustomerModel Not Found");
         }
 
         if (input.dueDate() != null) {
@@ -102,9 +103,9 @@ public class TaskServiceImpl implements CommonService<Task, TaskInput, Long> {
         }
     }
 
-    private Customer getCustomer(Long customerId) {
+    private CustomerModel getCustomer(UUID customerId) {
         return customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer Not found"));
+                .orElseThrow(() -> new RuntimeException("CustomerModel Not found"));
     }
 
     private Opportunity getOpportunity(Long opportunityId) {

@@ -12,7 +12,7 @@ public interface DealMappers {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "customer", ignore = true)
+    @Mapping(target = "customerModel", ignore = true)
     @Mapping(target = "opportunity", ignore = true)
     @Mapping(target = "campaignManager", ignore = true)
     Deal inputToEntity(DealInput input);
@@ -20,7 +20,7 @@ public interface DealMappers {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "customer", ignore = true)
+    @Mapping(target = "customerModel", ignore = true)
     @Mapping(target = "opportunity", ignore = true)
     @Mapping(target = "campaignManager", ignore = true)
     Deal inputToUpdatedEntity(@MappingTarget Deal existingUser, DealInput input);

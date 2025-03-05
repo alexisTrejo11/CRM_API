@@ -3,7 +3,7 @@ package at.backend.MarketingCompany.marketing.campaign.api.repository;
 import at.backend.MarketingCompany.crm.deal.domain.Deal;
 import at.backend.MarketingCompany.marketing.activity.api.repository.CampaignActivityModel;
 import at.backend.MarketingCompany.marketing.interaction.api.repository.CampaignInteractionModel;
-import at.backend.MarketingCompany.marketing.interaction.api.repository.CustomerSegment;
+import at.backend.MarketingCompany.marketing.customer.CustomerSegment;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.CampaignStatus;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.CampaignType;
 import at.backend.MarketingCompany.marketing.metric.api.repository.CampaignMetricModel;

@@ -1,146 +1,166 @@
 package at.backend.MarketingCompany.marketing.interaction.api.service;
 
-import at.backend.MarketingCompany.customer.api.repository.CustomerRepository;
-import at.backend.MarketingCompany.common.exceptions.InvalidInputException;
-import at.backend.MarketingCompany.marketing.interaction.infrastructure.autoMappers.CampaignInteractionMappers;
-import at.backend.MarketingCompany.marketing.interaction.infrastructure.DTOs.CampaignInteractionDTO;
-import at.backend.MarketingCompany.marketing.interaction.infrastructure.DTOs.CampaignInteractionInsertDTO;
-import at.backend.MarketingCompany.marketing.interaction.api.repository.CampaignInteractionModel;
-import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
-import at.backend.MarketingCompany.customer.domain.Customer;
-import at.backend.MarketingCompany.marketing.interaction.api.repository.CampaignInteractionRepository;
+import at.backend.MarketingCompany.common.exceptions.*;
+import at.backend.MarketingCompany.crm.deal.api.repository.DealRepository;
+import at.backend.MarketingCompany.crm.deal.domain.Deal;
+import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignRepository;
+import at.backend.MarketingCompany.marketing.campaign.domain.MarketingCampaign;
+import at.backend.MarketingCompany.marketing.campaign.infrastructure.autoMappers.CampaignMappers;
+import at.backend.MarketingCompany.marketing.interaction.api.repository.CampaignInteractionModel;
+import at.backend.MarketingCompany.marketing.interaction.api.repository.CampaignInteractionRepository;
+import at.backend.MarketingCompany.marketing.interaction.domain.CampaignInteraction;
+import at.backend.MarketingCompany.marketing.interaction.infrastructure.autoMappers.InteractionMappers;
+import at.backend.MarketingCompany.marketing.interaction.infrastructure.DTOs.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class CampaignInteractionServiceImpl implements CampaignInteractionService {
 
-    private final CampaignInteractionRepository campaignInteractionRepository;
-    private final MarketingCampaignRepository marketingCampaignRepository;
-    private final CustomerRepository customerRepository;
-    private final CampaignInteractionMappers campaignInteractionMappers;
+    private final CampaignInteractionRepository repository;
+    private final InteractionMappers interactionMappers;
+    private final DealRepository dealRepository;
+    private final MarketingCampaignRepository campaignRepository;
+    private final CampaignMappers campaignMappers;
 
     @Override
-    public CampaignInteractionDTO create(CampaignInteractionInsertDTO insertDTO) {
-        CampaignInteractionModel interaction = campaignInteractionMappers.inputToEntity(insertDTO);
+    @Transactional
+    public CampaignInteractionDTO create(CampaignInteractionInsertDTO dto) {
+        validate(dto);
 
-        validate(insertDTO);
+        CampaignInteraction domain = interactionMappers.insertDTOToDomain(dto);
+        validateCampaignAndCustomer(domain);
 
-        fetchInteractionRelationships(interaction, insertDTO.getCampaignId(), insertDTO.getCustomerId());
+        CampaignInteractionModel model = interactionMappers.domainToModel(domain);
+        repository.save(model);
 
-        campaignInteractionRepository.save(interaction);
-
-        return campaignInteractionMappers.entityToDTO(interaction);
+        return interactionMappers.domainToDTO(domain);
     }
 
     @Override
-    public CampaignInteractionDTO update(Long id, CampaignInteractionInsertDTO insertDTO) {
-        CampaignInteractionModel existingInteraction = getInteraction(id);
+    @Transactional
+    public CampaignInteractionDTO update(UUID id, CampaignInteractionInsertDTO dto) {
+        CampaignInteraction existing = getDomainById(id);
+        validate(dto);
 
-        campaignInteractionMappers.updateEntity(existingInteraction, insertDTO);
+        updateDomain(existing, dto);
+        validateCampaignAndCustomer(existing);
 
-        campaignInteractionRepository.save(existingInteraction);
+        CampaignInteractionModel updatedModel = interactionMappers.domainToModel(existing);
+        repository.save(updatedModel);
 
-        return campaignInteractionMappers.entityToDTO(existingInteraction);
+        return interactionMappers.domainToDTO(existing);
     }
 
     @Override
-    public void delete(Long id) {
-        CampaignInteractionModel interaction = getInteraction(id);
-
-        campaignInteractionRepository.delete(interaction);
+    @Transactional
+    public void delete(UUID id) {
+        CampaignInteraction domain = getDomainById(id);
+        if (domain.isConversion()) {
+            throw new BusinessLogicException("Cannot delete converted interactions");
+        }
+        repository.deleteById(id);
     }
 
     @Override
     public Page<CampaignInteractionDTO> getAll(Pageable pageable) {
-        return campaignInteractionRepository.findAll(pageable).map(campaignInteractionMappers::entityToDTO);
+        return repository.findAll(pageable)
+                .map(interactionMappers::modelToDTO);
     }
 
     @Override
-    public CampaignInteractionDTO getById(Long id) {
-        CampaignInteractionModel interaction = getInteraction(id);
-
-        return campaignInteractionMappers.entityToDTO(interaction);
+    public CampaignInteractionDTO getById(UUID id) {
+        return interactionMappers.domainToDTO(getDomainById(id));
     }
 
     @Override
-    public List<CampaignInteractionDTO> getInteractionsByCampaignId(Long campaignId) {
-        return campaignInteractionRepository.findByCampaignId(campaignId)
-                .stream()
-                .map(campaignInteractionMappers::entityToDTO)
+    public List<CampaignInteractionDTO> getByCampaignId(UUID campaignId, LocalDateTime from, LocalDateTime to) {
+        return repository.findByCampaignIdAndInteractionDateBetween(campaignId, from, to).stream()
+                .map(interactionMappers::modelToDTO)
                 .toList();
     }
 
     @Override
-    public List<CampaignInteractionDTO> getInteractionsByCustomerId(Long customerId) {
-        return campaignInteractionRepository.findByCustomerId(customerId)
-                .stream()
-                .map(campaignInteractionMappers::entityToDTO)
+    public List<CampaignInteractionDTO> getByCustomerId(UUID customerId) {
+        return repository.findByCustomerId(customerId).stream()
+                .map(interactionMappers::modelToDTO)
                 .toList();
     }
 
     @Override
-    public CampaignInteractionDTO updateInteractionProperties(Long id, Map<String, String> properties) {
-        CampaignInteractionModel interaction = getInteraction(id);
+    public ConversionSummaryDTO getConversionSummary(UUID campaignId) {
+        MarketingCampaign campaign = campaignMappers.modelToDomain(
+                campaignRepository.findById(campaignId)
+                        .orElseThrow(() -> new EntityNotFoundException("Campaign not found"))
+        );
 
-        interaction.getProperties().putAll(properties);
+        List<CampaignInteraction> interactions = repository.findByCampaignId(campaignId).stream()
+                .map(interactionMappers::modelToDomain)
+                .filter(CampaignInteraction::isConversion)
+                .toList();
 
-        campaignInteractionRepository.save(interaction);
+        double totalValue = interactions.stream()
+                .mapToDouble(i -> i.getConversionValue() != null ? i.getConversionValue() : 0)
+                .sum();
 
-        return campaignInteractionMappers.entityToDTO(interaction);
+        return ConversionSummaryDTO.builder()
+                .campaignId(campaignId)
+                .conversionCount(interactions.size())
+                .totalConversionValue(totalValue)
+                .averageConversionValue(interactions.isEmpty() ? 0 : totalValue / interactions.size())
+                .build();
     }
 
-    public Double calculateTotalConversionValue(Long campaignId) {
-        List<CampaignInteractionModel> interactions = campaignInteractionRepository.findByCampaignId(campaignId);
-
-        return interactions.stream()
-                .map(CampaignInteractionModel::getConversionValue)
-                .filter(Objects::nonNull)
-                .reduce(0.0, Double::sum);
-    }
-
-    @Override
-    public void validate(CampaignInteractionInsertDTO insertDTO) {
-        if (insertDTO.getInteractionType() == null) {
-            throw new InvalidInputException("Interaction type cannot be null");
+    public void validate(CampaignInteractionInsertDTO dto) {
+        if (dto.getInteractionDate().isAfter(LocalDateTime.now())) {
+            throw new InvalidInputException("Interaction date cannot be in the future");
         }
-        if (insertDTO.getInteractionDate() == null) {
-            throw new InvalidInputException("Interaction date cannot be null");
-        }
-        if (insertDTO.getConversionValue() != null && insertDTO.getConversionValue() < 0) {
-            throw new InvalidInputException("Conversion value must be greater than or equal to zero");
+        if (dto.getConversionValue() != null && dto.getConversionValue() <= 0) {
+            throw new InvalidInputException("Conversion value must be positive");
         }
     }
 
-    private CampaignInteractionModel getInteraction(Long id) {
-        return campaignInteractionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Interaction not found with ID: " + id));
+    private void validateCampaignAndCustomer(CampaignInteraction domain) {
+        MarketingCampaign campaign = domain.getCampaign();
+        if (!campaign.isActive()) {
+            throw new BusinessLogicException("Campaign is not active");
+        }
+
+        CustomerModel customerModel = domain.getCustomerModel();
+        if (customerModel.isBlocked()) {
+            throw new BusinessLogicException("CustomerModel is blocked");
+        }
     }
 
-    private Customer getCustomerById(Long customerId) {
-         return customerRepository.findById(customerId)
-                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+    private void updateDomain(CampaignInteraction domain, CampaignInteractionInsertDTO dto) {
+        domain.setDetails(dto.getDetails());
+        domain.setInteractionDate(dto.getInteractionDate());
+        domain.setSource(CampaignInteraction.InteractionSource.builder()
+                .channel(dto.getSourceChannel())
+                .medium(dto.getSourceMedium())
+                .campaignName(dto.getSourceCampaign())
+                .build());
+
+        if (dto.getResultedDealId() != null || dto.getConversionValue() != null) {
+            assert dto.getResultedDealId() != null;
+            Deal deal = dealRepository.findById(dto.getResultedDealId())
+                    .orElseThrow(() -> new EntityNotFoundException("Deal not found"));
+            domain.setConversion(deal, dto.getConversionValue());
+        }
     }
 
-    private MarketingCampaignModel getCampaign(UUID campaignID) {
-        return marketingCampaignRepository.findById(campaignID)
-                .orElseThrow(() -> new EntityNotFoundException("Campaign not found with ID: " + campaignID));
-    }
-
-    private void fetchInteractionRelationships(CampaignInteractionModel interaction, UUID campaignId, Long customerId) {
-        Customer customer = getCustomerById(customerId);
-        MarketingCampaignModel campaign = getCampaign(campaignId);
-        interaction.setCampaign(campaign);
-        interaction.setCustomer(customer);
+    private CampaignInteraction getDomainById(UUID id) {
+        return repository.findById(id)
+                .map(interactionMappers::modelToDomain)
+                .orElseThrow(() -> new EntityNotFoundException("Interaction not found"));
     }
 }
