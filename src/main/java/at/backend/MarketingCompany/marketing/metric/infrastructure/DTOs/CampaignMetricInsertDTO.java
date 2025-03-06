@@ -2,6 +2,7 @@ package at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.MetricType;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CampaignMetricInsertDTO {
 
     @NotNull(message = "Campaign ID cannot be null")

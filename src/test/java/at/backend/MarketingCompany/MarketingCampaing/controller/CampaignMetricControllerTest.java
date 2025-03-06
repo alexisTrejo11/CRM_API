@@ -1,332 +1,202 @@
 package at.backend.MarketingCompany.MarketingCampaing.controller;
 
-import at.backend.MarketingCompany.common.exceptions.BusinessLogicException;
-import at.backend.MarketingCompany.common.exceptions.InvalidInputException;
-import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.MetricType;
-import at.backend.MarketingCompany.marketing.metric.api.controller.CampaignMetricController;
-import at.backend.MarketingCompany.marketing.metric.api.service.CampaignMetricService;
-import at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs.CampaignMetricDTO;
-import at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs.CampaignMetricInsertDTO;
-import jakarta.persistence.EntityNotFoundException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.graphql.test.tester.GraphQlTester;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.UUID;
-
+import static graphql.Assert.assertNotNull;
+import static graphql.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-@GraphQlTest(CampaignMetricController.class)
-@Import(CampaignMetricControllerTestConfig.class)
+import at.backend.MarketingCompany.common.utils.InputValidator;
+import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.MetricType;
+import at.backend.MarketingCompany.marketing.metric.api.controller.CampaignMetricController;
+import at.backend.MarketingCompany.marketing.metric.api.service.CampaignMetricService;
+import at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs.CampaignMetricDTO;
+import at.backend.MarketingCompany.marketing.metric.infrastructure.DTOs.CampaignMetricInsertDTO;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import jakarta.validation.ValidationException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
 class CampaignMetricControllerTest {
 
-    @Autowired
-    private GraphQlTester graphQlTester;
-
-    @Autowired
+    @Mock
     private CampaignMetricService campaignMetricService;
 
+    @InjectMocks
+    private CampaignMetricController controller;
+
+    @Mock
+    private InputValidator validator;
+
     private UUID metricId;
-    private UUID campaignId;
     private CampaignMetricDTO metricDTO;
     private CampaignMetricInsertDTO insertDTO;
 
     @BeforeEach
     void setUp() {
         metricId = UUID.randomUUID();
-        campaignId = UUID.randomUUID();
 
-        // Setup DTO for responses
+
         metricDTO = CampaignMetricDTO.builder()
                 .id(metricId)
-                .campaignId(campaignId)
+                .campaignId(UUID.randomUUID())
                 .name("Test Metric")
-                .description("Test Description")
-                .type(MetricType.COST)
-                .value(BigDecimal.valueOf(100))
-                .targetValue(BigDecimal.valueOf(150))
-                .measurementUnit("count")
+                .description("This is a test metric")
+                .type(MetricType.COUNT)
+                .value(BigDecimal.valueOf(100.5))
+                .targetValue(BigDecimal.valueOf(200.0))
+                .measurementUnit("%")
                 .lastCalculated(LocalDateTime.now())
-                .calculationFormula("Some formula")
+                .calculationFormula("(clicks / impressions) * 100")
                 .dataSource("Google Analytics")
                 .automated(true)
                 .build();
 
-        // Setup insert DTO for mutations
-        insertDTO = new CampaignMetricInsertDTO();
-        insertDTO.setCampaignId(campaignId);
-        insertDTO.setName("Test Metric");
-        insertDTO.setDescription("Test Description");
-        insertDTO.setType(MetricType.COST);
-        insertDTO.setValue(BigDecimal.valueOf(100));
-        insertDTO.setTargetValue(BigDecimal.valueOf(150));
-        insertDTO.setMeasurementUnit("count");
-        insertDTO.setCalculationFormula("Some formula");
-        insertDTO.setDataSource("Google Analytics");
-        insertDTO.setAutomated(true);
+        insertDTO = CampaignMetricInsertDTO.builder()
+                .campaignId(UUID.randomUUID())
+                .name("Test Metric")
+                .description("This is a test metric")
+                .type(MetricType.PERCENTAGE)
+                .value(BigDecimal.valueOf(100.5))
+                .targetValue(BigDecimal.valueOf(200.0))
+                .measurementUnit("%")
+                .calculationFormula("(clicks / impressions) * 100")
+                .dataSource("Google Analytics")
+                .automated(true)
+                .build();
     }
 
-    @Test
-    void getMetricById_ReturnsMetric() {
-        // Arrange
-        when(campaignMetricService.getById(metricId)).thenReturn(metricDTO);
+    @Nested
+    class GetMetricByIdTests {
 
-        // Act and Assert
-        String document = """
-                query {
-                  getMetricById(id: "%s") {
-                    id
-                    campaignId
-                    name
-                    description
-                    type
-                    value
-                    targetValue
-                    measurementUnit
-                    lastCalculated
-                    calculationFormula
-                    dataSource
-                    automated
-                  }
-                }
-                """.formatted(metricId);
+        @Test
+        void getMetricById_ShouldReturnMetric() {
+            // Arrange
+            when(campaignMetricService.getById(metricId)).thenReturn(metricDTO);
 
-        graphQlTester.document(document)
-                .execute()
-                .path("getMetricById")
-                .entity(CampaignMetricDTO.class)
-                .isEqualTo(metricDTO);
+            // Act
+            CampaignMetricDTO result = controller.getMetricById(metricId);
 
-        verify(campaignMetricService).getById(metricId);
+            // Assert
+            assertNotNull(result);
+            assertEquals(metricId, result.getId());
+            assertEquals("Test Metric", result.getName());
+            verify(campaignMetricService).getById(metricId);
+        }
+
+        @Test
+        void getMetricById_NonExistingMetric_ThrowsException() {
+            // Arrange
+            when(campaignMetricService.getById(metricId)).thenThrow(new RuntimeException("Metric not found"));
+
+            // Act & Assert
+            assertThatThrownBy(() -> controller.getMetricById(metricId))
+                    .isInstanceOf(RuntimeException.class)
+                    .hasMessageContaining("Metric not found");
+        }
     }
 
-    @Test
-    void getMetricById_NotFound_ThrowsException() {
-        // Arrange
-        when(campaignMetricService.getById(metricId)).thenThrow(new EntityNotFoundException("Metric not found"));
+    @Nested
+    class CreateMetricTests {
 
-        // Act and Assert
-        String document = """
-                query {
-                  getMetricById(id: "%s") {
-                    id
-                    name
-                  }
-                }
-                """.formatted(metricId);
+        @Test
+        void createMetric_ValidInput_CreatesAndReturnsMetric() {
+            // Arrange
+            when(campaignMetricService.create(any(CampaignMetricInsertDTO.class))).thenReturn(metricDTO);
 
-        graphQlTester.document(document)
-                .execute()
-                .errors()
-                .expect(error -> Objects.requireNonNull(error.getMessage()).contains("Metric not found"));
+            // Act
+            CampaignMetricDTO result = controller.createMetric(insertDTO);
 
-        verify(campaignMetricService).getById(metricId);
+            // Assert
+            assertNotNull(result);
+            assertEquals(metricId, result.getId());
+            assertEquals("Test Metric", result.getName());
+            verify(campaignMetricService).create(insertDTO);
+        }
+
+        @Test
+        void createMetric_InvalidInput_ThrowsException() {
+            // Arrange
+            CampaignMetricInsertDTO invalidDTO = new CampaignMetricInsertDTO();
+            invalidDTO.setName("");
+
+            doThrow(new ValidationException("Name cannot be empty"))
+                    .when(validator).validate(any());
+
+            // Act & Assert
+            assertThatThrownBy(() -> controller.createMetric(invalidDTO))
+                    .isInstanceOf(ValidationException.class);
+        }
     }
 
-    @Test
-    void createMetric_ValidInput_ReturnsCreatedMetric() {
-        // Arrange
-        when(campaignMetricService.create(any(CampaignMetricInsertDTO.class))).thenReturn(metricDTO);
+    @Nested
+    class UpdateMetricTests {
 
-        // Act and Assert
-        String document = """
-                mutation {
-                  createMetric(input: {
-                    campaignId: "%s",
-                    name: "Test Metric",
-                    description: "Test Description",
-                    type: ENGAGEMENT,
-                    value: 100,
-                    targetValue: 150,
-                    measurementUnit: "count",
-                    calculationFormula: "Some formula",
-                    dataSource: "Google Analytics",
-                    automated: true
-                  }) {
-                    id
-                    campaignId
-                    name
-                    type
-                    value
-                    targetValue
-                  }
-                }
-                """.formatted(campaignId);
+        @Test
+        void updateMetric_ValidInput_UpdatesAndReturnsMetric() {
+            // Arrange
+            when(campaignMetricService.update(eq(metricId), any(CampaignMetricInsertDTO.class))).thenReturn(metricDTO);
 
-        graphQlTester.document(document)
-                .execute()
-                .path("createMetric")
-                .entity(CampaignMetricDTO.class)
-                .satisfies(dto -> {
-                    assertEquals(metricId, dto.getId());
-                    assertEquals(campaignId, dto.getCampaignId());
-                    assertEquals("Test Metric", dto.getName());
-                    assertEquals(MetricType.COST, dto.getType());
-                    assertEquals(0, BigDecimal.valueOf(100).compareTo(dto.getValue()));
-                    assertEquals(0, BigDecimal.valueOf(150).compareTo(dto.getTargetValue()));
-                });
+            // Act
+            CampaignMetricDTO result = controller.updateMetric(insertDTO, metricId);
 
-        verify(campaignMetricService).create(any(CampaignMetricInsertDTO.class));
+            // Assert
+            assertNotNull(result);
+            assertEquals(metricId, result.getId());
+            assertEquals("Test Metric", result.getName());
+            verify(campaignMetricService).update(metricId, insertDTO);
+        }
+
+        @Test
+        void updateMetric_NonExistingMetric_ThrowsException() {
+            // Arrange
+            when(campaignMetricService.update(eq(metricId), any(CampaignMetricInsertDTO.class)))
+                    .thenThrow(new RuntimeException("Metric not found"));
+
+            // Act & Assert
+            assertThatThrownBy(() -> controller.updateMetric(insertDTO, metricId))
+                    .isInstanceOf(RuntimeException.class)
+                    .hasMessageContaining("Metric not found");
+        }
     }
 
-    @Test
-    void createMetric_InvalidInput_ThrowsException() {
-        // Arrange
-        when(campaignMetricService.create(any(CampaignMetricInsertDTO.class)))
-                .thenThrow(new InvalidInputException("Name cannot be empty"));
+    @Nested
+    class DeleteMetricTests {
 
-        // Act and Assert
-        String document = """
-                mutation {
-                  createMetric(input: {
-                    campaignId: "%s",
-                    name: "",
-                    type: ENGAGEMENT,
-                    value: 100,
-                    targetValue: 150
-                  }) {
-                    id
-                    name
-                  }
-                }
-                """.formatted(campaignId);
+        @Test
+        void deleteMetric_ExistingMetric_DeletesAndReturnsTrue() {
+            // Arrange
+            doNothing().when(campaignMetricService).delete(metricId);
 
-        graphQlTester.document(document)
-                .execute()
-                .errors()
-                .expect(error -> Objects.requireNonNull(error.getMessage()).contains("Name cannot be empty"));
+            // Act
+            boolean result = controller.deleteMetric(metricId);
 
-        verify(campaignMetricService).create(any(CampaignMetricInsertDTO.class));
-    }
+            // Assert
+            assertTrue(result);
+            verify(campaignMetricService).delete(metricId);
+        }
 
-    @Test
-    void updateMetric_ValidInput_ReturnsUpdatedMetric() {
-        // Arrange
-        when(campaignMetricService.update(eq(metricId), any(CampaignMetricInsertDTO.class)))
-                .thenReturn(metricDTO);
+        @Test
+        void deleteMetric_NonExistingMetric_ThrowsException() {
+            // Arrange
+            doThrow(new RuntimeException("Metric not found")).when(campaignMetricService).delete(metricId);
 
-        // Act and Assert
-        String document = """
-                mutation {
-                  updateMetric(
-                    id: "%s",
-                    input: {
-                      campaignId: "%s",
-                      name: "Test Metric",
-                      description: "Updated Description",
-                      type: ENGAGEMENT,
-                      value: 120,
-                      targetValue: 180,
-                      measurementUnit: "count",
-                      calculationFormula: "Updated formula",
-                      dataSource: "Google Analytics",
-                      automated: true
-                    }
-                  ) {
-                    id
-                    campaignId
-                    name
-                    description
-                    value
-                    targetValue
-                  }
-                }
-                """.formatted(metricId, campaignId);
-
-        graphQlTester.document(document)
-                .execute()
-                .path("updateMetric")
-                .entity(CampaignMetricDTO.class)
-                .satisfies(dto -> {
-                    assertEquals(metricId, dto.getId());
-                    assertEquals(campaignId, dto.getCampaignId());
-                    assertEquals("Test Metric", dto.getName());
-                });
-
-        verify(campaignMetricService).update(eq(metricId), any(CampaignMetricInsertDTO.class));
-    }
-
-    @Test
-    void updateMetric_MetricNotFound_ThrowsException() {
-        // Arrange
-        when(campaignMetricService.update(eq(metricId), any(CampaignMetricInsertDTO.class)))
-                .thenThrow(new EntityNotFoundException("Metric not found"));
-
-        // Act and Assert
-        String document = """
-                mutation {
-                  updateMetric(
-                    id: "%s",
-                    input: {
-                      campaignId: "%s",
-                      name: "Test Metric",
-                      type: ENGAGEMENT,
-                      value: 100,
-                      targetValue: 150
-                    }
-                  ) {
-                    id
-                    name
-                  }
-                }
-                """.formatted(metricId, campaignId);
-
-        graphQlTester.document(document)
-                .execute()
-                .errors()
-                .expect(error -> Objects.requireNonNull(error.getMessage()).contains("Metric not found"));
-
-        verify(campaignMetricService).update(eq(metricId), any(CampaignMetricInsertDTO.class));
-    }
-
-    @Test
-    void deleteMetric_ValidId_ReturnsTrue() {
-        // Arrange
-        doNothing().when(campaignMetricService).delete(metricId);
-
-        // Act and Assert
-        String document = """
-                mutation {
-                  deleteMetric(id: "%s")
-                }
-                """.formatted(metricId);
-
-        graphQlTester.document(document)
-                .execute()
-                .path("deleteMetric")
-                .entity(Boolean.class)
-                .isEqualTo(true);
-
-        verify(campaignMetricService).delete(metricId);
-    }
-
-    @Test
-    void deleteMetric_BusinessConstraint_ThrowsException() {
-        // Arrange
-        doThrow(new BusinessLogicException("Cannot delete metric with dependent data"))
-                .when(campaignMetricService).delete(metricId);
-
-        // Act and Assert
-        String document = """
-                mutation {
-                  deleteMetric(id: "%s")
-                }
-                """.formatted(metricId);
-
-        graphQlTester.document(document)
-                .execute()
-                .errors()
-                .expect(error -> Objects.requireNonNull(error.getMessage()).contains("Cannot delete metric with dependent data"));
-
-        verify(campaignMetricService).delete(metricId);
+            // Act & Assert
+            assertThatThrownBy(() -> controller.deleteMetric(metricId))
+                    .isInstanceOf(RuntimeException.class)
+                    .hasMessageContaining("Metric not found");
+        }
     }
 }

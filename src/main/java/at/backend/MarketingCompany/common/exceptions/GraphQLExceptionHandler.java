@@ -15,7 +15,6 @@ public class GraphQLExceptionHandler extends DataFetcherExceptionResolverAdapter
 
     @Override
     protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
-        ex.printStackTrace(); // Solo para depuración. En producción, usa un logger.
 
         if (ex instanceof BusinessException) {
             return GraphqlErrorBuilder.newError()
@@ -47,6 +46,7 @@ public class GraphQLExceptionHandler extends DataFetcherExceptionResolverAdapter
                 .location(env.getField().getSourceLocation())
                 .build();
     }
+    
 
 }
 
