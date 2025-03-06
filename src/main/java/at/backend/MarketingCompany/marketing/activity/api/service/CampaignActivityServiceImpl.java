@@ -2,14 +2,17 @@ package at.backend.MarketingCompany.marketing.activity.api.service;
 
 import at.backend.MarketingCompany.common.exceptions.InvalidInputException;
 import at.backend.MarketingCompany.common.exceptions.InvalidStatusTransitionException;
-import at.backend.MarketingCompany.marketing.activity.infrastructure.AutoMappers.CampaignActivityMappers;
+import at.backend.MarketingCompany.marketing.activity.domain.CampaignActivity;
+import at.backend.MarketingCompany.marketing.activity.infrastructure.AutoMappers.ActivityMappers;
 import at.backend.MarketingCompany.marketing.activity.infrastructure.DTOs.CampaignActivityDTO;
 import at.backend.MarketingCompany.marketing.activity.infrastructure.DTOs.CampaignActivityInsertDTO;
 import at.backend.MarketingCompany.marketing.activity.api.repository.CampaignActivityModel;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.ActivityStatus;
 import at.backend.MarketingCompany.marketing.activity.api.repository.CampaignActivityRepository;
-import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
+import at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers.CampaignId;
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignRepository;
+import at.backend.MarketingCompany.marketing.campaign.domain.MarketingCampaign;
+import at.backend.MarketingCompany.marketing.campaign.infrastructure.autoMappers.CampaignMappers;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,17 +30,19 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
 
     private final CampaignActivityRepository campaignActivityRepository;
     private final MarketingCampaignRepository marketingCampaignRepository;
-    private final CampaignActivityMappers campaignActivityMappers;
+    private final CampaignMappers campaignMappers;
+    private final ActivityMappers activityMappers;
 
     @Override
     public Page<CampaignActivityDTO> getAll(Pageable pageable) {
-        return campaignActivityRepository.findAll(pageable).map(campaignActivityMappers::entityToDTO);
+        return campaignActivityRepository.findAll(pageable)
+                .map(activityMappers::modelToDTO);
     }
 
     @Override
     public CampaignActivityDTO getById(UUID id) {
         return campaignActivityRepository.findById(id)
-                .map(campaignActivityMappers::entityToDTO)
+                .map(activityMappers::modelToDTO)
                 .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
     }
 
@@ -45,25 +50,24 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     public CampaignActivityDTO create(CampaignActivityInsertDTO input) {
         validate(input);
 
-        CampaignActivityModel activity = campaignActivityMappers.inputToEntity(input);
+        CampaignActivity activity = activityMappers.inputToEntity(input);
 
-        MarketingCampaignModel campaign = getCampaign(input.getCampaignId());
-        activity.setCampaign(campaign);
+        getCampaign(input.getCampaignId());
+        activity.setCampaignId(CampaignId.of(input.getCampaignId()));
 
-        campaignActivityRepository.save(activity);
+        save(activity);
 
-        return campaignActivityMappers.entityToDTO(activity);
+        return activityMappers.domainToDTO(activity);
     }
 
     @Override
     public CampaignActivityDTO update(UUID id, CampaignActivityInsertDTO input) {
-        CampaignActivityModel existingActivity = campaignActivityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + id));
+        CampaignActivity existingActivity = getActivity(id);
 
-        campaignActivityMappers.updateEntity(existingActivity, input);
-        campaignActivityRepository.save(existingActivity);
+        activityMappers.updateEntity(existingActivity, input);
+        save(existingActivity);
 
-        return campaignActivityMappers.entityToDTO(existingActivity);
+        return activityMappers.domainToDTO(existingActivity);
     }
 
     @Override
@@ -75,45 +79,52 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
     }
 
     @Override
-    public List<CampaignActivityModel> getActivitiesByCampaignId(UUID campaignId) {
-        return campaignActivityRepository.findByCampaignId(campaignId);
+    public List<CampaignActivityDTO> getActivitiesByCampaignId(UUID campaignId) {
+        return campaignActivityRepository.findByCampaignId(campaignId)
+                .stream()
+                .map(activityMappers::modelToDTO)
+                .toList();
     }
 
     @Override
-    public List<CampaignActivityModel> getActivitiesByStatus(ActivityStatus status) {
-        return campaignActivityRepository.findByStatus(status);
+    public List<CampaignActivityDTO> getActivitiesByStatus(ActivityStatus status) {
+        return campaignActivityRepository.findByStatus(status)
+                .stream()
+                .map(activityMappers::modelToDTO)
+                .toList();
     }
 
     @Override
     public CampaignActivityDTO startActivity(UUID id) {
-        CampaignActivityModel activity = getActivity(id);
+        CampaignActivity activity = getActivity(id);
         if (activity.getStatus() != ActivityStatus.PLANNED) {
             throw new InvalidStatusTransitionException(activity.getStatus(), ActivityStatus.PLANNED);
         }
-        activity.setStatus(ActivityStatus.IN_PROGRESS);
-        activity.setActualStartDate(LocalDateTime.now());
-        campaignActivityRepository.save(activity);
+        activity.startActivity();
 
-        return campaignActivityMappers.entityToDTO(activity);
+        save(activity);
+
+        return activityMappers.domainToDTO(activity);
     }
 
     @Override
     public CampaignActivityDTO completeActivity(UUID id) {
-        CampaignActivityModel activity = getActivity(id);
+        CampaignActivity activity = getActivity(id);
 
         if (activity.getStatus() != ActivityStatus.IN_PROGRESS) {
             throw new InvalidStatusTransitionException(activity.getStatus(), ActivityStatus.COMPLETED);
         }
 
-        activity.setStatus(ActivityStatus.COMPLETED);
-        activity.setActualEndDate(LocalDateTime.now());
-        campaignActivityRepository.save(activity);
+        activity.completeActivity();
+        save(activity);
 
-        return campaignActivityMappers.entityToDTO(activity);
+        return activityMappers.domainToDTO(activity);
     }
 
     public BigDecimal calculateRemainingBudget(UUID id) {
-        CampaignActivityModel activity = getActivity(id);
+        var activity = campaignActivityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Campaign not found with ID: " + id));
+
         return activity.getPlannedCost().subtract(activity.getActualCost() != null ? activity.getActualCost() : BigDecimal.ZERO);
     }
 
@@ -130,13 +141,20 @@ public class CampaignActivityServiceImpl implements CampaignActivityService {
         }
     }
 
-    private CampaignActivityModel getActivity(UUID activityID) {
+    private CampaignActivity getActivity(UUID activityID) {
         return campaignActivityRepository.findById(activityID)
+                .map(activityMappers::modelToDomain)
                 .orElseThrow(() -> new EntityNotFoundException("Campaign Activity not found with ID: " + activityID));
     }
 
-    private MarketingCampaignModel getCampaign(UUID campaignID) {
+    private MarketingCampaign getCampaign(UUID campaignID) {
         return marketingCampaignRepository.findById(campaignID)
+                .map(campaignMappers::modelToDomain)
                 .orElseThrow(() -> new EntityNotFoundException("Campaign not found with ID: " + campaignID));
+    }
+
+    private void save(CampaignActivity activity) {
+        CampaignActivityModel model = activityMappers.domainToModel(activity);
+        campaignActivityRepository.save(model);
     }
 }

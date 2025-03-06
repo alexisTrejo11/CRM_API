@@ -279,6 +279,7 @@ enum DealStatus {
 
 
 
+
 type Property {
     key: String!
     value: String!
@@ -289,22 +290,27 @@ input PropertyInput {
     value: String!
 }
 
+
+
 # MARKETING #
 # Type for CampaignActivityModel
 scalar JSON
+scalar DateTime
+scalar Date
+scalar BigDecimal
 
 type CampaignActivity {
-    id: ID!
-    name: String!
+    id: ID
+    name: String
     description: String
-    activityType: ActivityType!
-    plannedStartDate: String!
-    plannedEndDate: String!
-    actualStartDate: String
-    actualEndDate: String
-    status: ActivityStatus!
-    plannedCost: Float!
-    actualCost: Float
+    activityType: ActivityType
+    plannedStartDate: DateTime
+    plannedEndDate: DateTime
+    actualStartDate: DateTime
+    actualEndDate: DateTime
+    status: ActivityStatus
+    plannedCost: BigDecimal
+    actualCost: BigDecimal
     assignedTo: String
     successCriteria: String
     targetAudience: String
@@ -316,14 +322,15 @@ input CampaignActivityInput {
     name: String!
     description: String
     activityType: ActivityType!
-    plannedStartDate: String!
-    plannedEndDate: String!
-    plannedCost: Float!
+    plannedStartDate: DateTime!
+    plannedEndDate: DateTime!
+    plannedCost: BigDecimal
     successCriteria: String
     targetAudience: String
     deliveryChannel: String
     campaignId: ID!
 }
+
 
 # Enum for ActivityType
 enum ActivityType {
@@ -344,15 +351,16 @@ enum ActivityStatus {
 
 # Type for CampaignAttributionModel
 type CampaignAttribution {
-    id: ID!
-    dealId: ID!
-    campaignId: ID!
+    id: ID
+    dealId: ID
+    campaignId: ID
     attributionModel: AttributionModel!
-    attributionPercentage: Float!
-    attributedRevenue: Float
-    firstTouchDate: String
-    lastTouchDate: String
+    attributionPercentage: BigDecimal
+    attributedRevenue: BigDecimal
+    firstTouchDate: DateTime
+    lastTouchDate: DateTime
     touchCount: Int
+    distribution: [CampaignAttribution]
 }
 
 # Input for creating a new CampaignAttributionModel
@@ -360,18 +368,20 @@ input CampaignAttributionInput {
     dealId: ID!
     campaignId: ID!
     attributionModel: AttributionModel!
-    attributionPercentage: Float!
-    attributedRevenue: Float
+    attributionPercentage: BigDecimal
+    attributedRevenue: BigDecimal
     touchCount: Int
 }
 
 # Enum for AttributionModel
 enum AttributionModel {
-    FIRST_TOUCH
-    LAST_TOUCH
-    LINEAR
-    TIME_DECAY
-    POSITION_BASED
+    FIRST_TOUCH,
+    LAST_TOUCH,
+    LINEAR,
+    U_SHAPED,
+    W_SHAPED,
+    TIME_DECAY,
+    POSITION_BASED,
     CUSTOM
 }
 
@@ -381,7 +391,6 @@ type CampaignInteraction {
     campaignId: ID
     customerId: ID
     interactionType: MarketingInteractionType
-    interactionDate: String
     sourceChannel: String
     sourceMedium: String
     sourceCampaign: String
@@ -393,6 +402,7 @@ type CampaignInteraction {
     resultedDealId: ID
     conversionValue: Float
 }
+
 
 # Input for creating a new CampaignInteractionModel
 input CampaignInteractionInput {
@@ -481,10 +491,10 @@ type CampaignMetric {
     name: String
     description: String
     type: MetricType
-    value: Float
-    targetValue: Float
+    value: BigDecimal
+    targetValue: BigDecimal
     measurementUnit: String
-    lastCalculated: String
+    lastCalculated: DateTime
     calculationFormula: String
     dataSource: String
     automated: Boolean
@@ -492,12 +502,12 @@ type CampaignMetric {
 
 # Input for creating a new CampaignMetricModel
 input CampaignMetricInput {
-    campaignId: ID!
-    name: String!
+    campaignId: ID
+    name: String
     description: String
-    type: MetricType!
-    value: Float
-    targetValue: Float!
+    type: MetricType
+    value: BigDecimal
+    targetValue: BigDecimal
     measurementUnit: String
     calculationFormula: String
     dataSource: String
@@ -506,11 +516,14 @@ input CampaignMetricInput {
 
 # Enum for MetricType
 enum MetricType {
-    COUNT
-    CURRENCY
-    PERCENTAGE
-    DURATION
-    COST
+    COUNT,
+    PERCENTAGE,
+    CURRENCY,
+    RATIO,
+    DURATION,
+    COST,
+    SCORE,
+    CUSTOM
 }
 
 # Type for MarketingCampaign
@@ -518,62 +531,84 @@ type MarketingCampaign {
     id: ID!
     name: String!
     description: String
-    startDate: String!
-    endDate: String
-    budget: Float
-    costToDate: Float
+    startDate: Date
+    endDate: Date
+    budget: BigDecimal
+    costToDate: BigDecimal
     status: CampaignStatus!
     type: CampaignType!
     targetAudience: String
     successCriteria: String
     targets: JSON
-    relatedDealIds: [ID!]
-    targetSegmentIds: [ID!]
+    relatedDealIds: [ID]
+    targetSegmentIds: [ID]
 }
 
 # Input for creating a new MarketingCampaign
 input MarketingCampaignInput {
     name: String!
     description: String
-    startDate: String!
-    endDate: String
-    budget: Float
-    targetAudience: String
-    successCriteria: String
+    startDate: Date!
+    endDate: Date
+    budget: BigDecimal
+    targetAudience: TargetAudienceDetailsInput
+    successCriteria: SuccessCriteriaDetailsInput
     targets: JSON
     type: CampaignType!
 }
 
+input TargetAudienceDetailsInput {
+    description: String!
+    demographics: [String!]!
+    geographicLocations: [String!]!
+    interests: [String!]!
+}
+
+input SuccessCriteriaDetailsInput {
+    description: String!
+    metrics: [MetricInput!]!
+}
+
+input MetricInput {
+    name: String!
+    value: Float!
+}
+
+
 # Enum for CampaignStatus
 enum CampaignStatus {
     DRAFT
+    PLANNED
+    APPROVED
+    SCHEDULED
     ACTIVE
     PAUSED
     COMPLETED
     CANCELLED
+    ANALYZING
 }
 
 # Enum for CampaignType
 enum CampaignType {
-    EMAIL,
-    SOCIAL_MEDIA,
-    CONTENT_MARKETING,
-    EVENT,
-    WEBINAR,
-    PPC,
-    SEO,
-    DIRECT_MAIL,
-    SMS,
-    REFERRAL,
-    AFFILIATE,
-    INFLUENCER,
-    PR,
-    TRADE_SHOW,
-    PRINT,
-    TV,
-    RADIO,
-    REMARKETING,
-    MULTI_CHANNEL,
+    EMAIL
+    SOCIAL_MEDIA
+    CONTENT_MARKETING
+    EVENT
+    WEBINAR
+    PPC
+    SEO
+    DIRECT_MAIL
+    SMS
+    REFERRAL
+    AFFILIATE
+    INFLUENCER
+    PR
+    TRADE_SHOW
+    PRINT
+    TV
+    RADIO
+    REMARKETING
+    MULTI_CHANNEL
     OTHER
 }
 

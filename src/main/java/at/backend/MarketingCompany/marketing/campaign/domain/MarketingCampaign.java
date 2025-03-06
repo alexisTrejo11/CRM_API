@@ -23,11 +23,11 @@ import java.util.*;
 
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(force = true)
+@AllArgsConstructor
 @Builder
 public class MarketingCampaign {
-    private final CampaignId id;
+    private CampaignId id;
     private String name;
     private String description;
     private CampaignPeriod period;

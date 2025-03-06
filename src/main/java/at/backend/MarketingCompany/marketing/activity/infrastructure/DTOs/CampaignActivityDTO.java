@@ -44,7 +44,10 @@ public class CampaignActivityDTO {
     @DecimalMin(value = "0.0", inclusive = true, message = "Actual cost must be greater than or equal to zero")
     private BigDecimal actualCost;
 
-    private String assignedTo;
+    private UUID assignedTo;
+
+    private UUID campaignId;
+
 
     @Size(max = 500, message = "Success criteria cannot exceed 500 characters")
     private String successCriteria;

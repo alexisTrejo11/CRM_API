@@ -16,6 +16,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -121,7 +122,7 @@ public class CampaignActivity {
         }
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         if (name == null || name.trim().isEmpty()) {
             throw new ActivityException("Activity name is required");
         }
@@ -131,14 +132,14 @@ public class CampaignActivity {
         this.name = name.trim();
     }
 
-    private void setDescription(String description) {
+    public void setDescription(String description) {
         if (description != null && description.length() > 1000) {
             throw new ActivityException("Description cannot exceed 1000 characters");
         }
         this.description = description != null ? description.trim() : null;
     }
 
-    private void setDeliveryChannel(String channel) {
+    public void setDeliveryChannel(String channel) {
         if (channel == null || channel.trim().isEmpty()) {
             throw new ActivityException("Delivery channel is required");
         }
