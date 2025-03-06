@@ -20,6 +20,7 @@ import java.util.Locale;
 public class GraphQLScalars {
 
     public static final GraphQLScalarType DateTime = ExtendedScalars.DateTime;
+    public static final GraphQLScalarType Date = ExtendedScalars.Date;
     public static final GraphQLScalarType BigDecimal = ExtendedScalars.GraphQLBigDecimal;
 
     public static final GraphQLScalarType JSON = GraphQLScalarType.newScalar()

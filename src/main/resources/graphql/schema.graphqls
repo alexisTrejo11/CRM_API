@@ -648,6 +648,9 @@ type Query {
 
     #Marketing
     getActivityById(id: ID!): CampaignActivity
+    getActivitiesByCampaignId(campaignId: ID!): [CampaignActivity]
+    getActivitiesByStatus(status: ActivityStatus!): [CampaignActivity]
+
     getAttributionById(id: ID!): CampaignAttribution
     getCampaignInteractionById(id: ID!): CampaignInteraction
     getMetricById(id: ID!): CampaignMetric
@@ -693,9 +696,11 @@ type Mutation {
     deleteDeal(id: ID!): Boolean!
 
     # Marketing Campaign
-    createActivity(input: CampaignActivityInput!): CampaignActivity!
-    updateActivity(id: ID!, input: CampaignActivityInput!): CampaignActivity!
-    deleteActivity(id: ID!): Boolean!
+    createActivity(input: CampaignActivityInput!): CampaignActivity
+    updateActivity(input: CampaignActivityInput!, id: ID!): CampaignActivity
+    deleteActivity(id: ID!): Boolean
+    startActivity(id: ID!): CampaignActivity
+    completeActivity(id: ID!): CampaignActivity
 
     createCampaignInteraction(input: CampaignInteractionInput!): CampaignInteraction!
     updateCampaignInteraction(id: ID!, input: CampaignInteractionInput!): CampaignInteraction!
