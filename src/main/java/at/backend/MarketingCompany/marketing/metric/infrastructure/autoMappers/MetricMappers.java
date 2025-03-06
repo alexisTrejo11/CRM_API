@@ -106,7 +106,6 @@ public class MetricMappers {
                 .build();
     }
 
-
     private TargetAudience targetAudienceMap(TargetAudienceDetailsDTO dto) {
         return new TargetAudience(
                 dto.description(),

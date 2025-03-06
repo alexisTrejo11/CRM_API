@@ -2,7 +2,7 @@ package at.backend.MarketingCompany.marketing.attribution.domain;
 
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.AttributionModel;
 import at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers.*;
-import lombok.Builder;
+        import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -50,12 +50,13 @@ public class CampaignAttribution {
             AttributionModel model,
             TouchTimeline timeline
     ) {
+        AttributionPercentage initialPercentage = calculatePercentageForModel(model);
         return new CampaignAttribution(
                 AttributionId.of(generateId()),
                 dealId,
                 campaignId,
                 model,
-                new AttributionPercentage(BigDecimal.ZERO),
+                initialPercentage,
                 new AttributedRevenue(BigDecimal.ZERO),
                 timeline,
                 LocalDateTime.now(),
@@ -87,7 +88,7 @@ public class CampaignAttribution {
                 this.dealId,
                 this.campaignId,
                 newModel,
-                calculatePercentage(newModel),
+                calculatePercentageForModel(newModel),
                 this.revenue,
                 this.timeline,
                 this.createdAt,
@@ -95,7 +96,7 @@ public class CampaignAttribution {
         );
     }
 
-    public AttributionPercentage calculatePercentage(AttributionModel model) {
+    public static AttributionPercentage calculatePercentageForModel(AttributionModel model) {
         return switch (model) {
             case FIRST_TOUCH -> new AttributionPercentage(BigDecimal.valueOf(100));
             case LAST_TOUCH -> new AttributionPercentage(BigDecimal.valueOf(50));

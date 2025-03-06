@@ -12,13 +12,14 @@ import java.time.LocalDateTime;
 
 @Getter
 @SuperBuilder
+@Setter
 public class CampaignMetric {
 
-    private final CampaignMetricId id;
+    private CampaignMetricId id;
     @Setter
     private MarketingCampaign campaign;
-    private final String name;
-    private final MetricType type;
+    private String name;
+    private MetricType type;
     private String description;
     private BigDecimal value;
     private BigDecimal targetValue;
@@ -70,7 +71,7 @@ public class CampaignMetric {
         if (targetValue == null || targetValue.compareTo(BigDecimal.ZERO) == 0) {
             return BigDecimal.ZERO;
         }
-        return value.divide(targetValue, 4, BigDecimal.ROUND_HALF_UP)
+        return value.divide(targetValue, 2, BigDecimal.ROUND_HALF_UP)
                 .multiply(BigDecimal.valueOf(100));
     }
 }

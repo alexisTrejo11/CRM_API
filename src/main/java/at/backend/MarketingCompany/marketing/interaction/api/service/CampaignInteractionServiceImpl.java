@@ -10,6 +10,7 @@ import at.backend.MarketingCompany.marketing.campaign.infrastructure.autoMappers
 import at.backend.MarketingCompany.marketing.interaction.api.repository.CampaignInteractionModel;
 import at.backend.MarketingCompany.marketing.interaction.api.repository.CampaignInteractionRepository;
 import at.backend.MarketingCompany.marketing.interaction.domain.CampaignInteraction;
+import at.backend.MarketingCompany.marketing.interaction.domain.InteractionSource;
 import at.backend.MarketingCompany.marketing.interaction.infrastructure.autoMappers.InteractionMappers;
 import at.backend.MarketingCompany.marketing.interaction.infrastructure.DTOs.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -144,7 +145,7 @@ public class CampaignInteractionServiceImpl implements CampaignInteractionServic
     private void updateDomain(CampaignInteraction domain, CampaignInteractionInsertDTO dto) {
         domain.setDetails(dto.getDetails());
         domain.setInteractionDate(dto.getInteractionDate());
-        domain.setSource(CampaignInteraction.InteractionSource.builder()
+        domain.setSource(InteractionSource.builder()
                 .channel(dto.getSourceChannel())
                 .medium(dto.getSourceMedium())
                 .campaignName(dto.getSourceCampaign())

@@ -9,6 +9,7 @@ import at.backend.MarketingCompany.marketing.activity.domain.HelperClasses.Activ
 import at.backend.MarketingCompany.marketing.campaign.domain.HelperClasses.CampaignId;
 import at.backend.MarketingCompany.marketing.customer.UserId;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CampaignActivity {

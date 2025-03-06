@@ -1,9 +1,12 @@
 package at.backend.MarketingCompany.marketing.campaign.domain.HelperClasses;
 
+import lombok.Builder;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Builder
 public record TargetAudience(String description, Set<String> demographics, Set<String> geographicLocations,
                              Set<String> interests) {
     public TargetAudience(String description, Set<String> demographics, Set<String> geographicLocations, Set<String> interests) {

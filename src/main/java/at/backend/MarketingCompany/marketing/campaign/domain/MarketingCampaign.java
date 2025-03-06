@@ -71,6 +71,8 @@ public class MarketingCampaign {
         validateInitialState();
     }
 
+
+
     private void validateInitialState() {
         if (period.startDate().isBefore(LocalDate.now().plusDays(1))) {
             throw new CampaignException("Campaigns must be created at least 1 day in advance");
@@ -92,7 +94,7 @@ public class MarketingCampaign {
         if (status != CampaignStatus.ACTIVE) {
             throw new CampaignException("Only active campaigns can be completed");
         }
-        if (period.endDate() == null || !LocalDate.now().isAfter(period.endDate())) {
+        if (period.endDate() == null || LocalDate.now().isBefore(period.endDate())) {
             throw new CampaignException("A campaign cannot be completed before its end date");
         }
         this.status = CampaignStatus.COMPLETED;

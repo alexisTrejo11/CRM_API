@@ -29,7 +29,7 @@ public class AttributionCalculatorImpl implements AttributionCalculator {
 
     @Override
     public CampaignAttribution recalculateForModel(CampaignAttribution attribution) {
-        AttributionPercentage recalculatedPercentage = attribution.calculatePercentage(AttributionModel.LAST_TOUCH);
+        AttributionPercentage recalculatedPercentage = attribution.calculatePercentageForModel(AttributionModel.LAST_TOUCH);
         return CampaignAttribution.builder()
                 .percentage(recalculatedPercentage)
                 .revenue(attribution.getRevenue())

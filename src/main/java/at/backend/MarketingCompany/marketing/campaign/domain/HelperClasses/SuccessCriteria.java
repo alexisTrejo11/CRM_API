@@ -1,8 +1,11 @@
 package at.backend.MarketingCompany.marketing.campaign.domain.HelperClasses;
 
+import lombok.Builder;
+
 import java.util.Map;
 import java.util.Objects;
 
+@Builder
 public record SuccessCriteria(String description, Map<String, Double> metrics) {
     public SuccessCriteria(String description, Map<String, Double> metrics) {
         this.description = validateDescription(description);

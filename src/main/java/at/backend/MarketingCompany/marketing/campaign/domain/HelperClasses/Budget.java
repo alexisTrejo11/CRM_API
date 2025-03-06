@@ -17,4 +17,8 @@ public record Budget(BigDecimal totalBudget, BigDecimal costToDate) {
     public boolean exceedsBudget() {
         return totalBudget != null && costToDate.compareTo(totalBudget) > 0;
     }
+
+    public BigDecimal getSpentAmount() {
+        return costToDate;
+    }
 }

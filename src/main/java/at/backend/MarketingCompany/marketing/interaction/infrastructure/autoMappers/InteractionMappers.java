@@ -24,12 +24,12 @@ public class InteractionMappers {
                 //.customerModel(dto.getCustomerModel())
                 .interactionType(dto.getInteractionType())
                 .interactionDate(dto.getInteractionDate())
-                .source(CampaignInteraction.InteractionSource.builder()
+                .source(InteractionSource.builder()
                         .channel(dto.getSourceChannel())
                         .medium(dto.getSourceMedium())
                         .campaignName(dto.getSourceCampaign())
                         .build())
-                .deviceInfo(CampaignInteraction.DeviceInfo.builder()
+                .deviceInfo(DeviceInfo.builder()
                         .deviceType(dto.getDeviceType())
                         .ipAddress(dto.getIpAddress())
                         .build())
@@ -91,12 +91,12 @@ public class InteractionMappers {
                 .customerModel(model.getCustomer())
                 .interactionType(model.getInteractionType())
                 .interactionDate(model.getInteractionDate())
-                .source(CampaignInteraction.InteractionSource.builder()
+                .source(InteractionSource.builder()
                         .channel(model.getSourceChannel())
                         .medium(model.getSourceMedium())
                         .campaignName(model.getSourceCampaign())
                         .build())
-                .deviceInfo(CampaignInteraction.DeviceInfo.builder()
+                .deviceInfo(DeviceInfo.builder()
                         .deviceType(model.getDeviceType())
                         .ipAddress(model.getIpAddress())
                         .build())
@@ -110,17 +110,17 @@ public class InteractionMappers {
                 .build();
     }
 
-    private CampaignInteraction.GeoLocation parseGeoLocation(String geoLocation) {
+    private GeoLocation parseGeoLocation(String geoLocation) {
         if (geoLocation == null) return null;
         String[] parts = geoLocation.split(",");
-        return CampaignInteraction.GeoLocation.builder()
+        return GeoLocation.builder()
                 .country(parts.length > 0 ? parts[0] : null)
                 .region(parts.length > 1 ? parts[1] : null)
                 .city(parts.length > 2 ? parts[2] : null)
                 .build();
     }
 
-    private String formatGeoLocation(CampaignInteraction.GeoLocation geo) {
+    private String formatGeoLocation(GeoLocation geo) {
         if (geo == null) return null;
         return String.format("%s,%s,%s",
                 geo.getCountry(),

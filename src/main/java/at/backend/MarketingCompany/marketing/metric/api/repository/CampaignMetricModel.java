@@ -3,8 +3,8 @@ package at.backend.MarketingCompany.marketing.metric.api.repository;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.MetricType;
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,6 +12,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "campaign_metrics")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class CampaignMetricModel {
 
@@ -48,6 +50,10 @@ public class CampaignMetricModel {
 
     @Column(name = "calculation_formula", length = 1000)
     private String calculationFormula;
+
+    @Setter
+    @Column(name = "revenue", precision = 19, scale = 4)
+    private BigDecimal revenue;
 
     @Column(name = "data_source", length = 500)
     private String dataSource;
@@ -87,8 +93,6 @@ public class CampaignMetricModel {
     }
 
     public BigDecimal getRevenue() {
-        return BigDecimal.ONE;
+        return revenue != null ? revenue : BigDecimal.ZERO;
     }
-
-
 }

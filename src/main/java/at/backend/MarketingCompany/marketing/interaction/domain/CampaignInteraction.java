@@ -24,9 +24,9 @@ public class CampaignInteraction {
     private final MarketingInteractionType interactionType;
     private LocalDateTime interactionDate;
     private InteractionSource source;
-    private final DeviceInfo deviceInfo;
-    private final GeoLocation geoLocation;
-    private final Map<String, String> properties;
+    private DeviceInfo deviceInfo;
+    private GeoLocation geoLocation;
+    private Map<String, String> properties;
     private String details;
     private Deal resultedDeal;
     private Double conversionValue;
@@ -114,28 +114,5 @@ public class CampaignInteraction {
         double attributionWeight = Math.max(0, campaignROI);
 
         return conversionValue * attributionWeight;
-    }
-
-    @Getter
-    @Builder
-    public static class InteractionSource {
-        private final String channel;
-        private final String medium;
-        private final String campaignName;
-    }
-
-    @Getter
-    @Builder
-    public static class DeviceInfo {
-        private final String deviceType;
-        private final String ipAddress;
-    }
-
-    @Getter
-    @Builder
-    public static class GeoLocation {
-        private final String country;
-        private final String region;
-        private final String city;
     }
 }
