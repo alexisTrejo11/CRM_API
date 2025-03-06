@@ -1,4 +1,4 @@
-package at.backend.MarketingCompany.common.utils;
+package at.backend.MarketingCompany.common.utils.GraphQL;
 
 import graphql.GraphQLContext;
 import graphql.execution.CoercedVariables;
@@ -10,6 +10,7 @@ import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import graphql.scalars.ExtendedScalars;
 
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 
 public class GraphQLScalars {
+
+    public static final GraphQLScalarType DateTime = ExtendedScalars.DateTime;
+    public static final GraphQLScalarType BigDecimal = ExtendedScalars.GraphQLBigDecimal;
 
     public static final GraphQLScalarType JSON = GraphQLScalarType.newScalar()
             .name("JSON")
