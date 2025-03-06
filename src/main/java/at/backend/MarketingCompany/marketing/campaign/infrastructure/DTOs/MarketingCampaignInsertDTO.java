@@ -2,6 +2,7 @@ package at.backend.MarketingCompany.marketing.campaign.infrastructure.DTOs;
 
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.CampaignType;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@Builder
 public class MarketingCampaignInsertDTO {
 
     @NotBlank(message = "Name cannot be empty")

@@ -3,6 +3,7 @@ package at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.AttributionModel;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CampaignAttributionInsertDTO {
 
     @NotNull(message = "Deal ID cannot be null")

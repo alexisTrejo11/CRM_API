@@ -29,7 +29,7 @@ public class AttributionCalculatorImpl implements AttributionCalculator {
 
     @Override
     public CampaignAttribution recalculateForModel(CampaignAttribution attribution) {
-        AttributionPercentage recalculatedPercentage = attribution.calculatePercentageForModel(AttributionModel.LAST_TOUCH);
+        AttributionPercentage recalculatedPercentage = CampaignAttribution.calculatePercentageForModel(attribution.getModel());
         return CampaignAttribution.builder()
                 .percentage(recalculatedPercentage)
                 .revenue(attribution.getRevenue())
@@ -46,6 +46,7 @@ public class AttributionCalculatorImpl implements AttributionCalculator {
     public CampaignAttribution adjustForNewTouch(CampaignAttribution attribution) {
         int touchCount = attribution.getTimeline().getTouchCount();
         BigDecimal adjustedPercentageValue = BigDecimal.valueOf(100).divide(BigDecimal.valueOf(touchCount), 2, BigDecimal.ROUND_HALF_UP);
+        System.out.println("Touch Count: " + touchCount);
 
         AttributionPercentage adjustedPercentage = new AttributionPercentage(adjustedPercentageValue);
 

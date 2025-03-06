@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-05T13:17:57-0600",
+    date = "2025-03-05T20:42:47-0600",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.11.1.jar, environment: Java 23.0.2 (Homebrew)"
 )
 @Component
@@ -22,19 +22,19 @@ public class CampaignActivityMappersImpl implements CampaignActivityMappers {
             return null;
         }
 
-        CampaignActivityModel campaignActivityModel = new CampaignActivityModel();
+        CampaignActivityModel.CampaignActivityModelBuilder campaignActivityModel = CampaignActivityModel.builder();
 
-        campaignActivityModel.setName( input.getName() );
-        campaignActivityModel.setDescription( input.getDescription() );
-        campaignActivityModel.setActivityType( input.getActivityType() );
-        campaignActivityModel.setPlannedStartDate( input.getPlannedStartDate() );
-        campaignActivityModel.setPlannedEndDate( input.getPlannedEndDate() );
-        campaignActivityModel.setPlannedCost( input.getPlannedCost() );
-        campaignActivityModel.setSuccessCriteria( input.getSuccessCriteria() );
-        campaignActivityModel.setTargetAudience( input.getTargetAudience() );
-        campaignActivityModel.setDeliveryChannel( input.getDeliveryChannel() );
+        campaignActivityModel.name( input.getName() );
+        campaignActivityModel.description( input.getDescription() );
+        campaignActivityModel.activityType( input.getActivityType() );
+        campaignActivityModel.plannedStartDate( input.getPlannedStartDate() );
+        campaignActivityModel.plannedEndDate( input.getPlannedEndDate() );
+        campaignActivityModel.plannedCost( input.getPlannedCost() );
+        campaignActivityModel.successCriteria( input.getSuccessCriteria() );
+        campaignActivityModel.targetAudience( input.getTargetAudience() );
+        campaignActivityModel.deliveryChannel( input.getDeliveryChannel() );
 
-        return campaignActivityModel;
+        return campaignActivityModel.build();
     }
 
     @Override
@@ -43,28 +43,28 @@ public class CampaignActivityMappersImpl implements CampaignActivityMappers {
             return null;
         }
 
-        CampaignActivityDTO campaignActivityDTO = new CampaignActivityDTO();
+        CampaignActivityDTO.CampaignActivityDTOBuilder campaignActivityDTO = CampaignActivityDTO.builder();
 
         UUID id = entityAssignedToId( entity );
         if ( id != null ) {
-            campaignActivityDTO.setAssignedTo( id.toString() );
+            campaignActivityDTO.assignedTo( id.toString() );
         }
-        campaignActivityDTO.setId( entity.getId() );
-        campaignActivityDTO.setName( entity.getName() );
-        campaignActivityDTO.setDescription( entity.getDescription() );
-        campaignActivityDTO.setActivityType( entity.getActivityType() );
-        campaignActivityDTO.setPlannedStartDate( entity.getPlannedStartDate() );
-        campaignActivityDTO.setPlannedEndDate( entity.getPlannedEndDate() );
-        campaignActivityDTO.setActualStartDate( entity.getActualStartDate() );
-        campaignActivityDTO.setActualEndDate( entity.getActualEndDate() );
-        campaignActivityDTO.setStatus( entity.getStatus() );
-        campaignActivityDTO.setPlannedCost( entity.getPlannedCost() );
-        campaignActivityDTO.setActualCost( entity.getActualCost() );
-        campaignActivityDTO.setSuccessCriteria( entity.getSuccessCriteria() );
-        campaignActivityDTO.setTargetAudience( entity.getTargetAudience() );
-        campaignActivityDTO.setDeliveryChannel( entity.getDeliveryChannel() );
+        campaignActivityDTO.id( entity.getId() );
+        campaignActivityDTO.name( entity.getName() );
+        campaignActivityDTO.description( entity.getDescription() );
+        campaignActivityDTO.activityType( entity.getActivityType() );
+        campaignActivityDTO.plannedStartDate( entity.getPlannedStartDate() );
+        campaignActivityDTO.plannedEndDate( entity.getPlannedEndDate() );
+        campaignActivityDTO.actualStartDate( entity.getActualStartDate() );
+        campaignActivityDTO.actualEndDate( entity.getActualEndDate() );
+        campaignActivityDTO.status( entity.getStatus() );
+        campaignActivityDTO.plannedCost( entity.getPlannedCost() );
+        campaignActivityDTO.actualCost( entity.getActualCost() );
+        campaignActivityDTO.successCriteria( entity.getSuccessCriteria() );
+        campaignActivityDTO.targetAudience( entity.getTargetAudience() );
+        campaignActivityDTO.deliveryChannel( entity.getDeliveryChannel() );
 
-        return campaignActivityDTO;
+        return campaignActivityDTO.build();
     }
 
     @Override

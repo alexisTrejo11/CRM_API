@@ -44,7 +44,7 @@ public class InteractionMappers {
     public CampaignInteractionDTO domainToDTO(CampaignInteraction domain) {
         return CampaignInteractionDTO.builder()
                 .id(domain.getId().value())
-                .campaignId(domain.getCampaign().getId().value())
+                .campaignId(domain.getCampaign().getId().getValue())
                 .customerId(domain.getCustomerModel().getId())
                 .interactionType(domain.getInteractionType())
                 .interactionDate(domain.getInteractionDate())

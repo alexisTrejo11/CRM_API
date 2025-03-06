@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="at.backend.MarketingCompany.MarketingCampaing.domain.CampaignMetricTest$MarkAsAutomatedTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-03-06T00:00:50" hostname="alexiss-MacBook-Air.local" time="0.551">
+<testsuite name="at.backend.MarketingCompany.MarketingCampaing.domain.CampaignInteractionServiceImplTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-03-06T03:11:51" hostname="alexiss-MacBook-Air.local" time="0.731">
   <properties/>
-  <testcase name="markAsAutomated_UpdatesFlagAndTimestamp()" classname="at.backend.MarketingCompany.MarketingCampaing.domain.CampaignMetricTest$MarkAsAutomatedTests" time="0.551"/>
+  <testcase name="create_ValidInteraction_Success()" classname="at.backend.MarketingCompany.MarketingCampaing.domain.CampaignInteractionServiceImplTest" time="0.731"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
 WARNING: A Java agent has been loaded dynamically (/Users/alexis/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.15.11/a38b16385e867f59a641330f0362ebe742788ed8/byte-buddy-agent-1.15.11.jar)

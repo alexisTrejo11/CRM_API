@@ -6,6 +6,7 @@ import at.backend.MarketingCompany.customer.api.repository.CustomerModel;
 import at.backend.MarketingCompany.marketing.campaign.domain.MarketingCampaign;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
@@ -16,12 +17,13 @@ import java.util.Map;
 @Getter
 @Setter
 @SuperBuilder
+@NoArgsConstructor
 public class CampaignInteraction {
 
-    private final CampaignInteractionId id;
-    private final MarketingCampaign campaign;
-    private final CustomerModel customerModel;
-    private final MarketingInteractionType interactionType;
+    private CampaignInteractionId id;
+    private MarketingCampaign campaign;
+    private CustomerModel customerModel;
+    private MarketingInteractionType interactionType;
     private LocalDateTime interactionDate;
     private InteractionSource source;
     private DeviceInfo deviceInfo;
@@ -30,7 +32,7 @@ public class CampaignInteraction {
     private String details;
     private Deal resultedDeal;
     private Double conversionValue;
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public CampaignInteraction(

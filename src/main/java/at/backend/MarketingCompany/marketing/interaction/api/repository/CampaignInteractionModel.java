@@ -5,8 +5,11 @@ import at.backend.MarketingCompany.crm.deal.domain.Deal;
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.MarketingInteractionType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +19,8 @@ import java.util.UUID;
 @Table(name = "campaign_interactions")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CampaignInteractionModel {
 
     @Id

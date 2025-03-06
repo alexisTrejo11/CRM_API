@@ -4,6 +4,7 @@ import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.Attribut
 import at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers.*;
         import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,16 +12,18 @@ import java.util.UUID;
 
 @Getter
 @Builder
+@NoArgsConstructor
 public class CampaignAttribution {
-    private final AttributionId id;
-    private final DealId dealId;
-    private final CampaignId campaignId;
-    private final AttributionModel model;
-    private final AttributionPercentage percentage;
-    private final AttributedRevenue revenue;
-    private final TouchTimeline timeline;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private AttributionId id;
+    private DealId dealId;
+    private CampaignId campaignId;
+    private AttributionModel model;
+    private AttributionPercentage percentage;
+    private AttributedRevenue revenue;
+    private TouchTimeline timeline;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
 
     private CampaignAttribution(
             AttributionId id,

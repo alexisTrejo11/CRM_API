@@ -37,7 +37,7 @@ public class MetricMappers {
     public CampaignMetricDTO domainToDTO(CampaignMetric domain) {
         return CampaignMetricDTO.builder()
                 .id(domain.getId().value())
-                .campaignId(domain.getCampaign().getId().value())
+                .campaignId(domain.getCampaign().getId().getValue())
                 .name(domain.getName())
                 .type(domain.getType())
                 .description(domain.getDescription())

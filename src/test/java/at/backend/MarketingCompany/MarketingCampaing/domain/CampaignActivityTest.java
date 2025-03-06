@@ -6,7 +6,7 @@ import at.backend.MarketingCompany.marketing.activity.domain.CampaignActivity;
 import at.backend.MarketingCompany.marketing.activity.domain.Exception.ActivityException;
 import at.backend.MarketingCompany.marketing.activity.domain.HelperClasses.ActivityCost;
 import at.backend.MarketingCompany.marketing.activity.domain.HelperClasses.ActivitySchedule;
-import at.backend.MarketingCompany.marketing.campaign.domain.HelperClasses.CampaignId;
+import at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers.CampaignId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

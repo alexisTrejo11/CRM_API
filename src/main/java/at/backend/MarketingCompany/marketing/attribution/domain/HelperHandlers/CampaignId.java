@@ -7,4 +7,8 @@ import java.util.UUID;
 @Value(staticConstructor = "of")
 public class CampaignId {
     UUID value;
+
+    public static CampaignId generate() {
+        return of(UUID.randomUUID());
+    }
 }

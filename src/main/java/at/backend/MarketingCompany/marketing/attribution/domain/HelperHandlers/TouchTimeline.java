@@ -45,4 +45,15 @@ public class TouchTimeline {
                 .touches(updatedTouches)
                 .build();
     }
+
+
+    public static TouchTimeline create() {
+        LocalDateTime now = LocalDateTime.now();
+        return TouchTimeline.builder()
+                .firstTouch(now)
+                .lastTouch(now)
+                .touchCount(1)
+                .touches(List.of(now))
+                .build();
+    }
 }

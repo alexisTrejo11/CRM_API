@@ -5,6 +5,7 @@ import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCa
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.ActivityStatus;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.ActivityType;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "campaign_activities")
 @Data
+@Builder
 public class CampaignActivityModel {
 
     @Id

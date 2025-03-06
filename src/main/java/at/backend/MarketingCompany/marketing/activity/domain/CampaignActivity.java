@@ -6,7 +6,7 @@ import at.backend.MarketingCompany.marketing.activity.domain.Exception.ActivityE
 import at.backend.MarketingCompany.marketing.activity.domain.HelperClasses.ActivityCost;
 import at.backend.MarketingCompany.marketing.activity.domain.HelperClasses.ActivityId;
 import at.backend.MarketingCompany.marketing.activity.domain.HelperClasses.ActivitySchedule;
-import at.backend.MarketingCompany.marketing.campaign.domain.HelperClasses.CampaignId;
+import at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers.CampaignId;
 import at.backend.MarketingCompany.marketing.customer.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

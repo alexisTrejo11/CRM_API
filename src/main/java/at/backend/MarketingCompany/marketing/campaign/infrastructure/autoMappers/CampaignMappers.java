@@ -1,5 +1,6 @@
 package at.backend.MarketingCompany.marketing.campaign.infrastructure.autoMappers;
 
+import at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers.CampaignId;
 import at.backend.MarketingCompany.marketing.campaign.api.repository.MarketingCampaignModel;
 import at.backend.MarketingCompany.marketing.campaign.domain.HelperClasses.*;
 import at.backend.MarketingCompany.marketing.campaign.domain.MarketingCampaign;
@@ -39,7 +40,7 @@ public class CampaignMappers {
 
     public MarketingCampaignModel domainToModel(MarketingCampaign domain) {
         return MarketingCampaignModel.builder()
-                .id(domain.getId().value())
+                .id(domain.getId().getValue())
                 .name(domain.getName())
                 .description(domain.getDescription())
                 .type(domain.getType())
@@ -74,7 +75,7 @@ public class CampaignMappers {
 
     public MarketingCampaignDTO domainToDTO(MarketingCampaign domain) {
         return MarketingCampaignDTO.builder()
-                .id(domain.getId().value())
+                .id(domain.getId().getValue())
                 .name(domain.getName())
                 .description(domain.getDescription())
                 .startDate(domain.getPeriod().startDate())
@@ -91,7 +92,7 @@ public class CampaignMappers {
 
     public MarketingCampaign modelToDomain(MarketingCampaignModel model) {
         return MarketingCampaign.builder()
-                .id(new CampaignId(model.getId()))
+                .id(CampaignId.of(model.getId()))
                 .name(model.getName())
                 .description(model.getDescription())
                 .period(new CampaignPeriod(model.getStartDate(), model.getEndDate()))

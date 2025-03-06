@@ -3,6 +3,7 @@ package at.backend.MarketingCompany.marketing.campaign.domain;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.CampaignStatus;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.CampaignType;
 import at.backend.MarketingCompany.marketing.activity.api.repository.CampaignActivityModel;
+import at.backend.MarketingCompany.marketing.attribution.domain.HelperHandlers.CampaignId;
 import at.backend.MarketingCompany.marketing.campaign.domain.Exceptions.CampaignException;
 import at.backend.MarketingCompany.marketing.campaign.domain.HelperClasses.*;
 import at.backend.MarketingCompany.marketing.interaction.api.repository.CampaignInteractionModel;

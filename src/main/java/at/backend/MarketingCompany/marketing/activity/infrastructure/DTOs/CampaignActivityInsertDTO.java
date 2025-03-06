@@ -3,6 +3,7 @@ package at.backend.MarketingCompany.marketing.activity.infrastructure.DTOs;
 import at.backend.MarketingCompany.common.utils.Enums.MarketingCampaign.ActivityType;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CampaignActivityInsertDTO {
 
     @NotBlank(message = "Name cannot be empty")
