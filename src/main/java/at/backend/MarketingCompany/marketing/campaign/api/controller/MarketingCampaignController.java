@@ -1,5 +1,6 @@
 package at.backend.MarketingCompany.marketing.campaign.api.controller;
 
+import at.backend.MarketingCompany.common.utils.InputValidator;
 import at.backend.MarketingCompany.marketing.campaign.api.service.MarketingCampaignService;
 import at.backend.MarketingCompany.marketing.campaign.infrastructure.DTOs.MarketingCampaignDTO;
 import at.backend.MarketingCompany.marketing.campaign.infrastructure.DTOs.MarketingCampaignInsertDTO;
@@ -17,6 +18,8 @@ import java.util.UUID;
 public class MarketingCampaignController {
 
     private final MarketingCampaignService marketingCampaignService;
+    private final InputValidator validator;
+
 
     @QueryMapping
     public MarketingCampaignDTO getCampaignById(@Argument String id) {
@@ -25,12 +28,14 @@ public class MarketingCampaignController {
 
     @MutationMapping
     public MarketingCampaignDTO createCampaign(@Valid @Argument MarketingCampaignInsertDTO input) {
+        validator.validate(input);
         return marketingCampaignService.create(input);
     }
 
     @MutationMapping
     public MarketingCampaignDTO updateCampaign(@Valid @Argument MarketingCampaignInsertDTO input,
                                                @Argument String id) {
+        validator.validate(input);
         return marketingCampaignService.update(UUID.fromString(id), input);
     }
 

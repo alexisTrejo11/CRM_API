@@ -1,5 +1,6 @@
 package at.backend.MarketingCompany.marketing.attribution.api.controller;
 
+import at.backend.MarketingCompany.common.utils.InputValidator;
 import at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs.CampaignAttributionDTO;
 import at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs.CampaignAttributionInsertDTO;
 import at.backend.MarketingCompany.marketing.attribution.infrastructure.DTOs.TouchPointDTO;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class CampaignAttributionController {
 
     private final CampaignAttributionService campaignAttributionService;
+    private final InputValidator validator;
 
     @QueryMapping
     public Page<CampaignAttributionDTO> getAllAttributions(@Argument Pageable pageable) {
@@ -49,12 +51,16 @@ public class CampaignAttributionController {
 
     @MutationMapping
     public CampaignAttributionDTO createAttribution(@Valid @Argument CampaignAttributionInsertDTO input) {
+        validator.validate(input);
+
         return campaignAttributionService.create(input);
     }
 
     @MutationMapping
     public CampaignAttributionDTO updateAttribution(@Valid @Argument CampaignAttributionInsertDTO input,
                                                     @Argument UUID id) {
+        validator.validate(input);
+
         return campaignAttributionService.update(id, input);
     }
 

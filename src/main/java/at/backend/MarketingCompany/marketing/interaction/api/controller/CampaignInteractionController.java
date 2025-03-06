@@ -1,5 +1,6 @@
 package at.backend.MarketingCompany.marketing.interaction.api.controller;
 
+import at.backend.MarketingCompany.common.utils.InputValidator;
 import at.backend.MarketingCompany.marketing.interaction.infrastructure.DTOs.CampaignInteractionDTO;
 import at.backend.MarketingCompany.marketing.interaction.infrastructure.DTOs.CampaignInteractionInsertDTO;
 import at.backend.MarketingCompany.marketing.interaction.api.service.CampaignInteractionService;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class CampaignInteractionController {
 
     private final CampaignInteractionService campaignInteractionService;
+    private final InputValidator validator;
 
     @QueryMapping
         public CampaignInteractionDTO getCampaignInteractionById(@Argument UUID id) {
@@ -28,12 +30,14 @@ public class CampaignInteractionController {
 
     @MutationMapping
     public CampaignInteractionDTO createCampaignInteraction(@Valid @Argument CampaignInteractionInsertDTO input) {
+        validator.validate(input);
         return campaignInteractionService.create(input);
     }
 
     @MutationMapping
     public CampaignInteractionDTO updateCampaignInteraction(@Valid @Argument CampaignInteractionInsertDTO input,
                                                @Argument UUID id) {
+        validator.validate(input);
         return campaignInteractionService.update(id, input);
     }
 
